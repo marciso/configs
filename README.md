@@ -1,6 +1,9 @@
 # Configs
 
 ## Vim plugins:
+
+Vundle: https://github.com/VundleVim/Vundle.vim
+
 a.vim: https://github.com/vim-scripts/a.vim
 
 fakeclip.vim: https://github.com/kana/vim-fakeclip
