@@ -12,6 +12,10 @@ export VISUAL=vim
 export EDITOR=vim
 export PAGER=less
 
+export LESSOPEN='|~/.lessfilter %s'
+# to enable raw chars (needed for lessfilter?)
+#export LESS=-R
+
 #export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH
 
 #export LESS='-CxQai4' # for binary view -- use xless alias instead
