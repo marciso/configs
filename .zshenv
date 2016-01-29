@@ -5,7 +5,7 @@
 # for the rest of your zsh configuration.
 
 
-export DISPLAY=10.0.2.2:0.0
+#export DISPLAY=10.0.2.2:0.0
 
 # use vim as the visual editor
 export VISUAL=vim
