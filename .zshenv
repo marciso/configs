@@ -12,7 +12,7 @@ export VISUAL=vim
 export EDITOR=vim
 export PAGER=less
 
-export LESSOPEN='|~/.lessfilter %s'
+export LESSOPEN='|pygmentize -f 256 -g %s'
 # to enable raw chars (needed for lessfilter?)
 #export LESS=-R
 
