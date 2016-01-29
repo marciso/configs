@@ -110,6 +110,11 @@ endif
 " Turn on the WiLd menu
 set wildmenu
 
+" On the first tab it will act as longest:full, showing the wildmenu but only
+" populating the longest string found. The second tab will populate the first
+" full match, which happens to be the first in the wildmenu
+set wildmode=longest:full,full
+
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 
@@ -131,6 +136,9 @@ set ignorecase
 
 " When searching try to be smart about cases 
 set smartcase
+
+" Always keep cursor 2 lines from screen edge
+set scrolloff=2
 
 " Highlight search results
 set hlsearch
