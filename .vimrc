@@ -470,3 +470,9 @@ augroup Binary
 	au BufWritePost *.bin set nomod | endif
 augroup END
 
+" enable digraphs, type
+"  :digraphs
+" for the list; and
+"  CTRL-K + <char1> <char2>
+" to insert special char
+set digraph
