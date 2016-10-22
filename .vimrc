@@ -24,6 +24,14 @@ Plugin 'christoomey/vim-tmux-navigator'
 " Vimux - vim+tmux split window
 "Plugin 'benmills/vimus'
 
+Plugin 'mhinz/vim-grepper'
+
+" use '.' for repeating operations
+Plugin 'tpope/vim-repeat'
+
+" rtags - llvm tags
+Plugin 'lyuts/vim-rtags'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
@@ -31,14 +39,33 @@ call vundle#end()            " required
 execute pathogen#infect()
 
 " disable visual bell
-set noeb vb t_vb=
+"set noeb vb t_vb=
 set nu
 
-if &term =~ '256color'
-    " disable Background Color Erase (BCE) so that color schemes
-    " render properly when inside 256-color tmux and GNU screen.
-    " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-    set t_ut=
+if  !has('nvim)
+    set t_vb=
+    if &term =~ '256color'
+        " disable Background Color Erase (BCE) so that color schemes
+        " render properly when inside 256-color tmux and GNU screen.
+       " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+       set t_ut=
+    endif
+    set ttyfast
+endif
+
+if has('nvim)
+	" Esc to exit terninal mode:
+	tnoremp <Esc> <C-\><C-n>
+	
+	#tnoremap <A-h> <C-\><C-n><C-w>h
+	#tnoremap <A-j> <C-\><C-n><C-w>j
+	#tnoremap <A-k> <C-\><C-n><C-w>k
+	#tnoremap <A-l> <C-\><C-n><C-w>l
+
+	tnoremap <C-w>h <C-\><C-n><C-w>h
+	tnoremap <C-w>j <C-\><C-n><C-w>j
+	tnoremap <C-w>k <C-\><C-n><C-w>k
+	tnoremap <C-w>l <C-\><C-n><C-w>l
 endif
 
 " ~/.vimrc
@@ -65,6 +92,9 @@ filetype on
 filetype plugin on
 filetype indent on
 
+" TIP: change one line into multiply lines and indent:
+" %s/[{;}]/&\r/g|norm! =gg
+
 let mapleader = ","
 
 " load vim-plug plugin manager -- https://github.com/junegunn/vim-plug
@@ -75,8 +105,7 @@ set background=dark
 "colorscheme elflord
 colorscheme desert
 
-"colorscheme base16-railscasts
-"
+"colorscheme base16-railscasts"
 "highlight clear SignColumn
 "highlight VertSplit    ctermbg=236
 "highlight ColorColumn  ctermbg=237
@@ -105,7 +134,8 @@ if &diff
   "set diffopt+=iwhite
 endif
 
-
+" Show title in the xterm window
+set title
 
 " Turn on the WiLd menu
 set wildmenu
@@ -164,7 +194,7 @@ set tm=500
 
 
 " Use tabs instead of spaces :(
-set noexpandtab
+"set noexpandtab
 
 " Be smart when using tabs ;)
 set smarttab
@@ -300,6 +330,13 @@ if has("cscope")
 endif
 
 map <F7> :set csto=1<CR>
+
+if has('rtags')
+    set completfunc=RtagsCompleteFunc
+    set csto=1 " we want to search tags gefore cscope because rtags bind to ctags
+    
+    " for list of default bindings, go to the plugin page
+endif
 
 " disable default key/mouse mapping
 "let g:GtagsCscope_Auto_Map = 0
@@ -467,20 +504,25 @@ nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 " Automatically load *.bin files in binary mode
 " Manually enter binary mode: :%!xxd
 " exit: :%!xxd -r
-augroup Binary
-	au!
-	au BufReadPre *.bin let &bin=1
-	au BufReadPost *.bin if &bin | %!xxd
-	au BufReadPost *.bin set ft=xxd | endif
-	au BufWritePre *.bin if &bin | %!xxd -r
-	au BufWritePre *.bin endif
-	au BufWritePost *.bin if &bin | %!xxd
-	au BufWritePost *.bin set nomod | endif
-augroup END
+"augroup Binary
+"	au!
+"	au BufReadPre *.bin let &bin=1
+"	au BufReadPost *.bin if &bin | %!xxd
+"	au BufReadPost *.bin set ft=xxd | endif
+"	au BufWritePre *.bin if &bin | %!xxd -r
+"	au BufWritePre *.bin endif
+"	au BufWritePost *.bin if &bin | %!xxd
+"	au BufWritePost *.bin set nomod | endif
+"augroup END
 
-" enable digraphs, type
-"  :digraphs
-" for the list; and
-"  CTRL-K + <char1> <char2>
-" to insert special char
-set digraph
+" TODO: search for DIffToggle
+
+" install FuzzyFinder, vim.org/scripts/script.php?scirpt_id=1984
+let g:fuf_modesDisable = []
+let g:fuf_mrufile_maxItem = 1000
+let g:fuf_mrucmd_maxItem = 400
+"t g:fuf_mrufile_exclude = 
+
+
+" prevents from a warning anout the varianble not being set
+let g:gitgutter_max_signs=9999
