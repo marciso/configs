@@ -544,13 +544,62 @@ nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 "	au BufWritePost *.bin set nomod | endif
 "augroup END
 
-" TODO: search for DIffToggle
+" Disable one diff window during a three-way diff allowing you to cut out the
+" noise of a three-way diff and focus on just the changes between two versions
+" at a time. Inspired by Steve Losh's Splice
+function! DiffToggle(window)
+  " Save the cursor position and turn on diff for all windows
+  let l:save_cursor = getpos('.')
+  windo :diffthis
+  " Turn off diff for the specified window (but keep scrollbind) and move
+  " the cursor to the left-most diff window
+  exe a:window . "wincmd w"
+  diffoff
+  set scrollbind
+  set cursorbind
+  exe a:window . "wincmd " . (a:window == 1 ? "l" : "h")
+  " Update the diff and restore the cursor position
+  diffupdate
+  call setpos('.', l:save_cursor)
+endfunction
+" Toggle diff view on the left, center, or right windows
+nmap <silent> <leader>dl :call DiffToggle(1)<cr>
+nmap <silent> <leader>dc :call DiffToggle(2)<cr>
+nmap <silent> <leader>dr :call DiffToggle(3)<cr>
 
-" install FuzzyFinder, vim.org/scripts/script.php?scirpt_id=1984
+
+
+" TODO: search for DIffToggle
+" FuzzyFinder, http://www.vim.org/scripts/script.php?script_id=1984
 let g:fuf_modesDisable = []
 let g:fuf_mrufile_maxItem = 1000
 let g:fuf_mrucmd_maxItem = 400
-"t g:fuf_mrufile_exclude = 
+let g:fuf_mrufile_exclude = '\v\~$|\.(bak|sw[po])$|^(\/\/|\\\\|\/mnt\/)'
+nnoremap <silent> <C-n>      :FufBuffer<CR>
+nnoremap <silent> <C-p>      :FufFileWithCurrentBufferDir<CR>
+nnoremap <silent> <C-f><C-p> :FufFileWithFullCwd<CR>
+nnoremap <silent> <C-f>p     :FufFile<CR>
+nnoremap <silent> <C-f><C-d> :FufDirWithCurrentBufferDir<CR>
+nnoremap <silent> <C-f>d     :FufDirWithFullCwd<CR>
+nnoremap <silent> <C-f>D     :FufDir<CR>
+nnoremap <silent> <C-j>      :FufMruFile<CR>
+nnoremap <silent> <C-k>      :FufMruCmd<CR>
+nnoremap <silent> <C-b>      :FufBookmarkDir<CR>
+nnoremap <silent> <C-f><C-t> :FufTag<CR>
+nnoremap <silent> <C-f>t     :FufTag!<CR>
+noremap  <silent> g]         :FufTagWithCursorWord!<CR>
+nnoremap <silent> <C-f><C-f> :FufTaggedFile<CR>
+nnoremap <silent> <C-f><C-j> :FufJumpList<CR>
+nnoremap <silent> <C-f><C-g> :FufChangeList<CR>
+nnoremap <silent> <C-f><C-q> :FufQuickfix<CR>
+nnoremap <silent> <C-f><C-l> :FufLine<CR>
+nnoremap <silent> <C-f><C-h> :FufHelp<CR>
+nnoremap <silent> <C-f><C-b> :FufAddBookmark<CR>
+vnoremap <silent> <C-f><C-b> :FufAddBookmarkAsSelectedText<CR>
+nnoremap <silent> <C-f><C-e> :FufEditInfo<CR>
+nnoremap <silent> <C-f><C-r> :FufRenewCache<CR>
+
+" TODO: try https://github.com/junegunn/fzf
 
 
 " prevents from a warning anout the varianble not being set
