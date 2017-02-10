@@ -13,6 +13,8 @@
 # See .zshenv for more details about DISTCC_TCP_CORK
 unset DISTCC_TCP_CORK
 
+export GTEST_COLOR=yes
+
 # allows editing command in external editor
 autoload edit-command-line
 autoload -U zmv
@@ -59,8 +61,8 @@ setopt pushd_to_home            # `pushd` = `pushd $HOME`
 alias ls='ls -F --color=auto'
 #alias ls='ls -F'
 #alias ll='ls -lh'
-alias la='ls -AFrt'
-alias lal='ls -AlFrt'
+alias la='ls -FArt'
+alias lal='ls -FlArt'
 alias lla=lal
 alias lt='ls -Flrt'
 alias ll=lt
@@ -141,11 +143,104 @@ bindkey "^Y" accept-and-hold
 bindkey "^N" insert-last-word
 
 
+alias S='cd $MS_SRC_BASE'
 
-alias S='cd $BUILD_ROOT'
-alias D='cd $BUILD_ROOT/../Debug64'
-alias R='cd $BUILD_ROOT/../ReleaseShared64'
-alias B='cd $MS_SRC_BASE'
+
+# build commands
+pushd-build-cmd () {
+    local cmd="$1"
+    local dir_name=$2
+    shift 2
+    pushd $dir_name && eval $cmd "$@" && popd
+}
+
+pushd-ninja () {
+    pushd-build-cmd "CCACHE_BASEDIR=\$(readlink -f \$MS_SRC_BASE) ninja" "$@"
+    #pushd-build-cmd "ninja" "$@"
+}
+
+get-ms-build-dir() {
+    test -n "$MS_SRC_BASE" && (echo $(dirname $(readlink -f $MS_SRC_BASE))/.$(basename $(readlink -f $MS_SRC_BASE))-build) || (echo "MS_SRC_BASE not set" >&2; echo '/dev/null'; exit 1)
+}
+
+alias cd-last-cmake-build-dir='cd $(cat ~/.last-cmake-build-dir)'
+alias cd-ms-build-dir='cd $(get-ms-build-dir)'
+
+ms-run-build-cmd() {
+    local cmd="$1"
+    local dir_name=$2
+    shift 2
+    pushd-build-cmd "$cmd" $(get-ms-build-dir)/$dir_name "$@"
+}
+
+ms-ninja-run() {
+    ms-run-build-cmd ninja "$@"
+}
+
+set-build-dir() {
+    local dir_name=$1
+    test -n "$dir_name" || (echo "$FUNCNAME() requires an argument (sub-directory name)" >&2; exit 1)
+    local full_dir_name="$(get-ms-build-dir)/$dir_name"
+    mkdir -p "$full_dir_name"
+    echo "$full_dir_name" >! ~/.last-cmake-build-dir
+}
+
+ms-cm-run() {
+    local dir_name=$1
+    local env="${2}"
+    local build_type=$3
+    local generator="$4"
+    local build_cmd="$5"
+    shift 5
+    test -n "$dir_name" || (echo "$FUNCNAME() requires an argument (sub-directory name)" >&2; exit 1)
+    test -n "$build_type" || (echo "$FUNCNAME() requires an argument (build type)" >&2; exit 1)
+    test -n "$generator" || (echo "$FUNCNAME() requires an argument (cmake generator name)" >&2; exit 1)
+    test -n "$build_cmd" || (echo "$FUNCNAME() requires an argument (build command)" >&2; exit 1)
+    set-build-dir $dir_name && cd-last-cmake-build-dir && \
+        eval ${env[@]} cmake -G "$generator" \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=On \
+        -DCMAKE_BUILD_TYPE="$build_type" "$@" $MS_SRC_BASE && \
+        ms-run-build-cmd "$build_cmd" $dir_name
+}
+
+alias B=cd-last-cmake-build-dir
+alias n='pushd-ninja $(cat ~/.last-cmake-build-dir)'
+
+for i in gcc-Debug gcc-RelWithDebInfo clang-Debug clang-RelWithDebInfo eclipse-clang-Debug ccc-Debug; do
+
+    build_env=()
+    ninja_cmd="CCACHE_BASEDIR=\$(readlink -f \$MS_SRC_BASE) ninja"
+    #ninja_cmd="ninja"
+    case $i in
+        *gcc*) build_env=(CC='ccache\ gcc' CXX='ccache\ g++');;
+        *clang*) build_env=(CC='ccache\ clang' CXX='ccache\ clang++');;
+        *ccc*) build_env=(CCC_CC=clang CCC_CXX=clang++ \
+            CC='/usr/libexec/ccc-analyzer'; \
+            CXX='/usr/libexec/c++-analyzer'); ninja_cmd="scan-build ninja";;
+        *) echo "unknown compiler" >&2;;
+    esac
+    case $i in
+        *Debug*) build_type=Debug;;
+        *RelWithDebInfo*) build_type=RelWithDebInfo;;
+        *Release*) build_type=Release;;
+        *) echo "unknown build type" >&2;;
+    esac
+    case $i in
+        *eclipse*) gen='"Eclipse CDT4 - Ninja"';;
+        *) gen=Ninja;
+    esac
+    extra=''
+    case $i in
+        *eclipse*) extra='-DCMAKE_ECLIPSE_VERSION=\"4.2\ (Kepler)\"';;
+        *) gen=Ninja;
+    esac
+
+    alias cm-$i="ms-cm-run $i \"$build_env\" $build_type $gen \"$ninja_cmd\" $extra"
+    alias n-$i="ms-run-build-cmd \"$ninja_cmd\" $i"
+    alias B-$i="cd \$(get-ms-build-dir)/$i"
+    alias clang-check-$i="clang-check -p \$(get-ms-build-dir)/$i"
+done
+
 
 # for some other aliases see .zshenv
 #alias P=select_work_dir
@@ -253,12 +348,14 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # ignore case
 zstyle ':completion:*' menu select=2                        # menu if nb items > 2
 #zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # colorz !
+# PERFORMANCE issues? remove _approximate if take too long
 zstyle ':completion:*::::' completer _expand _complete _match _ignored _approximate
 
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
 zstyle ':completion:*:match:*' original only
+# PERFORMANCE issues? comment out the line below
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
