@@ -30,13 +30,42 @@ Plugin 'mhinz/vim-grepper'
 Plugin 'tpope/vim-repeat'
 
 " rtags - llvm tags
+" need to start rdm and load compilation db (rc -c / rc -J)
 Plugin 'lyuts/vim-rtags'
+
+" syntax highlight for git diff
+Plugin 'tpope/vim-git'
+" integration with git:
+Plugin 'tpope/vim-fugitive'
+
+" git browser (like tig) in vim
+Plugin 'xaizek/vim-extradite'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 " pathogen is another package manager
 execute pathogen#infect()
+
+call plug#begin('~/.vim/plugged')
+
+" On-demand loading
+"Plug 'mathstuf/vim-fugitive', { 'branch':  'git-workdir-support' }
+"Plug 'mathstuf/vim-fugitive'
+"
+" " Add plugins to &runtimepath
+call plug#end()
+
+" Also Recommended:
+"  2) extradite.vim: a git commit browser,
+"       http://int3.github.io/vim-extradite/
+"
+
+" NOTE: when error occurs (typically after full partition)
+"  Error detected while processing function <SNR>25_updateData..fuf#updateMruList
+" Solution:
+"  remove  ~/.vim-fuf-data/mrufile/items
+
 
 " disable visual bell
 "set noeb vb t_vb=
