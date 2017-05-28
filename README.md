@@ -12,3 +12,7 @@ minibufexpl.vim: https://github.com/fholgado/minibufexpl.vim
 
 ## Tmux plugins
 TPM: https://github.com/tmux-plugins/tpm
+
+## Apps
+cmatrix
+
