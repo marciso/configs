@@ -15,4 +15,5 @@ TPM: https://github.com/tmux-plugins/tpm
 
 ## Apps
 cmatrix
+tmux-mem-cpu-load
 
