@@ -23,10 +23,10 @@ autoload zcalc
 ##
 # Vcs info
 ##
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git svn hg
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats "%{$fg[yellow]%}%c%{$fg[green]%}%u%{$reset_color%} [%{$fg[blue]%}%b%{$reset_color%}] %{$fg[yellow]%}%s%{$reset_color%}:%r"
+#autoload -Uz vcs_info
+#zstyle ':vcs_info:*' enable git svn hg
+#zstyle ':vcs_info:*' check-for-changes true
+#zstyle ':vcs_info:*' formats "%{$fg[yellow]%}%c%{$fg[green]%}%u%{$reset_color%} [%{$fg[blue]%}%b%{$reset_color%}] %{$fg[yellow]%}%s%{$reset_color%}:%r"
 
 
 # big history file, by default: $HISTFILE, that is ~/.bash_history
@@ -288,7 +288,7 @@ function last-command-ok () { echo "%F{green}^_^%f" }
 function last-command-err () { echo "%F{red}O_O%f" }
 
 PS1_HOSTCOLOR="%F{magenta}"
-if [ .$HOSTNAME = .vm-marcin-mm ] ; then
+if [ .$HOSTNAME = .MacBook-Pro ] ; then
 	PS1_HOSTCOLOR="%F{green}"
 fi
 
