@@ -13,6 +13,7 @@
 # See .zshenv for more details about DISTCC_TCP_CORK
 unset DISTCC_TCP_CORK
 
+# I want to see test colors in the interactive shell
 export GTEST_COLOR=yes
 
 # allows editing command in external editor
@@ -24,7 +25,7 @@ autoload zcalc
 # Vcs info
 ##
 #autoload -Uz vcs_info
-#zstyle ':vcs_info:*' enable git svn hg
+#zstyle ':vcs_info:*' enable git #svn hg
 #zstyle ':vcs_info:*' check-for-changes true
 #zstyle ':vcs_info:*' formats "%{$fg[yellow]%}%c%{$fg[green]%}%u%{$reset_color%} [%{$fg[blue]%}%b%{$reset_color%}] %{$fg[yellow]%}%s%{$reset_color%}:%r"
 
@@ -73,10 +74,16 @@ alias ls-la='ls -la'
 alias ls-l='ls -l'
 alias ls-a='ls -a'
 
+alias gls='git ls-files -ovs --abbrev=10'
+# git aliases
+for a in ch co cp bt st sh shr d d- lg la ll dd dd- a au l lp b s vb bf fe pl ph; do
+	alias g$a="git $a"
+done
+
 alias grep='grep --color=auto'
 alias rgrep='grep -rn'
 
-alias srgrep='rgrep -I' # like rgrep but ignore binary files
+#alias srgrep='rgrep -I' # like rgrep but ignore binary files
 alias moer=more
 alias cim=vim
 alias greo=grep
@@ -85,6 +92,12 @@ alias xs=cd
 alias maek=make
 alias mkae=make
 alias amke=make
+alias gi=git
+alias gti=git
+alias gut=git
+
+alias g=git
+#alias git='git --work-tree=\$(git rev-parse --show-toplevel)'
 
 alias watch='watch -d'
 
@@ -93,17 +106,16 @@ alias today-="date +'%Y-%m-%d'"
 
 
 alias xless='less -CxQai4'
-alias L=xless
-alias M=more
+#alias L=less
+#alias M=more
 #alias C=cat
+alias cat.orig=cat
+alias cat=dog
 #alias G=grep
 #alias F=find
-alias V=vim
-alias VD=vimdiff
+#alias V=vim
+#alias VD=vimdiff
 alias LL='xless `ls -1tr | tail -1`'
-alias g=git
-alias gti=git
-alias gut=git
 
 #alias htop='LANG=en_UK htop'
 
@@ -112,16 +124,18 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
-alias h=history
+alias h=history -i 0
 alias j=jobs
 # f - find
-alias f=locate
+#alias f=locate
 
 alias d='dirs -v'
 # "push"
 alias p=pushd
 # "back"
 alias b=popd
+
+alias weather='curl -4 wttr.in/London' 
 
 #setopt VI
 bindkey -v
@@ -148,10 +162,10 @@ alias S='cd $MS_SRC_BASE'
 
 # build commands
 pushd-build-cmd () {
-    local cmd="$1"
-    local dir_name=$2
-    shift 2
-    pushd $dir_name && eval $cmd "$@" && popd
+	local cmd="$1"
+	local dir_name=$2
+	shift 2
+	pushd $dir_name && eval $cmd "$@" && popd
 }
 
 pushd-ninja () {
@@ -297,7 +311,7 @@ LAST_CMD_STATUS="%(?.$(last-command-ok).$(last-command-err))"
 precmd () {
 	# update last command status on each prompt display
     if [ $? -eq 0 ] ; then LAST_CMD_STATUS="$(last-command-ok)" else LAST_CMD_STATUS="$(last-command-err)" fi
-	PS1="%F{green}%n@$PS1_HOSTCOLOR%m:%F{yellow}%~%f $(__git_ps1)$prompt_newline%{$terminfo_down_sc$VI_MODE$terminfo[rc]%}$LAST_CMD_STATUS %h%# "
+	PS1="%F{green}%n@$PS1_HOSTCOLOR%m: %F{yellow}%~%f $(__git_ps1)$prompt_newline%{$terminfo_down_sc$VI_MODE$terminfo[rc]%}$LAST_CMD_STATUS %h%# "
 	#TMUX_HOSTNAME="$( (hostname -s||uname -n)2>/dev/null )"
 	MY_GIT_LOC="$(echo $(git rev-parse --abbrev-ref HEAD 2>/dev/null)|\
 		sed -e 's/feature/f/' -e 's/bugfix/b/' -e 's/hotfix/h/' -e 's/release/r/' -e 's/f587339/-/')"
@@ -311,8 +325,13 @@ function set-prompt () {
       (main|viins) VI_MODE="$(insert-mode)" ;;
       (*)          VI_MODE="$(insert-mode)" ;;
     esac
-	PS1="%F{green}%n@$PS1_HOSTCOLOR%m:%F{yellow}%~%f $(__git_ps1)$prompt_newline%{$terminfo_down_sc$VI_MODE$terminfo[rc]%}$LAST_CMD_STATUS %h%# "
+	PS1="%F{green}%n@$PS1_HOSTCOLOR%m: %F{yellow}%~%f $(__git_ps1)$prompt_newline%{$terminfo_down_sc$VI_MODE$terminfo[rc]%}$LAST_CMD_STATUS %h%# "
 }
+
+# PS4 is used in xtrace mode (set -x)
+#export PS4='+(${(%):-%N}:${LINENO}): ${funcstack[0]:+${funcstack[0]}(): }'
+# bash equivalent would be:
+export PS4='+($0|${BASH_SOURCE:-?}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
 function set-title () {
 	printf "\033k$1\033\\"
@@ -338,7 +357,7 @@ zmodload -i zsh/complist
 setopt hash_list_all            # hash everything before completion
 setopt complete_aliases         # complete alisases
 setopt always_to_end            # when completing from the middle of a word, move the cursor to the end of the word
-setopt complete_in_word         # allow completion from within a word/phrase
+setopt no_complete_in_word         # do not allow completion from within a word/phrase -- too slow!
 #setopt correct                  # spelling correction for commands
 setopt list_ambiguous           # complete as much of a completion until it gets ambiguous.
 
@@ -348,15 +367,14 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # ignore case
 zstyle ':completion:*' menu select=2                        # menu if nb items > 2
 #zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # colorz !
-# PERFORMANCE issues? remove _approximate if take too long
-zstyle ':completion:*::::' completer _expand _complete _match _ignored _approximate
+#zstyle ':completion:*::::' completer _expand _complete _match _ignored _approximate
+zstyle ':completion:*::::' completer _expand _complete _match _ignored
 
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
 zstyle ':completion:*:match:*' original only
-# PERFORMANCE issues? comment out the line below
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
+#zstyle ':completion:*:approximate:*' max-errors 1 numeric
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
 #zstyle ':completion:*:*:kill:*' menu yes select
@@ -376,8 +394,8 @@ zstyle ':completion:*' verbose yes
 zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
 
 #generic completion with --help
-compdef _gnu_generic gcc
-compdef _gnu_generic gdb
+#compdef _gnu_generic gcc
+#compdef _gnu_generic gdb
 
 ##
 # Various
@@ -413,3 +431,6 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # oh-my-zsh plugins
 # zsh-syntax-highlighting: https://github.com/zsh-users/zsh-syntax-highlighting
 #plugins=( zsh-syntax-highlighting)
+
+#source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

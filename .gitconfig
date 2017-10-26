@@ -1,59 +1,64 @@
-
 [push]
-    default = simple
-    #default = matching
+	default = simple
+	#default = matching
 [pull]
-    rebase = true
+	rebase = true
 [alias]
-    ch = checkout
-    co = commit
-    cp = cherry-pick
-    br = branch
-    st = status
-    sh = show
-    shr = show --pretty=raw
-    diff- = diff --cached
-    d = diff
-    d- = diff --cached
-    last = log -1 HEAD
-    lg = log --graph --pretty=la --abbrev-commit --date=short
-    la = log --pretty=la --decorate --date=short
-    ll = log -p --color-words=.
-    bf = !git branch -a | grep --color=auto -i
-    dd = diff --color-words=.
-    dd- = diff --cached --color-words=.
-    a = add
-    au = add -u
-    l = log
-    lp = log -p
-    b = branch
-    s = status -uno
-    vimdiff = difftool --tool=vimdiff --no-prompt
-    vd = difftool --tool=vimdiff --no-prompt
-    pl = pull
-    ph = push
-    fe = fetch
+	ch = checkout
+	co = commit
+	cp = cherry-pick
+	br = branch
+	st = status
+	sh = show
+	shr = show --pretty=raw
+	diff- = diff --cached
+	d = diff
+	d- = diff --cached
+	last = log -1 HEAD
+	lg = log --graph --pretty=la --abbrev-commit --date=short
+	la = log --pretty=la --decorate --date=short
+	ll = log -p --color-words=.
+	lst = log --stat
+	bf = !git branch -a | grep --color=auto -i
+	dd = diff --color-words=.
+	dd- = diff --cached --color-words=.
+	a = add
+	au = add -u
+	l = log
+	lp = log -p
+	b = branch
+	s = status -uno
+	vimdiff = difftool --tool=vimdiff --no-prompt
+	vd = difftool --tool=vimdiff --no-prompt
+	pl = pull
+	ph = push
+	fe = fetch
+	mt = mergetool
+	r = rebase
+	r-c = rebase --continue
+	r-s = rebase --skip
+	r-a = rebase --abort
 [core]
-    abbrev = 12
-    editor = vim
-    # this is the default git seems to be using if env LESS isn't set
-    #pager = less -FRSX
+	abbrev = 12
+	editor = vim
+	# this is the default git seems to be using if env LESS isn't set
+	#pager = less -FRSX
 [pack]
-    compression = 9
-    windowMemory = 100m
-    SizeLimit = 100m
-    threads = 1
-    window = 0
+	compression = 9
+	windowMemory = 100m
+	SizeLimit = 100m
+	threads = 1
+	window = 0
 [log]
-    date = iso
+	date = iso
 [pretty]
-    la = tformat:%C(yellow)%H%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
-    la-nc = tformat:%h%d %s <%an> %ad
+	la = tformat:%C(yellow)%H%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
+	la-nc = tformat:%h%d %s <%an> %ad
 [mergetool "vimdiff3"]
-    cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 [merge]
-    tool = vimdiff3
+	tool = vimdiff3
 [diff]
-    tool = vimdiff
+	tool = vimdiff
 [rebase]
-    instructionFormat = %H - %d %s <%an> %aI (^:%p)
+	instructionFormat = %H - %d %s <%an> %aI (^:%p)

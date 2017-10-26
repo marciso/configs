@@ -1,7 +1,10 @@
+" vim: set ts=4 sw=4 sts=4 noet :
 "
+" =====================================
 " NOTE: use ":so %" to reload this file
+" =====================================
 "
-" Necesary  for lots of cool vim things
+" Necesary  for lots of cool vim things (always set for nvim)
 set nocompatible
 
 "filetype off  "needed by Vundle?
@@ -26,39 +29,85 @@ Plugin 'christoomey/vim-tmux-navigator'
 
 Plugin 'mhinz/vim-grepper'
 
-" use '.' for repeating operations
+" Optional: used for repeating operator actions via "."
 Plugin 'tpope/vim-repeat'
-
-" rtags - llvm tags
-" need to start rdm and load compilation db (rc -c / rc -J)
-Plugin 'lyuts/vim-rtags'
-
 " syntax highlight for git diff
 Plugin 'tpope/vim-git'
 " integration with git:
 Plugin 'tpope/vim-fugitive'
 
+" async compilations
+Plugin 'tpope/vim-dispatch'
+
+" surroungings: https://vim.sourceforge.io/scripts/script.php?script_id=1697
+Plugin 'tpope/vim-surround'
+
 " git browser (like tig) in vim
 Plugin 'xaizek/vim-extradite'
+
+" rtags - llvm tags
+" need to start rdm and load compilation db (rc -c / rc -J)
+Plugin 'lyuts/vim-rtags'
+
+
+" displaying thin vertical lines at each indentation level for code indented
+" with spaces
+Plugin 'Yggdroot/indentLine'
+
+" allows you to configure % to match more than just single characters
+Plugin 'tmhedberg/matchit'
+
+"
+"[count]<leader>cc |NERDComComment|				Comment out the current line or text selected in visual mode.
+"[count]<leader>cn |NERDComNestedComment|		Same as cc but forces nesting.
+"[count]<leader>c<space> |NERDComToggleComment| Toggles the comment state of the selected line(s).
+"[count]<leader>cm |NERDComMinimalComment|		Comments the given lines using only one set of multipart delimiters.
+"[count]<leader>ci |NERDComInvertComment|		Toggles the comment state of the selected line(s) individually.
+"[count]<leader>cs |NERDComSexyComment|			Comments out the selected lines with a pretty block formatted layout.
+"[count]<leader>cy |NERDComYankComment|			Same as cc except that the commented line(s) are yanked first.
+"<leader>c$ |NERDComEOLComment|					Comments the current line from the cursor to the end of line.
+"<leader>cA |NERDComAppendComment|				Adds comment delimiters to the end of line and goes into insert mode between them.
+"|NERDComInsertComment|							Adds comment delimiters at the current cursor position and inserts between (disabled by default)
+"<leader>ca |NERDComAltDelim|					Switches to the alternative set of delimiters.
+"[count]<leader>cl								Same as |NERDComComment| except that the delimiters are aligned down the left side
+"[count]<leader>cb |NERDComAlignedComment|		Same as |NERDComComment| except that the delimiters are aligned down the both sides.
+"[count]<leader>cu |NERDComUncommentLine|		Uncomments the selected line(s).
+"
+"Simple visual comment:
+" <Ctrl+v>, select block, <Shift+I>, insert comment chars (e.g. //), <Esc>
+Plugin 'scrooloose/nerdcommenter'
+
+" The Most Recently Used (MRU) plugin provides an easy access to a list of
+" recently opened/edited files in Vim
+Plugin 'yegappan/mru'
+
+Plugin 'Yggdroot/LeaderF'
+
+"Plugin 'L9'
+"Plugin 'FuzzyFinder'
+"Plugin 'SkidanovAlex/CtrlK'
+
+Plugin 'wincent/command-t'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
-" pathogen is another package manager
-execute pathogen#infect()
-
-call plug#begin('~/.vim/plugged')
-
-" On-demand loading
-"Plug 'mathstuf/vim-fugitive', { 'branch':  'git-workdir-support' }
-"Plug 'mathstuf/vim-fugitive'
+"" pathogen is another package manager
+"execute pathogen#infect()
 "
-" " Add plugins to &runtimepath
-call plug#end()
+"
+"call plug#begin('~/.vim/plugged')
+"
+"" On-demand loading
+""Plug 'mathstuf/vim-fugitive', { 'branch':  'git-workdir-support' }
+""Plug 'mathstuf/vim-fugitive'
+""
+"" " Add plugins to &runtimepath
+"call plug#end()
 
 " Also Recommended:
 "  2) extradite.vim: a git commit browser,
-"       http://int3.github.io/vim-extradite/
+"		http://int3.github.io/vim-extradite/
 "
 
 " NOTE: when error occurs (typically after full partition)
@@ -66,35 +115,65 @@ call plug#end()
 " Solution:
 "  remove  ~/.vim-fuf-data/mrufile/items
 
+" Additional stuff:
+"  * CSV support with https://github.com/chrisbra/csv.vim
+"    Some useful commands:
+"     :%ArrangeColumn		-- align visually
+"     :%UnArrangeColumn
+"     :HiColumn				-- highlight column
+"     :VertFold 2			-- hide column
+"     :VertFold!			-- unhide
+"
+"     :%MoveColumn from to
+"     :DeleteColumn pattern -- e.g. "DeleteColumn 2" or "DeleteColumn /foobar"
+"
+"     :%Substitute 1,4/foobar/baz/gce -- Substitutes in the whole file in
+"				columns 1 till 4 the pattern foobar by baz for every match ('g' flag)
+"				and asks for confirmation ('c' flag).
+"	  :%S 3,$/(\d\+)/\1 EUR/g	-- Substitutes in each column starting from the
+"				third each number and appends the EURO suffix to it.
+"
+"     :1,10Sort 3
+"	  :1,10Sort! 3			-- reverse sort
+"
+"     :NrColumns			-- count number of columns
+"     :WhatColumn			-- current column number
+"
+"     :Analyze 3			-- distribution of top 5 values in column 3
+"     :Transpose
 
-" disable visual bell
-"set noeb vb t_vb=
+" automatically highlight current column in CSV
+let g:csv_highlight_column = 'y'
+
+
 set nu
 
-if  !has('nvim)
-    set t_vb=
-    if &term =~ '256color'
-        " disable Background Color Erase (BCE) so that color schemes
-        " render properly when inside 256-color tmux and GNU screen.
-       " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-       set t_ut=
-    endif
-    set ttyfast
+if !has('nvim')
+	set t_vb=
+	if &term =~ '256color'
+		" disable Background Color Erase (BCE) so that color schemes
+		" render properly when inside 256-color tmux and GNU screen.
+		" see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+		set t_ut=
+	endif
+	" set title of the terminal (always set for nvim)
+	set ttyfast
 endif
 
-if has('nvim)
-	" Esc to exit terninal mode:
-	tnoremp <Esc> <C-\><C-n>
-	
-	#tnoremap <A-h> <C-\><C-n><C-w>h
-	#tnoremap <A-j> <C-\><C-n><C-w>j
-	#tnoremap <A-k> <C-\><C-n><C-w>k
-	#tnoremap <A-l> <C-\><C-n><C-w>l
+if has('nvim')
+	" Esc to exit terminal mode:
+    tnoremap <Esc> <C-\><C-n>
 
-	tnoremap <C-w>h <C-\><C-n><C-w>h
-	tnoremap <C-w>j <C-\><C-n><C-w>j
-	tnoremap <C-w>k <C-\><C-n><C-w>k
-	tnoremap <C-w>l <C-\><C-n><C-w>l
+	" Map keys to navigate windows
+    "tnoremap <A-h> <C-\><C-n><C-w>h
+    "tnoremap <A-j> <C-\><C-n><C-w>j
+    "tnoremap <A-k> <C-\><C-n><C-w>k
+    "tnoremap <A-l> <C-\><C-n><C-w>l
+
+    tnoremap <C-w>h <C-\><C-n><C-w>h
+    tnoremap <C-w>j <C-\><C-n><C-w>j
+    tnoremap <C-w>k <C-\><C-n><C-w>k
+    tnoremap <C-w>l <C-\><C-n><C-w>l
 endif
 
 " ~/.vimrc
@@ -121,9 +200,10 @@ filetype on
 filetype plugin on
 filetype indent on
 
-" TIP: change one line into multiply lines and indent:
+" TIP: change one line into multiply lines and indent
 " %s/[{;}]/&\r/g|norm! =gg
 
+" set leader key to colon
 let mapleader = ","
 
 " load vim-plug plugin manager -- https://github.com/junegunn/vim-plug
@@ -134,7 +214,8 @@ set background=dark
 "colorscheme elflord
 colorscheme desert
 
-"colorscheme base16-railscasts"
+"colorscheme base16-railscasts
+"
 "highlight clear SignColumn
 "highlight VertSplit    ctermbg=236
 "highlight ColorColumn  ctermbg=237
@@ -163,10 +244,11 @@ if &diff
   "set diffopt+=iwhite
 endif
 
-" Show title in the xterm window
+
+" Show title in xterm window
 set title
 
-" Turn on the WiLd menu
+" Turn on the WiLd menu (tab completion on opening a file)
 set wildmenu
 
 " On the first tab it will act as longest:full, showing the wildmenu but only
@@ -218,12 +300,27 @@ set mat=2
 
 " No annoying sound on errors
 set noerrorbells visualbell t_vb=
+" set noeb vb t_vb=
 set tm=500
 
 
-
+" for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
+let g:indentLine_char = '⁞'
+"set showbreak=
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
+set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+hi NonText ctermfg=22 guifg=#4a4a59
+hi SpecialKey ctermfg=22 guifg=#4a4a59
+set list
+"set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
+"set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
 " Use tabs instead of spaces :(
 "set noexpandtab
+" Use spaces instead of tabs :>
+set expandtab
 
 " Be smart when using tabs ;)
 set smarttab
@@ -237,15 +334,23 @@ set softtabstop=4
 set ai "Auto indent
 set si "Smart indent
 "set wrap "Wrap lines
-
-
-
-" Always show the status line
-set laststatus=2
-
-" Format the status line
-"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 "
+" Use tabs only for indentation, formating should use spaces
+"set cindent
+"set cinoptions=(0,u0,U0
+
+
+
+" Do not enable digraphs: they are slowing down processing, and more
+" importantly change the meaning of backspace (you can now use backspace to
+" insert uincode chars). This also interferes with Tmux keys
+"
+" enable digraphs, type
+"  :digraphs
+" for the list; and
+"  CTRL-K + <char1> <char2>
+" to insert special char
+"set digraph
 
 " Enable mouse support in console
 "set mouse=nvch
@@ -256,6 +361,13 @@ set undofile
 
 " red line indicating column 100
 set cc=100
+
+" Always show the status line
+set laststatus=2
+
+" Format the status line
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+"
 
 set statusline=
 set statusline +=%1*\ %n\ %*            "buffer number
@@ -276,6 +388,31 @@ hi User3 ctermfg=cyan ctermbg=darkgray guifg=cyan guibg=darkgray
 hi User4 ctermfg=green ctermbg=darkgray guifg=green guibg=darkgray
 hi User5 ctermfg=yellow ctermbg=darkgray guifg=yellow guibg=darkgray
 
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+" bind K to grep word under cursor
+nnoremap K :GrepperAg "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+command! -nargs=+ -complete=file GrepperGit Grepper -noprompt -tool git -query <args>
+command! -nargs=+ -complete=file GrepperAg Grepper -noprompt -tool ag -query <args>
+
+" This defines an operator "gs" that takes any {motion} and uses that
+" selection to populate the search prompt. The query is quoted automatically.
+"Useful examples are gsW, gsiw, or gsi". See |text-objects| for all of them.
+"In visual mode, it uses the current selection.
+nmap gs  <plug>(GrepperOperator) 
+xmap gs  <plug>(GrepperOperator) 
 
 if has("cscope")
 
@@ -360,12 +497,27 @@ endif
 
 map <F7> :set csto=1<CR>
 
-if has('rtags')
-    set completfunc=RtagsCompleteFunc
-    set csto=1 " we want to search tags gefore cscope because rtags bind to ctags
-    
-    " for list of default bindings, go to the plugin page
-endif
+"if has("rtags")
+	set completefunc=RtagsCompleteFunc
+    set csto=1 " we actually want to search ctags before cscope because rtags binds to ctags
+
+	" list of default short cuts
+	" <Leader>ri	-U	Symbol info
+	" <Leader>rj	-f	Follow location
+	" <Leader>rJ	-f --declaration-only	Follow declaration location
+	" <Leader>rS	-f	Follow location (open in horizontal split)
+	" <Leader>rV	-f	Follow location (open in vertical split)
+	" <Leader>rT	-f	Follow location open in a new tab
+	" <Leader>rp	-U --symbol-info-include-parents	Jump to parent
+	" <Leader>rf	-e -r	Find references
+	" <Leader>rn	-ae -R	Find references by name
+	" <Leader>rs	-a -F	Find symbols by name
+	" <Leader>rr	-V	Reindex current file
+	" <Leader>rl	-w	List all available projects
+	" <Leader>rw	-e -r --rename	Rename symbol under cursor
+	" <Leader>rv	-k -r	Find virtuals
+	" <Leader>rb	N/A		Jump to previous location
+"endif
 
 " disable default key/mouse mapping
 "let g:GtagsCscope_Auto_Map = 0
@@ -408,6 +560,7 @@ set tags+=$MS_SRC_BASE/../src/tags
 set tags+=$HOME/dev/tags
 set tags+=$HOME/tp/tags
 
+set path^=.
 set path^=$HOME/dev/**5/src
 set path^=$HOME/dev/**5/include
 
@@ -422,15 +575,26 @@ imap <F4> <ESC>:set hls!<CR>a
 vmap <F4> <ESC>:set hls!<CR>gv
 
 
-" Disable mouse on console
-map <F5> :set mouse=<CR>
-imap <F5> <ESC>:set mouse=<CR>a
-vmap <F5> <ESC>:set mouse=<CR>gv
+" Disable list
+map <F5> :set nolist<CR>:let g:indentLine_enabled = 0<CR>
+imap <F5> <ESC>:set nolist<CR>:let g:indentLine_enabled = 0<CR>a
+vmap <F5> <ESC>:set nolist<CR>:let g:indentLine_enabled = 0<CR>gv
 
 " Enable mouse
-map <F6> :set mouse=a<CR>
-imap <F6> <ESC>:set mouse=a<CR>a
-vmap <F6> <ESC>:set mouse=a<CR>gv
+map <F6> :set list<CR>:let g:indentLine_enabled = 1<CR>
+imap <F6> <ESC>:set list<CR>:let g:indentLine_enabled = 1<CR>a
+vmap <F6> <ESC>:set list<CR>:let g:indentLine_enabled = 1<CR>gv
+
+
+"" Disable mouse on console
+"map <F5> :set mouse=<CR>
+"imap <F5> <ESC>:set mouse=<CR>a
+"vmap <F5> <ESC>:set mouse=<CR>gv
+"
+"" Enable mouse
+"map <F6> :set mouse=a<CR>
+"imap <F6> <ESC>:set mouse=a<CR>a
+"vmap <F6> <ESC>:set mouse=a<CR>gv
 
 highlight ExtraWhitespace ctermbg=darkgray guibg=darkgray
 au ColorScheme * highlight ExtraWhitespace guibg=darkgray
@@ -441,6 +605,12 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
+highlight WildMenu cterm=underline
+
+" Make sure you are using recent version of MiniBufferExplorer (MBE), 
+"let g:miniBufExplMaxSize = 1
+"let g:miniBufExplSplitBelow = 0
+"let g:miniBufExplorerAutoUpdate = 0
 "let g:miniBufExplMapWindowNavArrows = 0
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplMapCTabSwitchWindows = 0
@@ -451,6 +621,7 @@ au InsertLeave * match ExtraWhiteSpace /\s\+$/
 "nmap <F12> :TagbarToggle<CR>
 "nmap <F12> :TagExplorer<CR>
 
+nmap <F9> :Make<CR>
 nmap <F10> :cprev<CR>
 nmap <F11> :cnext<CR>
 
@@ -478,10 +649,10 @@ if has("spell")
   map <F3> :set spell!<CR><Bar>:echo "Spell Check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 
   " they were using white on white
-  "highlight SpellBad ctermfg=black ctermbg=lightgray
   highlight clear SpellBad
   highlight clear SpellCap
   highlight clear SpellRare
+  "highlight SpellBad ctermfg=black ctermbg=lightgray
   highlight SpellBad cterm=undercurl
   highlight SpellCap cterm=underline
   highlight SpellRare cterm=underline
@@ -507,13 +678,12 @@ endif
 
 let g:tmux_navigator_no_mappings = 1
 
-nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
 "nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
-" Tmux will translate A-Arrows into C-[hjkl] and execute the commands above
 " Unfortunately, the following mappings wouldn't work natively in vim (and putty)
 "nnoremap <silent> <A-Left> :TmuxNavigateLeft<cr>
 "nnoremap <silent> <A-Down> :TmuxNavigateDown<cr>
@@ -544,6 +714,7 @@ nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 "	au BufWritePost *.bin set nomod | endif
 "augroup END
 
+
 " Disable one diff window during a three-way diff allowing you to cut out the
 " noise of a three-way diff and focus on just the changes between two versions
 " at a time. Inspired by Steve Losh's Splice
@@ -567,40 +738,44 @@ nmap <silent> <leader>dl :call DiffToggle(1)<cr>
 nmap <silent> <leader>dc :call DiffToggle(2)<cr>
 nmap <silent> <leader>dr :call DiffToggle(3)<cr>
 
+" MRU - Most Recently Used
+let MRU_Window_Height = 15
 
-
-" TODO: search for DIffToggle
 " FuzzyFinder, http://www.vim.org/scripts/script.php?script_id=1984
-let g:fuf_modesDisable = []
-let g:fuf_mrufile_maxItem = 1000
-let g:fuf_mrucmd_maxItem = 400
-let g:fuf_mrufile_exclude = '\v\~$|\.(bak|sw[po])$|^(\/\/|\\\\|\/mnt\/)'
-nnoremap <silent> <C-n>      :FufBuffer<CR>
-nnoremap <silent> <C-p>      :FufFileWithCurrentBufferDir<CR>
-nnoremap <silent> <C-f><C-p> :FufFileWithFullCwd<CR>
-nnoremap <silent> <C-f>p     :FufFile<CR>
-nnoremap <silent> <C-f><C-d> :FufDirWithCurrentBufferDir<CR>
-nnoremap <silent> <C-f>d     :FufDirWithFullCwd<CR>
-nnoremap <silent> <C-f>D     :FufDir<CR>
-nnoremap <silent> <C-j>      :FufMruFile<CR>
-nnoremap <silent> <C-k>      :FufMruCmd<CR>
-nnoremap <silent> <C-b>      :FufBookmarkDir<CR>
-nnoremap <silent> <C-f><C-t> :FufTag<CR>
-nnoremap <silent> <C-f>t     :FufTag!<CR>
-noremap  <silent> g]         :FufTagWithCursorWord!<CR>
-nnoremap <silent> <C-f><C-f> :FufTaggedFile<CR>
-nnoremap <silent> <C-f><C-j> :FufJumpList<CR>
-nnoremap <silent> <C-f><C-g> :FufChangeList<CR>
-nnoremap <silent> <C-f><C-q> :FufQuickfix<CR>
-nnoremap <silent> <C-f><C-l> :FufLine<CR>
-nnoremap <silent> <C-f><C-h> :FufHelp<CR>
-nnoremap <silent> <C-f><C-b> :FufAddBookmark<CR>
-vnoremap <silent> <C-f><C-b> :FufAddBookmarkAsSelectedText<CR>
-nnoremap <silent> <C-f><C-e> :FufEditInfo<CR>
-nnoremap <silent> <C-f><C-r> :FufRenewCache<CR>
+"let g:fuf_modesDisable = []
+"let g:fuf_mrufile_maxItem = 1000
+"let g:fuf_mrucmd_maxItem = 400
+"let g:fuf_mrufile_exclude = '\v\~$|\.(bak|sw[po])$|^(\/\/|\\\\|\/mnt\/)'
+"nnoremap <silent> <C-n>      :FufBuffer<CR>
+"nnoremap <silent> <C-p>      :FufFileWithCurrentBufferDir<CR>
+"nnoremap <silent> <C-f><C-p> :FufFileWithFullCwd<CR>
+"nnoremap <silent> <C-f>p     :FufFile<CR>
+"nnoremap <silent> <C-f><C-d> :FufDirWithCurrentBufferDir<CR>
+"nnoremap <silent> <C-f>d     :FufDirWithFullCwd<CR>
+"nnoremap <silent> <C-f>D     :FufDir<CR>
+"nnoremap <silent> <C-j>      :FufMruFile<CR>
+"nnoremap <silent> <C-k>      :FufMruCmd<CR>
+"nnoremap <silent> <C-b>      :FufBookmarkDir<CR>
+"nnoremap <silent> <C-f><C-t> :FufTag<CR>
+"nnoremap <silent> <C-f>t     :FufTag!<CR>
+"noremap  <silent> g]         :FufTagWithCursorWord!<CR>
+"nnoremap <silent> <C-f><C-f> :FufTaggedFile<CR>
+"nnoremap <silent> <C-f><C-j> :FufJumpList<CR>
+"nnoremap <silent> <C-f><C-g> :FufChangeList<CR>
+"nnoremap <silent> <C-f><C-q> :FufQuickfix<CR>
+"nnoremap <silent> <C-f><C-l> :FufLine<CR>
+"nnoremap <silent> <C-f><C-h> :FufHelp<CR>
+"nnoremap <silent> <C-f><C-b> :FufAddBookmark<CR>
+"vnoremap <silent> <C-f><C-b> :FufAddBookmarkAsSelectedText<CR>
+"nnoremap <silent> <C-f><C-e> :FufEditInfo<CR>
+"nnoremap <silent> <C-f><C-r> :FufRenewCache<CR>
 
 " TODO: try https://github.com/junegunn/fzf
+"
+" LeaderF config:
+let g:Lf_CommandMap = {'<C-C>': ['<Esc>', '<C-C>']}
+let g:Lf_ShortcutF = '<C-P>'
 
-
-" prevents from a warning anout the varianble not being set
+" prevents from a warning about the variable not being set
 let g:gitgutter_max_signs=9999
+
