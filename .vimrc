@@ -47,7 +47,7 @@ Plugin 'xaizek/vim-extradite'
 
 " rtags - llvm tags
 " need to start rdm and load compilation db (rc -c / rc -J)
-Plugin 'lyuts/vim-rtags'
+"Plugin 'lyuts/vim-rtags'
 
 
 " displaying thin vertical lines at each indentation level for code indented
@@ -305,13 +305,19 @@ set tm=500
 
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
-let g:indentLine_char = '⁞'
+let g:indentLine_char = '┊'
+let g:indentLine_setColors = 0
+						
+                           "
+                          
 "set showbreak=
-"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
+"set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
-set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+"ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
+set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
 hi NonText ctermfg=22 guifg=#4a4a59
 hi SpecialKey ctermfg=22 guifg=#4a4a59
 set list
