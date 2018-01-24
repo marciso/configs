@@ -379,14 +379,14 @@ set statusline=
 set statusline +=%1*\ %n\ %*            "buffer number
 set statusline +=%5*%{&ff}%*            "file format
 set statusline +=%3*%y%*                "file type
-set statusline +=%1*\ [%3.3n]%*            "buffer number
+set statusline +=%1*\ [%3.3n]%*         "buffer number
 set statusline +=%4*\ %<%F%*            "full path
-set statusline +=%2*%m%r%w%h%*                "modified flag
-set statusline +=%1*%=%*                    " separator
-set statusline +=%1*L:\ %5l%*             "current line
-set statusline +=%1*/%L\ (%2p%%),%*               "total lines
-set statusline +=%1*\ \ C:\ %4v,\ %*             "virtual column number
-set statusline +=%1*0x%04B\ [%3.3b]\ %*          "character under cursor
+set statusline +=%2*%m%r%w%h%*          "modified flag
+set statusline +=%1*%=%*                "separator
+set statusline +=%1*L:\ %5l%*           "current line
+set statusline +=%1*/%L\ (%2p%%),%*     "total lines
+set statusline +=%1*\ \ C:\ %4v,\ %*    "virtual column number
+set statusline +=%1*0x%04B\ [%3.3b]\ %* "character under cursor
 
 hi User1 ctermfg=yellow ctermbg=darkgray guifg=yellow guibg=darkgray
 hi User2 ctermfg=red ctermbg=darkgray guifg=red guibg=darkgray
@@ -435,11 +435,8 @@ if has("cscope")
     "cnoreabbrev css cs show
     "cnoreabbrev csh cs help
 
-    cscope add $MS_SRC_BASE/../cscope.out  $MS_SRC_BASE/..
-    cscope add $MS_SRC_BASE/../src/cscope.out  $MS_SRC_BASE/../src
-
-    cscope add $HOME/dev/cscope.out $HOME/dev
-    cscope add $HOME/tp/cscope.out $HOME/tp
+    cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
+    cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
 
     "cscope add /usr/include/cscope.out /usr/include
     "cscope add /usr/local/include/cscope.out /usr/local/include
@@ -501,6 +498,7 @@ if has("cscope")
     map <F8> :set csto=0<CR>
 endif
 
+
 map <F7> :set csto=1<CR>
 
 "if has("rtags")
@@ -561,14 +559,26 @@ set tags+=./tags;../../../../
 "set tags+=./tags;../../
 
 " fix locations:
-set tags+=$MS_SRC_BASE/../tags
-set tags+=$MS_SRC_BASE/../src/tags
-set tags+=$HOME/dev/tags
-set tags+=$HOME/tp/tags
+set tags+=$MS_SRC_BASE/tags
+set tags+=$MS_SRC_BASE/src/tags
 
 set path^=.
 set path^=$HOME/dev/**5/src
 set path^=$HOME/dev/**5/include
+
+" Alternative: working directory is always the same as the file you are editing
+"   set autochdir
+"
+" The above (autochdir) may not work well with scripts that assume cwd does not update;
+" this is a workaround:
+"   autocmd BufEnter * silent! lcd %:p:h
+" But generally cabbr is a better choice
+
+" use a command line abbreviation so %% expands to the full path of the
+" directory that contains the current file.
+cabbr <expr> %% expand('%:p:h')
+cabbr <expr> ~~ expand('%:p:h')
+
 
 "let g:alternateExtensions_hxx = "cpp,cc,CC,c"
 "let g:alternateExtensions_cxx = "h,hpp"
@@ -776,12 +786,39 @@ let MRU_Window_Height = 15
 "nnoremap <silent> <C-f><C-e> :FufEditInfo<CR>
 "nnoremap <silent> <C-f><C-r> :FufRenewCache<CR>
 
+"noremap <silent> <C-]> :FufTagWithCursorWord!<CR>
+
 " TODO: try https://github.com/junegunn/fzf
 "
 " LeaderF config:
+"
+" <C-R>					switch between fuzzy search mode and regex mode
+" <C-F>					switch between full path search mode and name only search mode
+" <C-V> <S-Insert>		paste from clipboard
+" <C-U>					clear the prompt
+" <C-J> <Down>			move the cursor downward in the result window
+" <C-K> <Up>			move the cursor upward in the result window
+" <2-LeftMouse> <CR>	open the file under cursor or selected(when multiple files are selected)
+" <C-X>					open in horizontal split window
+" <C-]>					open in vertical split window
+" <C-T>					open in new tabpage
+" <F5>					refresh the cache
+" <C-LeftMouse> <C-S>	select multiple files
+" <S-LeftMouse>			select consecutive multiple files
+" <C-A>					select all files
+" <C-L>					clear all selections
+" <BS>					delete the preceding character in the prompt
+" <Del>					delete the current character in the prompt
+" <Home>				move the cursor to the begin of the prompt
+" <End>					move the cursor to the end of the prompt
+" <Left>				move the cursor one character to the left in the prompt
+" <Right>				move the cursor one character to the right in the prompt
+" <C-P>					preview the result
+" <C-C>					quit from LeaderF
+" <ESC>					switch to normal mode
 let g:Lf_CommandMap = {'<C-C>': ['<Esc>', '<C-C>']}
 let g:Lf_ShortcutF = '<C-P>'
 
 " prevents from a warning about the variable not being set
 let g:gitgutter_max_signs=9999
-
+"

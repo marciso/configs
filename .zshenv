@@ -11,10 +11,18 @@
 export VISUAL=vim
 export EDITOR=vim
 export PAGER=less
+#export PAGER=most
+export LESS=FRX
 
-export LESSOPEN='|pygmentize -f 256 -g %s'
-# to enable raw chars (needed for lessfilter?)
-#export LESS=-R
+# The maximum size of files written by the shell and its children
+ulimit -f unlimited
+# The maximum number of open file descriptors (most systems do not allow this value to be set)
+ulimit -n 4096
+# The maximum size of core files created
+ulimit -c unlimited
+
+# pygmentize works fine for small files but not that great for big one
+#export LESSOPEN='|pygmentize -f 256 -g %s'
 
 #export PATH=/sbin:/usr/sbin:/usr/local/sbin:$PATH
 
@@ -85,6 +93,7 @@ function _ms_select_opt
 	_ms_mark_opt_fun=${2:-_ms_mark_opt}
 	_ms_print_opt_fun=${3:-_ms_print_opt}
 	file=${4:-$HOME/.last-ms-marked-opt}
+	selected=${5}
 
     opts=( `$_ms_get_opts_fun` )
     test -r "$file" && infile=$(cat $file)
@@ -98,27 +107,29 @@ function _ms_select_opt
 		$_ms_print_opt_fun $i "$o" "$suffix" "$infile" "$invar"
     done
 
-    if [ $i -ge 1 ] ; then
-        echo
-        echo -n "Select option [1-$i]: "
-        read opt
+	if [[ ".$selected" != ".-" ]] ; then
+		if [[ $i -ge 1 ]] ; then
+			echo
+			opt="$selected"
+			test -z "$selected" && { echo -n "Select option [1-$i]: "; read opt ; }
 
-        if test -n "$opt"; then
-          if [[ "$opt" -gt 0 ]] ; then
-            val=${opts[${opt}]}
-            if [[ -n "$val" ]] ; then
-              echo "Selected option: ${val}"
-              $_ms_mark_opt_fun "${val}" $file
-            else
-              echo "Wrong option: $opt"
-            fi
-          else
-            echo "Wrong option: $opt"
-          fi
-        fi
-    else
-        echo "No option to select"
-    fi
+			if test -n "$opt"; then
+				if [[ "$opt" -gt 0 ]] ; then
+					val=${opts[${opt}]}
+					if [[ -n "$val" ]] ; then
+						echo "Selected option: ${val}"
+						$_ms_mark_opt_fun "${val}" $file
+					else
+						echo "Wrong option: $opt"
+					fi
+				else
+					echo "Wrong option: $opt"
+				fi
+			fi
+		else
+			echo "No option to select"
+		fi
+	fi
 }
 
 function _ms_get_work_dirs
@@ -137,22 +148,23 @@ function _ms_set_work_dir
 
 function _ms_print_work_dir
 {
-	i=$1
-	o=$2
-	s=$3
+	num=$1
+	dir=$2
+	suffix=$3
 	infile=$4
 	invar=$5
 
-	if [ ".$infile" = ".$o" ] ; then f="-"; else f=" "; fi
-	if [ ".$invar"  = ".$o" ] ; then v="*"; else v=" "; fi
+	if [ ".$infile" = ".$dir" ] ; then f="-"; else f=" "; fi
+	if [ ".$invar"  = ".$dir" ] ; then v="*"; else v=" "; fi
 
-	g=$( (cd $o ; git rev-parse --abbrev-ref HEAD) 2> /dev/null )
-	d=$( (cd $o ; git log -1 --format="%ad" ) 2>/dev/null )
-	echo "[$i]$f$v $o$s [$g] ($d)"
+	branch=$( (cd $dir ; git rev-parse --abbrev-ref HEAD) 2> /dev/null )
+	#lastupdate=$( (cd $dir ; git log -1 --format="%ad, %h, %cn, %s" ) 2>/dev/null )
+	lastupdate=$( (cd $dir ; git log -1 --color=always --format="%C(yellow)%h%Creset - %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset" ) 2>/dev/null )
+	echo "[$num]$f$v $dir$suffix [$branch] ($lastupdate)"
 }
 
-alias select_work_dir='_ms_select_opt _ms_get_work_dirs _ms_set_work_dir _ms_print_work_dir "$HOME/.last-marked-work-dir"'
-alias P=select_work_dir
+alias select_work_dir='_ms_select_opt _ms_get_work_dirs _ms_set_work_dir _ms_print_work_dir "$HOME/.last-marked-work-dir"' # accepts one extra arg
+alias P=select_work_dir # accepts extra arg
 
 function repeat
 {

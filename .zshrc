@@ -166,6 +166,7 @@ pushd-build-cmd () {
 	local dir_name=$2
 	shift 2
 	pushd $dir_name && eval $cmd "$@" && popd
+	export S=$MS_SRC_BASE
 }
 
 pushd-ninja () {
