@@ -152,10 +152,6 @@ call vundle#end()            " required
 "     :Analyze 3			-- distribution of top 5 values in column 3
 "     :Transpose
 
-" automatically highlight current column in CSV
-let g:csv_highlight_column = 'y'
-
-
 set nu
 
 if !has('nvim')
@@ -357,8 +353,10 @@ let g:indentLine_setColors = 0
 "set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
 "ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
 set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
-hi NonText ctermfg=22 guifg=#4a4a59
-hi SpecialKey ctermfg=22 guifg=#4a4a59
+
+hi NonText cterm=NONE ctermfg=22 guifg=#4a4a59
+hi SpecialKey cterm=NONE ctermfg=22 guifg=#4a4a59
+
 set list
 "set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
 "set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
