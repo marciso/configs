@@ -91,7 +91,7 @@ Plugin 'yegappan/mru'
 Plugin 'Yggdroot/LeaderF'
 
 "Plugin 'L9'
-"Plugin 'FuzzyFinder'
+"Plugin 'FuzzyFinder' " not that great...
 "Plugin 'SkidanovAlex/CtrlK'
 
 Plugin 'wincent/command-t'
@@ -231,7 +231,6 @@ colorscheme solarized8
 " OceanicNext default  atom deep-space deus gruvbox materialbox jellybeans
 " pablo solarized8
 
-
 hi Search cterm=NONE ctermfg=grey ctermbg=darkblue
 hi Visual term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE
 
@@ -273,10 +272,19 @@ au BufNewFile,BufRead *.hxx set syntax=cpp11
 
 "if &diff
 "  colorscheme pablo
-  " other good cs for vimdiff: murphy pablo slate
-
-  " diff mode : ignore spaces
-  "set diffopt+=iwhite
+"  " other good cs for vimdiff: murphy pablo slate
+"
+"	"hi DiffAdd term=bold ctermbg=4
+"	hi DiffAdd term=bold ctermbg=30
+"	"hi DiffDelete term=bold ctermfg=12 ctermbg=6
+"	hi DiffDelete term=bold ctermfg=43 ctermbg=6
+"	"hi DiffChange term=bold ctermbg=5
+"	hi DiffChange term=bold ctermbg=128
+"	"hi DiffText term=reverse cterm=NONE ctermfg=Gray ctermbg=red
+"	hi DiffText term=reverse cterm=NONE ctermfg=Gray ctermbg=161
+"
+"  " diff mode : ignore spaces
+"  "set diffopt+=iwhite
 "endif
 
 
@@ -342,14 +350,13 @@ set tm=500
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
 let g:indentLine_char = '┊'
 let g:indentLine_setColors = 0
-						
-                           "
-                          
+"let g:indentLine_char = '⁞'
 "set showbreak=
-"set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
 "ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
 set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
@@ -598,7 +605,6 @@ set tags+=./tags;../../../../
 " fix locations:
 set tags+=$MS_SRC_BASE/tags
 set tags+=$MS_SRC_BASE/src/tags
-
 set path^=.
 set path^=$HOME/dev/**5/src
 set path^=$HOME/dev/**5/include
@@ -652,6 +658,7 @@ vmap <F6> <ESC>:set list<CR>:let g:indentLine_enabled = 1<CR>gv
 
 highlight ExtraWhitespace ctermbg=darkgray guibg=darkgray
 au ColorScheme * highlight ExtraWhitespace guibg=darkgray
+
 "au BufEnter * match ExtraWhitespace /[\t]\|\s\+$/
 "au InsertEnter * match ExtraWhitespace /[\t]\|\s\+\%#\@<!$/
 "au InsertLeave * match ExtraWhiteSpace /[\t]\|\s\+$/
@@ -860,7 +867,6 @@ let g:Lf_ShortcutF = '<C-P>'
 " prevents from a warning about the variable not being set
 let g:gitgutter_max_signs=9999
 "
-
 
 " configuration for CSV plugin
 "
