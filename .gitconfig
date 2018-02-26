@@ -22,6 +22,7 @@
 	bf = !git branch -a | grep --color=auto -i
 	dd = diff --color-words=.
 	dd- = diff --cached --color-words=.
+	dw = diff --word-diff-regex='[a-zA-Z0-9_]+'
 	a = add
 	au = add -u
 	l = log
