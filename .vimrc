@@ -9,6 +9,13 @@ set nocompatible
 
 "filetype off  "needed by Vundle?
 
+" General hints:
+" CTRL-R CTRL-W   : pull word under the cursor into a command line or search
+" CTRL-R CTRL-A   : pull whole word including punctuation
+" CTRL-R -        : pull small register
+" CTRL-R [0-9a-z] : pull named registers
+" CTRL-R %        : pull file name (also #)
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -88,6 +95,9 @@ Plugin 'Yggdroot/LeaderF'
 "Plugin 'SkidanovAlex/CtrlK'
 
 Plugin 'wincent/command-t'
+
+" more colorschemes
+Plugin 'rafi/awesome-vim-colorschemes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -208,11 +218,40 @@ let mapleader = ","
 
 " load vim-plug plugin manager -- https://github.com/junegunn/vim-plug
 
+" enable 256 colors:
+set t_Co=256
+
+" terminal codes for colors
+"set t_AB=^[[48;5;%dm
+"set t_AF=^[[38;5;%dm
+
 " Enable syntax highlighting
 syntax enable
 set background=dark
 "colorscheme elflord
-colorscheme desert
+"colorscheme desert
+"colorscheme materialbox
+colorscheme solarized8
+" OceanicNext default  atom deep-space deus gruvbox materialbox jellybeans
+" pablo solarized8
+
+
+hi Search cterm=NONE ctermfg=grey ctermbg=darkblue
+hi Visual term=reverse cterm=reverse ctermfg=NONE ctermbg=NONE
+
+"DiffAdd - line was added
+"DiffDelete - line was removed
+"DiffChange - part of the line was changed (highlights the whole line)
+"DiffText - the exact part of the line that changed
+"
+"hi DiffAdd term=bold ctermbg=4
+hi DiffAdd term=bold ctermbg=30
+"hi DiffDelete term=bold ctermfg=12 ctermbg=6
+hi DiffDelete term=bold ctermfg=43 ctermbg=6
+"hi DiffChange term=bold ctermbg=5
+hi DiffChange term=bold ctermbg=128
+"hi DiffText term=reverse cterm=NONE ctermfg=Gray ctermbg=red
+hi DiffText term=reverse cterm=NONE ctermfg=Gray ctermbg=161
 
 "colorscheme base16-railscasts
 "
@@ -236,13 +275,13 @@ au BufNewFile,BufRead *.cxx set syntax=cpp11
 au BufNewFile,BufRead *.ixx set syntax=cpp11
 au BufNewFile,BufRead *.hxx set syntax=cpp11
 
-if &diff
-  colorscheme pablo
+"if &diff
+"  colorscheme pablo
   " other good cs for vimdiff: murphy pablo slate
 
   " diff mode : ignore spaces
   "set diffopt+=iwhite
-endif
+"endif
 
 
 " Show title in xterm window
@@ -579,6 +618,7 @@ set path^=$HOME/dev/**5/include
 cabbr <expr> %% expand('%:p:h')
 cabbr <expr> ~~ expand('%:p:h')
 
+cabbr Ag GrepperAg
 
 "let g:alternateExtensions_hxx = "cpp,cc,CC,c"
 "let g:alternateExtensions_cxx = "h,hpp"
@@ -822,3 +862,33 @@ let g:Lf_ShortcutF = '<C-P>'
 " prevents from a warning about the variable not being set
 let g:gitgutter_max_signs=9999
 "
+
+
+" configuration for CSV plugin
+"
+" automatically highlight current column in CSV
+"let g:csv_highlight_column = 'y'
+
+" Do not highlight column when cursor moves:
+let g:csv_no_column_highlight = 1
+" Treat lines starting with '#' as comments
+"let g:csv_comment = '#'
+
+" By default, the csv plugin will analyze the whole file to determine which
+" delimiter to use. (You can also use :let g:csv_delim=',')
+" The following will only read 100 lines to do so.
+let g:csv_start = 1
+let g:csv_end = 100
+
+" By default, the delimiter will not be displayed, if Vim supports conceal of
+" syntax items and instead draws a vertical line. The following disables that:
+let g:csv_no_conceal = 1
+" set the 'conceallevel' option to control how the concealed chars will be
+" displayed.
+
+hi CSVDelimiter term=bold cterm=NONE ctermfg=darkgrey ctermbg=NONE
+
+"hi CSVColumnEven cterm=NONE ctermfg=NONE ctermbg=darkblue
+"hi CSVColumnOdd  cterm=NONE ctermfg=NONE ctermbg=darkmagenta
+
+" :help cterm-colors
