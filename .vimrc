@@ -9,13 +9,33 @@ set nocompatible
 
 "filetype off  "needed by Vundle?
 
-" General hints:
+" General Hints:
 " CTRL-R CTRL-W   : pull word under the cursor into a command line or search
 " CTRL-R CTRL-A   : pull whole word including punctuation
+" CTRL-R /        : pull last searched patter
 " CTRL-R -        : pull small register
 " CTRL-R [0-9a-z] : pull named registers
 " CTRL-R %        : pull file name (also #)
+"
+"
+" Hint Substitution:
+"  * Limit substitution to the visually selected text using \%V
+"    :s/\%Vpattern/text/gc
+"  * Searching in visual mode will extend it, use \%V to avoid it
+"    /\%Vpattern
+"
+" Hint Marks:
+"
+"`.	jump to position where last change occurred in current buffer
+"`"	jump to position where last exited current buffer
+"`0	jump to position in last file edited (when exited Vim)
+"`1	like `0 but the previous file (also `2 etc)"
+"''	jump back (to line in current buffer where jumped from)
+"``	jump back (to position in current buffer where jumped from)
+"`[ or `]	jump to beginning/end of previously changed or yanked text
+"`< or `>	jump to beginning/end of last visual selection
 
+" Vundle Plugins:
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -25,23 +45,25 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-
 " Tmux integration
 Plugin 'christoomey/vim-tmux-navigator'
 
 " Vimux - vim+tmux split window
 "Plugin 'benmills/vimus'
+"
+" drop into tmux from inside the vim
+Plugin 'benmills/vimux'
 
 Plugin 'mhinz/vim-grepper'
 
-" Optional: used for repeating operator actions via "."
+" pptional: used for repeating operator actions via "."
 Plugin 'tpope/vim-repeat'
 " syntax highlight for git diff
 Plugin 'tpope/vim-git'
 " integration with git:
 Plugin 'tpope/vim-fugitive'
+" Shows git diff in the gatter
+"Plugin 'airblade/vim-gitgutter'
 
 " async compilations
 Plugin 'tpope/vim-dispatch'
@@ -50,11 +72,11 @@ Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-surround'
 
 " git browser (like tig) in vim
-Plugin 'xaizek/vim-extradite'
+Plugin 'int3/vim-extradite'
 
 " rtags - llvm tags
 " need to start rdm and load compilation db (rc -c / rc -J)
-"Plugin 'lyuts/vim-rtags'
+Plugin 'lyuts/vim-rtags'
 
 
 " displaying thin vertical lines at each indentation level for code indented
@@ -84,20 +106,69 @@ Plugin 'tmhedberg/matchit'
 " <Ctrl+v>, select block, <Shift+I>, insert comment chars (e.g. //), <Esc>
 Plugin 'scrooloose/nerdcommenter'
 
+" Check syntax of different files
+"Plugin 'scrooloose/syntastic'
+
+" Asynchronous Lint Engine
+" Better option to syntastic ?
+Plugin 'w0rp/ale'
+
 " The Most Recently Used (MRU) plugin provides an easy access to a list of
 " recently opened/edited files in Vim
 Plugin 'yegappan/mru'
 
+" Press CTRL-P to start LeaderF - file mode
+" <leader>b - buffer mode
 Plugin 'Yggdroot/LeaderF'
 
 "Plugin 'L9'
 "Plugin 'FuzzyFinder' " not that great...
 "Plugin 'SkidanovAlex/CtrlK'
 
+" <leader>t - start command-t
 Plugin 'wincent/command-t'
+" Note, if you encounter the following error:
+"   command-t.vim could not load the C extension
+"   Please see INSTALLATION and TROUBLE-SHOOTING in the help              
+"   For more information type:    :help command-t
+" Go to the pluing directory (e.g. ~/.vim/bundle/command-t) and re-compile:
+"   rake make
 
 " more colorschemes
 Plugin 'rafi/awesome-vim-colorschemes'
+
+" place, toggle and display marks.
+Plugin 'kshenoy/vim-signature'
+
+" relative/hybrid numbers
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+
+" Different kind of navigation/search
+Plugin 'easymotion/vim-easymotion'
+
+" improvement over incsearch
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'haya14busa/incsearch-easymotion.vim'
+
+" try :help unimpaired-customization
+Plugin 'tpope/vim-unimpaired'
+
+" Preview registers when you hit " or @, or CTRL-R
+Plugin 'junegunn/vim-peekaboo'
+
+Plugin 'neovim/python-client'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
+
+" Aligning plugin
+Plugin 'junegunn/vim-easy-align'
+" Try EasyAlign*=
+
+" Fancy status line
+Plugin 'vim-airline/vim-airline'
+
+Plugin 'vim-scripts/Mark--Karkat'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -152,7 +223,10 @@ call vundle#end()            " required
 "     :Analyze 3			-- distribution of top 5 values in column 3
 "     :Transpose
 
+
 set nu
+set rnu " relative numbers
+set numberwidth=3 " size of gutter
 
 if !has('nvim')
 	set t_vb=
@@ -308,8 +382,8 @@ set ruler
 " Height of the command bar
 "set cmdheight=2
 
-" A buffer becomes hidden when it is abandoned
-set hid
+" A buffer becomes hidden (not closed) when it is abandoned
+set hidden
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -346,20 +420,21 @@ set noerrorbells visualbell t_vb=
 " set noeb vb t_vb=
 set tm=500
 
+" Do not write backup or swap files... useless feature nowadays?
+set nobackup
+set noswapfile
+
+" become root to write the file!
+cmap w!! w !sudo tee % >/dev/null
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
-let g:indentLine_char = '┊'
-let g:indentLine_setColors = 0
-"let g:indentLine_char = '⁞'
+let g:indentLine_char = '⁞'
 "set showbreak=
 "set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
-"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
-"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
-"ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
-set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
+set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
 
 hi NonText cterm=NONE ctermfg=22 guifg=#4a4a59
 hi SpecialKey cterm=NONE ctermfg=22 guifg=#4a4a59
@@ -368,9 +443,9 @@ set list
 "set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
 "set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
 " Use tabs instead of spaces :(
-"set noexpandtab
+set noexpandtab
 " Use spaces instead of tabs :>
-set expandtab
+"set expandtab
 
 " Be smart when using tabs ;)
 set smarttab
@@ -381,13 +456,16 @@ set tabstop=4
 set softtabstop=4
 
 
-set ai "Auto indent
-set si "Smart indent
+set autoindent "Auto indent
+"set copyindent "Copy previous indentation in insert mode
+set smartindent "Smart indent
 "set wrap "Wrap lines
 "
 " Use tabs only for indentation, formating should use spaces
-"set cindent
-"set cinoptions=(0,u0,U0
+set cindent
+set cinoptions=N-s,g-1
+" N-s: do not indent namespaces
+" g-1: protecte/private/public at the same level as class/struct
 
 
 
@@ -479,8 +557,8 @@ if has("cscope")
     "cnoreabbrev css cs show
     "cnoreabbrev csh cs help
 
-    cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
-    cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
+    cscope add $EMM_SRC_DIR/../cscope.out $EMM_SRC_DIR/..
+    cscope add $TP_BASE_DIR/cscope.out $TP_BASE_DIR
 
     "cscope add /usr/include/cscope.out /usr/include
     "cscope add /usr/local/include/cscope.out /usr/local/include
@@ -603,11 +681,22 @@ set tags+=./tags;../../../../
 "set tags+=./tags;../../
 
 " fix locations:
-set tags+=$MS_SRC_BASE/tags
-set tags+=$MS_SRC_BASE/src/tags
+set tags+=$EMM_SRC_DIR/../tags
+"set tags+=$EMM_SRC_DIR/../src/tags
+"set tags+=$HOME/dev/tags
+set tags+=$TP_BASE_DIR/tags
+
+" quick gf jumps (reverse order)
+set path^=$TP_BASE_DIR/usr/include/**5
+set path^=$TP_BASE_DIR/usr/include/tp_boost/**4
+set path^=$TP_BASE_DIR/usr/include/c++/**2
+set path^=$EMM_SRC_DIR/../**5/src
+set path^=$EMM_SRC_DIR/../**5/src/testing
+set path^=$EMM_SRC_DIR/../**5/test
+set path^=$EMM_SRC_DIR/lib
+set path^=$EMM_SRC_DIR/app
+set path^=$EMM_SRC_DIR
 set path^=.
-set path^=$HOME/dev/**5/src
-set path^=$HOME/dev/**5/include
 
 " Alternative: working directory is always the same as the file you are editing
 "   set autochdir
@@ -864,6 +953,11 @@ let MRU_Window_Height = 15
 let g:Lf_CommandMap = {'<C-C>': ['<Esc>', '<C-C>']}
 let g:Lf_ShortcutF = '<C-P>'
 
+" c - current working directory, CWD
+" a - the nearest ancestor of CWD that contains g:Lf_RootMarkers (e.g. .git)
+let g:Lf_WorkingDirectoryMode = 'ac'
+
+
 " prevents from a warning about the variable not being set
 let g:gitgutter_max_signs=9999
 "
@@ -896,3 +990,51 @@ hi CSVDelimiter term=bold cterm=NONE ctermfg=darkgrey ctermbg=NONE
 "hi CSVColumnOdd  cterm=NONE ctermfg=NONE ctermbg=darkmagenta
 
 " :help cterm-colors
+
+" Configure Syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+
+" EasyMotion
+" Use uppercase target labels and type as a lower case
+"let g:EasyMotion_use_upper = 1
+ " type `l` and match `l`&`L` - works similar to the global option smartcase
+let g:EasyMotion_smartcase = 1
+" Smartsign (type `3` and match `3`&`#`)
+"let g:EasyMotion_use_smartsign_us = 1
+
+" remap search
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+map z/ <Plug>(incsearch-easymotion-/)
+map z? <Plug>(incsearch-easymotion-?)
+map zg/ <Plug>(incsearch-easymotion-stay)
+"map  / <Plug>(easymotion-sn)
+"omap / <Plug>(easymotion-tn)
+" incsearch.vim x fuzzy x vim-easymotion
+
+" Move to line
+" letter L followed by leader
+map <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-overwin-line)
+
+" Configure Peekaboo (registry viewer)
+"  (Preview registers when you hit " or @, or CTRL-R)
+let g:peekaboo_window = "vert bo 30new"
+
+let g:deoplete#enable_at_startup = 1
+
+" Linting With ALE:
+" set error in the status line (uses vim-airline)
+let g:airline#extensions#ale#enabled = 1
+
+" jump between the ALE errors quickly
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
