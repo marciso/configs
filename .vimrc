@@ -56,7 +56,7 @@ Plugin 'benmills/vimux'
 
 Plugin 'mhinz/vim-grepper'
 
-" pptional: used for repeating operator actions via "."
+" Optional: used for repeating operator actions via "."
 Plugin 'tpope/vim-repeat'
 " syntax highlight for git diff
 Plugin 'tpope/vim-git'
@@ -289,7 +289,7 @@ let mapleader = ","
 " load vim-plug plugin manager -- https://github.com/junegunn/vim-plug
 
 " enable 256 colors:
-set t_Co=256
+"set t_Co=256
 
 " terminal codes for colors
 "set t_AB=^[[48;5;%dm
@@ -344,6 +344,13 @@ au BufNewFile,BufRead *.cxx set syntax=cpp11
 au BufNewFile,BufRead *.ixx set syntax=cpp11
 au BufNewFile,BufRead *.hxx set syntax=cpp11
 
+if &diff
+  colorscheme pablo
+  " other good cs for vimdiff: murphy pablo slate
+
+  " diff mode : ignore spaces
+  "set diffopt+=iwhite
+endif
 "if &diff
 "  colorscheme pablo
 "  " other good cs for vimdiff: murphy pablo slate
@@ -428,24 +435,25 @@ set noswapfile
 cmap w!! w !sudo tee % >/dev/null
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
-let g:indentLine_char = '⁞'
+let g:indentLine_char = '┊'
+let g:indentLine_setColors = 0
 "set showbreak=
-"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
+"set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
-set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
-
-hi NonText cterm=NONE ctermfg=22 guifg=#4a4a59
-hi SpecialKey cterm=NONE ctermfg=22 guifg=#4a4a59
-
+"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+"ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
+set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
+hi NonText ctermfg=22 guifg=#4a4a59
+hi SpecialKey ctermfg=22 guifg=#4a4a59
 set list
 "set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
 "set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
 " Use tabs instead of spaces :(
-set noexpandtab
+"set noexpandtab
 " Use spaces instead of tabs :>
-"set expandtab
+set expandtab
 
 " Be smart when using tabs ;)
 set smarttab
@@ -557,8 +565,8 @@ if has("cscope")
     "cnoreabbrev css cs show
     "cnoreabbrev csh cs help
 
-    cscope add $EMM_SRC_DIR/../cscope.out $EMM_SRC_DIR/..
-    cscope add $TP_BASE_DIR/cscope.out $TP_BASE_DIR
+    cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
+    cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
 
     "cscope add /usr/include/cscope.out /usr/include
     "cscope add /usr/local/include/cscope.out /usr/local/include
@@ -681,22 +689,12 @@ set tags+=./tags;../../../../
 "set tags+=./tags;../../
 
 " fix locations:
-set tags+=$EMM_SRC_DIR/../tags
-"set tags+=$EMM_SRC_DIR/../src/tags
-"set tags+=$HOME/dev/tags
-set tags+=$TP_BASE_DIR/tags
+set tags+=$MS_SRC_BASE/tags
+set tags+=$MS_SRC_BASE/src/tags
 
-" quick gf jumps (reverse order)
-set path^=$TP_BASE_DIR/usr/include/**5
-set path^=$TP_BASE_DIR/usr/include/tp_boost/**4
-set path^=$TP_BASE_DIR/usr/include/c++/**2
-set path^=$EMM_SRC_DIR/../**5/src
-set path^=$EMM_SRC_DIR/../**5/src/testing
-set path^=$EMM_SRC_DIR/../**5/test
-set path^=$EMM_SRC_DIR/lib
-set path^=$EMM_SRC_DIR/app
-set path^=$EMM_SRC_DIR
 set path^=.
+set path^=$HOME/dev/**5/src
+set path^=$HOME/dev/**5/include
 
 " Alternative: working directory is always the same as the file you are editing
 "   set autochdir
