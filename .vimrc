@@ -56,6 +56,10 @@ Plugin 'benmills/vimux'
 
 Plugin 'mhinz/vim-grepper'
 
+" provides Subvert command, e.g.:
+"	%Subvert/facilit{y,ies}/building{,s}/g
+Plugin 'tpope/vim-abolish'
+
 " Optional: used for repeating operator actions via "."
 Plugin 'tpope/vim-repeat'
 " syntax highlight for git diff
@@ -64,6 +68,9 @@ Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive'
 " Shows git diff in the gatter
 "Plugin 'airblade/vim-gitgutter'
+
+" gtiv - extension to vim-fugitive
+Plugin 'gregsexton/gitv'
 
 " async compilations
 Plugin 'tpope/vim-dispatch'
@@ -168,7 +175,132 @@ Plugin 'junegunn/vim-easy-align'
 " Fancy status line
 Plugin 'vim-airline/vim-airline'
 
+
+" Mark--Karkat
+" Highlight several words in different colors simultaneously.
+"
+" HIGHLIGHTING
+" <Leader>m		Mark the word under the cursor, similar to the star
+" 			command. The next free highlight group is used. 
+" 			If already on a mark: Clear the mark, like
+" 			<Leader>n. 
+" {Visual}<Leader>m	Mark or unmark the visual selection. 
+"
+" <Leader>r		Manually input a regular expression to mark. 
+" {Visual}<Leader>r	Ditto, based on the visual selection. 
+"
+" <Leader>n		Clear the mark under the cursor.
+" 			If not on a mark: Disable all marks, similar to
+" 			:nohlsearch. 
+"
+" :Mark {pattern}		Mark or unmark {pattern}. 
+" :Mark			Disable all marks, similar to :nohlsearch. Marks
+" 			will automatically re-enable when a mark is added or
+" 			removed, or a search for marks is performed. 
+" :MarkClear		Clear all marks. In contrast to disabling marks, the
+" 			actual mark information is cleared, the next mark will
+" 			use the first highlight group. This cannot be undone. 
+"
+" SEARCHING
+" [count]*         [count]#
+" [count]<Leader>* [count]<Leader>#
+" [count]<Leader>/ [count]<Leader>?
+" 			Use these six keys to jump to the [count]'th next /
+" 			previous occurrence of a mark. 
+" 			You could also use Vim's / and ? to search, since the
+" 			mark patterns are (optionally, see configuration)
+" 			added to the search history, too. 
+"
+"             Cursor over mark                    Cursor not over mark
+"  ---------------------------------------------------------------------------
+"   <Leader>* Jump to the next occurrence of      Jump to the next occurrence of
+"             current mark, and remember it       "last mark". 
+"             as "last mark". 
+"
+"   <Leader>/ Jump to the next occurrence of      Same as left. 
+"             ANY mark. 
+"
+"    *        If <Leader>* is the most recently   Do Vim's original * command. 
+"             used, do a <Leader>*; otherwise
+"             (<Leader>/ is the most recently
+"             used), do a <Leader>/. 
+"
+" MARK PERSISTENCE
+" The marks can be kept and restored across Vim sessions, using the viminfo
+" file. For this to work, the "!" flag must be part of the 'viminfo' setting: 
+"     set viminfo+=!  " Save and restore global variables. 
+" :MarkLoad		Restore the marks from the previous Vim session. All
+" 			current marks are discarded. 
+" :MarkSave		Save the currently defined marks (or clear the
+" 			persisted marks if no marks are currently defined) for
+" 			use in a future Vim session. 
 Plugin 'vim-scripts/Mark--Karkat'
+
+
+" Enhanced diff
+" (note: some algos use git, so make sure git >= 1.8.2 is installed)
+"
+" :PatienceDiff - Use the Patience Diff algorithm for the next diff mode
+" :EnhancedDiff <algorithm> - Use <algorithm> to generate the diff. Use any of
+"
+"	- myers			Default Diff algorithm used
+"	- default		Alias for myers algorithm
+"	- histogram		Fast version of patience algorithm
+"	- minimal		Default diff algorithm, trying harder to minimize the diff
+"	- patience		Patience diff algorithm.
+"
+" :EnhancedDiffDisable - Disable plugin (and use default Vim diff capabilities).
+"
+" :EnhancedDiffIgnorePat pat
+"   -- you can define patterns, that will be ignored before feeding the buffer
+"   contents to the diff program. Internally this will be handled by
+"   substituting those matches with 'XX' so that the content will look like
+"   the same for the diff binary.
+Plugin 'chrisbra/vim-diff-enhanced'
+
+
+" Sublime Text's awesome multiple selection feature
+"
+" *Quick Start*
+" - normal mode / visual mode
+"	  start: <C-n> start multicursor and add a virtual cursor + selection on the match
+"	  next: <C-n> add a new virtual cursor + selection on the next match
+"	  skip: <C-x> skip the next match
+"	  prev: <C-p> remove current virtual cursor + selection and go back on previous match
+"	  select all: <A-n> start muticursor and directly select all matches
+"	  You can now change the virtual cursors + selection with visual mode commands.
+"	  For instance: c, s, I, A work without any issues.
+"	  You could also go to normal mode by pressing v and use normal commands there.
+"	 
+"	  At any time, you can press <Esc> to exit back to regular Vim.
+"	 
+"	  NOTE: start with g<C-n> to match without boundaries (behaves like g* instead of *)
+"
+" - visual mode when multiple lines are selected
+"	  start: <C-n> add virtual cursors on each line
+"	  You can now change the virtual cursors with normal mode commands.
+"	  For instance: ciw.
+"
+" - command
+"	  The command MultipleCursorsFind accepts a range and a pattern (regexp), it creates a visual cursor at the end of each match.
+"	  If no range is passed in, then it defaults to the entire buffer.
+"
+" *Mapping*
+"	If you don't like the plugin taking over your key bindings, you can turn it off and reassign them the way you want:
+"
+"	let g:multi_cursor_use_default_mapping=0
+"
+" " Default mapping
+" let g:multi_cursor_start_word_key      = '<C-n>'
+" let g:multi_cursor_select_all_word_key = '<A-n>'
+" let g:multi_cursor_start_key           = 'g<C-n>'
+" let g:multi_cursor_select_all_key      = 'g<A-n>'
+" let g:multi_cursor_next_key            = '<C-n>'
+" let g:multi_cursor_prev_key            = '<C-p>'
+" let g:multi_cursor_skip_key            = '<C-x>'
+" let g:multi_cursor_quit_key            = '<Esc>'
+" NOTE: Please make sure to always map something to g:multi_cursor_quit_key, otherwise you'll have a tough time quitting from multicursor mode.
+Plugin 'terryma/vim-multiple-cursors'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -789,6 +921,9 @@ function! AppendModeline()
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
+"let &t_Cs = "\e[4:3m"
+"let &t_Ce = "\e[4:0m"
+
 if has("spell")
   " turn spelling on by default
   set spell
@@ -1036,3 +1171,31 @@ let g:airline#extensions#ale#enabled = 1
 " jump between the ALE errors quickly
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" quickly commenting a block: use TComment
+"
+
+" Some support for tab pages
+" Tab Page Hints:
+" gt - go to next tab
+" gT - to to previous tab
+
+
+let g:multi_cursor_use_default_mapping=0
+
+" Mapping for vim-multiple-cursors
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<C-\>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-j>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-m>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+" Default highlighting (see help :highlight and help :highlight-link)
+highlight link multiple_cursors_visual ReplaceMode
+highlight link multiple_cursors_cursor InsertMode
+" IsertMode     cterm=reverse ctermfg=37 ctermbg=230 gui=reverse guifg=#2aa198 guibg=#fdf6e3
+" ReplaceMode    cterm=reverse ctermfg=166 ctermbg=230 gui=reverse guifg=#cb4b16 guibg=#fdf6e3
+" VisualMode     cterm=reverse ctermfg=162 ctermbg=230 gui=reverse guifg=#d33682 guibg=#fdf6e33 guibg=#202020n
