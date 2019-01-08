@@ -1,3 +1,5 @@
+[user]
+	name = Marcin Sobieszczanski
 [push]
 	default = simple
 	#default = matching
@@ -15,21 +17,24 @@
 	d = diff
 	d- = diff --cached
 	last = log -1 HEAD
-	lg = log --graph --pretty=la --abbrev-commit --date=short
-	la = log --pretty=la --decorate --date=short
-	ll = log -p --color-words=.
-	lst = log --stat
+	# you can use the following to do branch diff: git lg feature...master
+	l = log
+	lp = log -p --stat
+	lpp = log -p --stat --color-words=.
+	lg = log --left-right --cherry-mark --pretty=la --graph
+	lg-l = log --left-right --cherry-mark --graph
+	la = log --pretty=la --decorate
+	l-gb = log --graph --boundary --full-history --simplify-merges 
 	bf = !git branch -a | grep --color=auto -i
 	dd = diff --color-words=.
 	dd- = diff --cached --color-words=.
 	dw = diff --word-diff-regex='[a-zA-Z0-9_]+'
+	dw- = diff --word-diff-regex='[a-zA-Z0-9_]+' --cached
 	a = add
 	au = add -u
-	l = log
-	lp = log -p
 	b = branch
 	s = status -uno
-	vimdiff = difftool --tool=vimdiff --no-prompt
+	vimdiff = difftool --tool=vimdiff
 	vd = difftool --tool=vimdiff --no-prompt
 	pl = pull
 	ph = push
@@ -39,6 +44,7 @@
 	r-c = rebase --continue
 	r-s = rebase --skip
 	r-a = rebase --abort
+	exportfiles = !sh -c 'git diff $0 --name-only | "while read files; do mkdir -p \"$1/$(dirname $files)\"; cp -vf $files $1/$(dirname $files); done"'
 [core]
 	abbrev = 12
 	editor = vim
@@ -53,13 +59,19 @@
 [log]
 	date = iso
 [pretty]
-	la = tformat:%C(yellow)%H%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
+	lA = tformat:%C(yellow)%H%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
+	la = tformat:%C(yellow)%h%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
 	la-nc = tformat:%h%d %s <%an> %ad
-[mergetool "vimdiff3"]
-	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
-[merge]
-	tool = vimdiff3
 [diff]
 	tool = vimdiff
 [rebase]
 	instructionFormat = %H - %d %s <%an> %aI (^:%p)
+[mergetool "diffconflicts"]
+	cmd = diffconflicts vim \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
+	keepBackup = false
+[mergetool "vimdiff3"]
+	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+[merge]
+	#tool = diffconflicts
+	tool = vimdiff3

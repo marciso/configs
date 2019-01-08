@@ -86,6 +86,7 @@ alias rgrep='grep -rn'
 #alias srgrep='rgrep -I' # like rgrep but ignore binary files
 alias moer=more
 alias cim=vim
+alias vim='vim --servername VIM'
 alias greo=grep
 alias sl=ls
 alias xs=cd
