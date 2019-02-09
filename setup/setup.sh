@@ -1,4 +1,4 @@
-#!/,bin/bash
+#!/bin/bash
 
 die() { echo "ERROR: $*" ; exit 1; }
 
@@ -7,12 +7,12 @@ which curl || die "curl needed" # could use wget
 which vim || die "vim needed"
 which git || die "git needed"
 
-src_dir=$(dirname "$(readlink -f "$0")")
+src_dir=$(cd $(dirname "$(readlink -f "$0")") && git rev-parse --show-toplevel)
 dst_dir=${HOME:-~}
 
-test -n "$src_dir" || die "Could not locate current directory"
+test -n "$src_dir" || die "Could not locate directory with configs"
 
-rsync -vari --exclude=.git* --exclude=setup*.sh --exclude=README.md ${src_dir}/.* ${dst_dir}/
+rsync -vari --exclude=.git* --exclude=setup/ --exclude=README.md ${src_dir}/.* ${dst_dir}/
 
 mkdir -p ${dst_dir}/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
