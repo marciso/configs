@@ -17,7 +17,8 @@ export LESS=FRX
 # The maximum size of files written by the shell and its children
 ulimit -f unlimited
 # The maximum number of open file descriptors (most systems do not allow this value to be set)
-ulimit -n 4096
+ulimit -n 3200 # 3200 - highest number in cygwin?
+#ulimit -n 4096
 # The maximum size of core files created
 ulimit -c unlimited
 
