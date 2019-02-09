@@ -302,6 +302,11 @@ Plugin 'chrisbra/vim-diff-enhanced'
 " NOTE: Please make sure to always map something to g:multi_cursor_quit_key, otherwise you'll have a tough time quitting from multicursor mode.
 Plugin 'terryma/vim-multiple-cursors'
 
+
+Plugin 'kana/vim-fakeclip'
+Plugin 'vim-scripts/a.vim'
+Plugin 'fholgado/minibufexpl.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
