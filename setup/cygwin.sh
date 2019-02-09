@@ -2,7 +2,7 @@
 
 dst_dir=${HOME:-~}
 
-#setup-x86_64.exe -q --wait -P wget,tar,qawk,bzip2,subversion,vim,git,rsync,curl,python2,python3,bc,tmux,lynx
+setup-x86_64.exe -q --wait -P wget,tar,qawk,bzip2,subversion,vim,git,rsync,curl,python2,python3,bc,tmux,lynx
 
 # apt-cyg is an alternative package manager for cygwinn
 lynx -source http://rawgit.com/transcode-open/apt-cyg/master/apt-cyg > ${dst_dir}/bin/apt-cyg
