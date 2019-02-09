@@ -1,3 +1,4 @@
+#!/,bin/bash
 
 die() { echo "ERROR: $*" ; exit 1; }
 
@@ -25,4 +26,5 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dst_dir}/.z
 
 # python is needed in a zsh, and vim
 which python || die "Please install python"
+which tmux || die "Please install tmux"
 
