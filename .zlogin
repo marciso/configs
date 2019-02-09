@@ -5,7 +5,7 @@
 if [[ -o interactive ]] ; then
   cal
 
-  cowsay -p `fortune`
+  command -v cowsay >/dev/null 2>&1 && command -v fortune >/dev/null 2>&1 && cowsay -p `fortune`
 
   echo "tmux sessions:"
   tmux ls
