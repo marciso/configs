@@ -1,5 +1,6 @@
 [user]
 	name = Marcin Sobieszczanski
+    email = 
 [push]
 	default = simple
 	#default = matching
@@ -75,3 +76,5 @@
 [merge]
 	#tool = diffconflicts
 	tool = vimdiff3
+[credential]
+    helper = store

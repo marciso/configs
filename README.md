@@ -7,5 +7,3 @@ TPM: https://github.com/tmux-plugins/tpm
 
 ## Apps
 tmux-mem-cpu-load
-
-
