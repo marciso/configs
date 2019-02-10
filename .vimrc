@@ -573,7 +573,7 @@ cmap w!! w !sudo tee % >/dev/null
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
 let g:indentLine_char = '┊'
-let g:indentLine_setColors = 0
+"let g:indentLine_setColors = 0
 "set showbreak=
 "set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
@@ -581,7 +581,15 @@ let g:indentLine_setColors = 0
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
 "ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
-set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
+" ‐ ․•‡†‥…‧⁚⁝⁞₋₌₊⁼⁻⁺
+" ∙∕∖∎∴∵∶∷⋅⋮⋯⋰⋱
+" ␀␤␣
+"		example  asd   
+"         asdf
+"   asdfa
+"set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
+set listchars=tab:»⋅,eol:₋,trail:·,extends:›,precedes:‹
+
 hi NonText ctermfg=22 guifg=#4a4a59
 hi SpecialKey ctermfg=22 guifg=#4a4a59
 set list
