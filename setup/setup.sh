@@ -12,7 +12,7 @@ dst_dir=${HOME:-~}
 
 test -n "$src_dir" || die "Could not locate directory with configs"
 
-rsync -vari --exclude=.git* --exclude=setup/ --exclude=README.md ${src_dir}/.* ${dst_dir}/
+rsync -vari --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md ${src_dir}/.* ${dst_dir}/
 
 mkdir -p ${dst_dir}/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
