@@ -83,8 +83,11 @@ Plugin 'int3/vim-extradite'
 
 " rtags - llvm tags
 " need to start rdm and load compilation db (rc -c / rc -J)
-Plugin 'lyuts/vim-rtags'
+" Plugin 'lyuts/vim-rtags'
 
+
+" gtags, global tags
+"Plugin 'jsfaint/gen_tags.vim'
 
 " displaying thin vertical lines at each indentation level for code indented
 " with spaces
@@ -122,10 +125,25 @@ Plugin 'w0rp/ale'
 
 " The Most Recently Used (MRU) plugin provides an easy access to a list of
 " recently opened/edited files in Vim
+" use command: :MRU
 Plugin 'yegappan/mru'
 
 " Press CTRL-P to start LeaderF - file mode
 " <leader>b - buffer mode
+"  In window: <C-F> for full name, and <C-R> regex
+"  <C-C> : quit from LeaderF.
+"  <C-R> : switch between fuzzy search mode and regex mode.
+"  <C-F> : switch between full path search mode and name only search mode.
+"  <ESC> : switch to normal mode.
+"  <C-V> : paste from clipboard.
+"  <C-U> : clear the prompt.
+"  <C-J>, <Down>, <C-K>, <Up> : navigate the result list.
+"  <2-LeftMouse> or <CR> : open the file under cursor or selected (when multiple files are selected).
+"  <C-X> : open in horizontal split window.
+"  <C-]> : open in vertical split window.
+"  <C-T> : open in new tabpage.
+"  <F5> : refresh the cache.
+"  <C-LeftMouse> or <C-Z> : select multiple files.
 Plugin 'Yggdroot/LeaderF'
 
 "Plugin 'L9'
@@ -133,6 +151,7 @@ Plugin 'Yggdroot/LeaderF'
 "Plugin 'SkidanovAlex/CtrlK'
 
 " <leader>t - start command-t
+" try: :CommandT*
 Plugin 'wincent/command-t'
 " Note, if you encounter the following error:
 "   command-t.vim could not load the C extension
@@ -164,9 +183,9 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'junegunn/vim-peekaboo'
 
 Plugin 'neovim/python-client'
-Plugin 'Shougo/deoplete.nvim'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
+Plugin 'Shougo/deoplete.nvim'
 
 " Aligning plugin
 Plugin 'junegunn/vim-easy-align'
@@ -307,9 +326,20 @@ Plugin 'kana/vim-fakeclip'
 Plugin 'vim-scripts/a.vim'
 Plugin 'fholgado/minibufexpl.vim'
 
+" Rainbow CSV: CSV query language
+"  * Highlight csv columns in different rainbow colors.
+"  * Provide SELECT and UPDATE queries in RBQL: SQL-like transprogramming query " language.
+"Plugin 'mechatroner/rainbow_csv'
+" Alternative
+Plugin 'chrisbra/csv.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
+if has("patch-8.1.0360")
+	set diffopt+=internal
+	"set diffopt+=algorithm:patience
+endif
 "" pathogen is another package manager
 "execute pathogen#infect()
 "
@@ -572,10 +602,18 @@ set noswapfile
 cmap w!! w !sudo tee % >/dev/null
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
-let g:indentLine_char = '┊'
+"let g:indentLine_char = '┊'
 "let g:indentLine_setColors = 0
 "set showbreak=
 "set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
+"let g:indentLine_char = '¦'
+"let g:indentLine_char = '˽'
+"let g:indentLine_char = '·'
+"let g:indentLine_char = '⁞'
+let g:indentLine_char = '˸'
+"set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
+"set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
@@ -588,13 +626,15 @@ let g:indentLine_char = '┊'
 "         asdf
 "   asdfa
 "set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
+"
+" set listchars=tab:»·,eol:·,trail:·,extends:›,precedes:‹
+" set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+" ₌₋₊⁼⁻⁺⁞‹›‧․‥•‡†‐‑Ⅹ↲↵∙⊢⋮⋯␣⣿⠿﹒
 set listchars=tab:»⋅,eol:₋,trail:·,extends:›,precedes:‹
 
 hi NonText ctermfg=22 guifg=#4a4a59
 hi SpecialKey ctermfg=22 guifg=#4a4a59
 set list
-"set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
-"set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
 " Use tabs instead of spaces :(
 "set noexpandtab
 " Use spaces instead of tabs :>
@@ -773,6 +813,7 @@ if has("cscope")
     map <F8> :set csto=0<CR>
 endif
 
+"set csprg=$HOME/gentoo/usr/bin/gtags-cscope
 
 map <F7> :set csto=1<CR>
 
@@ -1111,12 +1152,12 @@ let g:gitgutter_max_signs=9999
 " configuration for CSV plugin
 "
 " automatically highlight current column in CSV
-"let g:csv_highlight_column = 'y'
+let g:csv_highlight_column = 'y'
 
 " Do not highlight column when cursor moves:
 let g:csv_no_column_highlight = 1
 " Treat lines starting with '#' as comments
-"let g:csv_comment = '#'
+let g:csv_comment = '#'
 
 " By default, the csv plugin will analyze the whole file to determine which
 " delimiter to use. (You can also use :let g:csv_delim=',')
@@ -1129,6 +1170,14 @@ let g:csv_end = 100
 let g:csv_no_conceal = 1
 " set the 'conceallevel' option to control how the concealed chars will be
 " displayed.
+"
+" Note, arranging the columns can be very slow on large files or many columns
+"let b:csv_arrange_use_all_rows = 1
+
+" auto arrange but only for small (1MB) files
+let g:csv_autocmd_arrange	   = 1
+let g:csv_autocmd_arrange_size = 1024*1024
+
 
 hi CSVDelimiter term=bold cterm=NONE ctermfg=darkgrey ctermbg=NONE
 
@@ -1184,6 +1233,13 @@ let g:airline#extensions#ale#enabled = 1
 " jump between the ALE errors quickly
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+let g:ale_echo_msg_format = '%linter%: %s'
+
+let g:ale_c_build_dir="$MS_SRC_BASE"
+
+" disable ALE by default (too slow). Can be enabled with :ALEToggle
+let g:ale_enabled=0
 
 " quickly commenting a block: use TComment
 "
