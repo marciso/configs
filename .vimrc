@@ -114,7 +114,10 @@ Plugin 'tmhedberg/matchit'
 "
 "Simple visual comment:
 " <Ctrl+v>, select block, <Shift+I>, insert comment chars (e.g. //), <Esc>
-Plugin 'scrooloose/nerdcommenter'
+"Plugin 'scrooloose/nerdcommenter' NOTE: use tcomment for easier commenting
+
+"  TComment: http://www.vim.org/scripts/script.php?script_id=1173
+Plugin 'tomtom/tcomment_vim'
 
 " Check syntax of different files
 "Plugin 'scrooloose/syntastic'
@@ -322,16 +325,14 @@ Plugin 'chrisbra/vim-diff-enhanced'
 Plugin 'terryma/vim-multiple-cursors'
 
 
-Plugin 'kana/vim-fakeclip'
-Plugin 'vim-scripts/a.vim'
-Plugin 'fholgado/minibufexpl.vim'
-
 " Rainbow CSV: CSV query language
 "  * Highlight csv columns in different rainbow colors.
 "  * Provide SELECT and UPDATE queries in RBQL: SQL-like transprogramming query " language.
-"Plugin 'mechatroner/rainbow_csv'
-" Alternative
+Plugin 'mechatroner/rainbow_csv'
+
+" Alternative CSV plugin
 Plugin 'chrisbra/csv.vim'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -634,6 +635,7 @@ set listchars=tab:»⋅,eol:₋,trail:·,extends:›,precedes:‹
 
 hi NonText ctermfg=22 guifg=#4a4a59
 hi SpecialKey ctermfg=22 guifg=#4a4a59
+
 set list
 " Use tabs instead of spaces :(
 "set noexpandtab
@@ -810,12 +812,12 @@ if has("cscope")
     set csto=0 " do not search ctags before cscope
     set csprg=$HOME/gentoo/usr/bin/cscope
 
-    map <F8> :set csto=0<CR>
+    "map <F8> :set csto=0<CR>
 endif
 
-"set csprg=$HOME/gentoo/usr/bin/gtags-cscope
+set csprg=$HOME/gentoo/usr/bin/gtags-cscope
 
-map <F7> :set csto=1<CR>
+"map <F7> :set csto=1<CR>
 
 "if has("rtags")
 	set completefunc=RtagsCompleteFunc
@@ -903,31 +905,17 @@ cabbr Ag GrepperAg
 "let g:alternateSearchPath = 'sfr:../src,sfr:../../src'
 let g:alternateSearchPath = 'sfr:.'
 
+" toggle highlight search
 map  <F4> :set hls!<CR>
 imap <F4> <ESC>:set hls!<CR>a
 vmap <F4> <ESC>:set hls!<CR>gv
 
-
-" Disable list
-map <F5> :set nolist<CR>:let g:indentLine_enabled = 0<CR>
-imap <F5> <ESC>:set nolist<CR>:let g:indentLine_enabled = 0<CR>a
-vmap <F5> <ESC>:set nolist<CR>:let g:indentLine_enabled = 0<CR>gv
-
-" Enable mouse
-map <F6> :set list<CR>:let g:indentLine_enabled = 1<CR>
-imap <F6> <ESC>:set list<CR>:let g:indentLine_enabled = 1<CR>a
-vmap <F6> <ESC>:set list<CR>:let g:indentLine_enabled = 1<CR>gv
-
-
-"" Disable mouse on console
-"map <F5> :set mouse=<CR>
-"imap <F5> <ESC>:set mouse=<CR>a
-"vmap <F5> <ESC>:set mouse=<CR>gv
+" leave F5 for Leaderf refresh cache
 "
-"" Enable mouse
-"map <F6> :set mouse=a<CR>
-"imap <F6> <ESC>:set mouse=a<CR>a
-"vmap <F6> <ESC>:set mouse=a<CR>gv
+" toggle disable/enable list; OPEN: why did we set let g:indentLine_enabled = 0/1
+map <F6> :set list!<CR>
+imap <F6> <ESC>:set list!<CR>
+vmap <F6> <ESC>:set list!<CR>
 
 highlight ExtraWhitespace ctermbg=darkgray guibg=darkgray
 au ColorScheme * highlight ExtraWhitespace guibg=darkgray
@@ -1144,6 +1132,24 @@ let g:Lf_ShortcutF = '<C-P>'
 " a - the nearest ancestor of CWD that contains g:Lf_RootMarkers (e.g. .git)
 let g:Lf_WorkingDirectoryMode = 'ac'
 
+let g:Lf_StlSeparator = { 'left': '►', 'right': '◄', 'font': '' }
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_PreviewCode = 1
+let g:Lf_UseVersionControlTool = 1
+
+" let g:Lf_PreviewResult = {
+" 			\ 'File': 0,
+" 			\ 'Buffer': 0,
+" 			\ 'Mru': 0,
+" 			\ 'Tag': 0,
+" 			\ 'BufTag': 1,
+" 			\ 'Function': 1,
+" 			\ 'Line': 0,
+" 			\ 'Colorscheme': 0
+" 			\}
+
+"highlight Lf_hl_match gui=bold guifg=Blue cterm=bold ctermfg=21
+"highlight Lf_hl_matchRefine  gui=bold guifg=Magenta cterm=bold ctermfg=201
 
 " prevents from a warning about the variable not being set
 let g:gitgutter_max_signs=9999
@@ -1152,10 +1158,11 @@ let g:gitgutter_max_signs=9999
 " configuration for CSV plugin
 "
 " automatically highlight current column in CSV
-let g:csv_highlight_column = 'y'
+" NOTE: this does not work very well if the file type changes
+" let g:csv_highlight_column = 'y'
 
 " Do not highlight column when cursor moves:
-let g:csv_no_column_highlight = 1
+"let g:csv_no_column_highlight = 1
 " Treat lines starting with '#' as comments
 let g:csv_comment = '#'
 
@@ -1178,8 +1185,13 @@ let g:csv_no_conceal = 1
 let g:csv_autocmd_arrange	   = 1
 let g:csv_autocmd_arrange_size = 1024*1024
 
+" disables :CSVTabularize or :CSVTable
+let g:csv_disable_table_command = 1
 
 hi CSVDelimiter term=bold cterm=NONE ctermfg=darkgrey ctermbg=NONE
+
+" disable Rainbow by default
+let g:disable_rainbow_csv_autodetect = 1
 
 "hi CSVColumnEven cterm=NONE ctermfg=NONE ctermbg=darkblue
 "hi CSVColumnOdd  cterm=NONE ctermfg=NONE ctermbg=darkmagenta
@@ -1241,7 +1253,11 @@ let g:ale_c_build_dir="$MS_SRC_BASE"
 " disable ALE by default (too slow). Can be enabled with :ALEToggle
 let g:ale_enabled=0
 
-" quickly commenting a block: use TComment
+
+" quickly commenting a block: use TComment, e.g. Ctrl-//
+" do not define Leader related mappings
+let g:tcommentMapLeader2=''
+
 "
 
 " Some support for tab pages
