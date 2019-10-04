@@ -1,102 +1,107 @@
+# vim: set ts=4 sw=4 sts=4 et :
 [user]
-	name = Marcin Sobieszczanski
+    name = Marcin Sobieszczanski
 [push]
-	default = simple
-	#default = matching
+    #default = simple
+    default = matching
+    # default = current
 [pull]
-	rebase = true
+    rebase = true
+    default = matching
 [alias]
-	ch = checkout
-	co = commit
-	cp = cherry-pick
-	br = branch
-	st = status
-	sh = show
-	shr = show --pretty=raw
-	diff- = diff --cached
-	d = diff
-	d- = diff --cached
-	last = log -1 HEAD
-	# you can use the following to do branch diff: git lg feature...master
-	l = log
-	lp = log -p --stat
-	lpp = log -p --stat --color-words=.
-	lpw = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
-	lg = log --left-right --cherry-mark --pretty=la --graph
-	lg-l = log --left-right --cherry-mark --graph
-	la = log --pretty=la --decorate
-	l-gb = log --graph --boundary --full-history --simplify-merges 
-	bf = !git branch -a | grep --color=auto -i
-	dd = diff --color-words=.
-	dd- = diff --cached --color-words=.
-	dw = diff --word-diff-regex='[a-zA-Z0-9_]+'
-	dw- = diff --word-diff-regex='[a-zA-Z0-9_]+' --cached
-	a = add
-	au = add -u
-	b = branch
-	s = status -uno
-	vimdiff = difftool --tool=vimdiff
-	vd = difftool --tool=vimdiff --no-prompt
-	pl = pull
-	pul = pull
-	ph = push
-	pus = push
-	fe = fetch
-	fet = fetch
-	mt = mergetool
-	r = rebase
-	#r-c = rebase --continue
-	#r-s = rebase --skip
-	#r-a = rebase --abort
-	exportfiles = !sh -c 'git diff $0 --name-only | "while read files; do mkdir -p \"$1/$(dirname $files)\"; cp -vf $files $1/$(dirname $files); done"'
+    ch = checkout
+    co = commit
+    cp = cherry-pick
+    br = branch
+    st = status
+    sh = show
+    shr = show --pretty=raw
+    diff- = diff --cached
+    d = diff
+    d- = diff --cached
+    last = log -1 HEAD
+    # you can use the following to do branch diff: git lg feature...master
+    l = log
+    lp = log -p --stat
+    lpp = log -p --stat --color-words=.
+    lpw = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
+    lg = log --left-right --cherry-mark --pretty=la --graph
+    lg-l = log --left-right --cherry-mark --graph
+    la = log --pretty=la --decorate
+    l-gb = log --graph --boundary --full-history --simplify-merges 
+    bf = !git branch -a | grep --color=auto -i
+    dd = diff --color-words=.
+    dd- = diff --cached --color-words=.
+    dw = diff --word-diff-regex='[a-zA-Z0-9_]+'
+    dw- = diff --word-diff-regex='[a-zA-Z0-9_]+' --cached
+    a = add
+    au = add -u
+    b = branch
+    s = status -uno
+    vimdiff = difftool --tool=vimdiff
+    vd = difftool --tool=vimdiff --no-prompt
+    pl = pull
+    pul = pull
+    ph = push
+    pus = push
+    fe = fetch
+    fet = fetch
+    mt = mergetool
+    r = rebase
+    #r-c = rebase --continue
+    #r-s = rebase --skip
+    #r-a = rebase --abort
+    exportfiles = !sh -c 'git diff $0 --name-only | "while read files; do mkdir -p \"$1/$(dirname $files)\"; cp -vf $files $1/$(dirname $files); done"'
 [core]
-	abbrev = 12
-	editor = vim
-	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	autocrlf = input
-	# this is the default git seems to be using if env LESS isn't set
-	#pager = less -FRSX
+    abbrev = 12
+    editor = vim
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    autocrlf = input
+    # this is the default git seems to be using if env LESS isn't set
+    #pager = less -FRSX
 [apply]
-	whitespace = nowarn
+    whitespace = nowarn
 [branch]
-	autosetuprebase = always
+    autosetuprebase = always
 [rerere]
-	enabled = 1
-	# autoupdate = 1
+    enabled = 1
+    # autoupdate = 1
 [pack]
-	compression = 9
-	windowMemory = 100m
-	SizeLimit = 100m
-	threads = 1
-	window = 0
+    compression = 9
+    windowMemory = 100m
+    SizeLimit = 100m
+    threads = 1
+    window = 0
 [log]
-	date = iso
+    date = iso
 [pretty]
-	lA = tformat:%C(yellow)%H%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
-	la = tformat:%C(yellow)%h%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
-	la-nc = tformat:%h%d %s <%an> %ad
+    lA = tformat:%C(yellow)%H%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
+    la = tformat:%C(yellow)%h%Creset -%C(bold red)%d%Creset %s %C(bold blue)<%an>%Creset %C(green)%aI%Creset (^:%p)
+    la-nc = tformat:%h%d %s <%an> %ad
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 [rebase]
-	instructionFormat = %H - %d %s <%an> %aI (^:%p)
+    instructionFormat = %H - %d %s <%an> %aI (^:%p)
 [mergetool "diffconflicts"]
-	cmd = diffconflicts vim \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
-	trustExitCode = true
-	keepBackup = false
+    cmd = diffconflicts vim \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+    trustExitCode = true
+    keepBackup = false
 [mergetool "vimdiff3"]
-	cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+    cmd = vim -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 [merge]
-	#tool = diffconflicts
-	tool = vimdiff3
-	conflictstyle = diff3
+    #tool = diffconflicts
+    tool = vimdiff3
+    conflictstyle = diff3
+    #default = rebase
+    #ff = only
 [credential]
-	helper = store
+    helper = store
 [color]
-	branch = auto
-	diff = auto
-	status = auto
-	showbranch = auto
-	ui = true
+    branch = auto
+    diff = auto
+    status = auto
+    showbranch = auto
+    ui = true
 
 # color.branch
 #     A boolean to enable/disable color in the output of git-branch(1). May be set to always, false (or
@@ -152,9 +157,9 @@
 #     The position of the attribute, if any, doesn't matter.
 
 [color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
+    current = yellow reverse
+    local = yellow
+    remote = green
 
 # color.diff.<slot>
 #     Use customized color for diff colorization.  <slot> specifies which part of the patch to use the
@@ -164,10 +169,10 @@
 #     in color.branch.<slot>.
 
 [color "diff"]
-	meta = yellow bold
-	frag = magenta bold
-	old = red bold
-	new = green bold
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
 
 # color.decorate.<slot>
 #     Use customized color for git log --decorate output.  <slot> is one of branch, remoteBranch, tag,
@@ -186,7 +191,12 @@
 #     red). The values of these variables may be specified as in color.branch.<slot>.
 
 [color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+    added = yellow
+    changed = green
+    untracked = cyan
 
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
