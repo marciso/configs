@@ -35,12 +35,15 @@ set nocompatible
 "`[ or `]	jump to beginning/end of previously changed or yanked text
 "`< or `>	jump to beginning/end of last visual selection
 
+
 " Vundle Plugins:
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
+
+Plugin 'vim-scripts/a.vim'
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -96,6 +99,7 @@ Plugin 'Yggdroot/indentLine'
 " allows you to configure % to match more than just single characters
 Plugin 'tmhedberg/matchit'
 
+Plugin 'fholgado/minibufexpl.vim'
 "
 "[count]<leader>cc |NERDComComment|				Comment out the current line or text selected in visual mode.
 "[count]<leader>cn |NERDComNestedComment|		Same as cc but forces nesting.
@@ -185,14 +189,14 @@ Plugin 'tpope/vim-unimpaired'
 " Preview registers when you hit " or @, or CTRL-R
 Plugin 'junegunn/vim-peekaboo'
 
-Plugin 'neovim/python-client'
+"Plugin 'neovim/python-client'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'Shougo/deoplete.nvim'
 
 " Aligning plugin
+"    Try EasyAlign*=
 Plugin 'junegunn/vim-easy-align'
-" Try EasyAlign*=
 
 " Fancy status line
 Plugin 'vim-airline/vim-airline'
@@ -333,14 +337,69 @@ Plugin 'mechatroner/rainbow_csv'
 " Alternative CSV plugin
 Plugin 'chrisbra/csv.vim'
 
+" Paul's
+"Plugin 'chrisbra/csv.vim'
+"Plugin 'gmarik/Vundle.vim'
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'jszakmeister/vim-togglecursor'
+"Plugin 'bling/vim-airline'
+"Plugin 'ntpeters/vim-better-whitespace'
+"Plugin 'Valloric/vim-operator-highlight'
+"Plugin 'jlanzarotta/bufexplorer'
+"Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'guns/xterm-color-table.vim'
+Plugin 'rhysd/vim-clang-format'
+"Plugin 'junegunn/limelight.vim'
+"Plugin 'dietsche/vim-lastplace'
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Raimondi/delimitMate'
+"Plugin 'scrooloose/syntastic'
+"Plugin 'edkolev/tmuxline.vim'
+"Plugin 'davidhalter/jedi-vim'
+"Plugin 'scrooloose/nerdtree'
+"Plugin 'majutsushi/tagbar'
+"Plugin 'Shougo/vimshell.vim'
+"Plugin 'jalcine/cmake.vim'
+"Plugin 'tpope/vim-obsession'
+"Plugin 'thinca/vim-quickrun'
+"Plugin 'Soares/longline.vim'
+"Plugin 'honza/vim-snippets'
+"Plugin 'tpope/vim-markdown'
+"Plugin 'tpope/vim-sensible'
+"Plugin 'mbbill/undotree'
+"Plugin 'tpope/vim-abolish'
+"Plugin 'gilligan/vim-lldb'
+"Plugin 'ogier/guessindent'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'vim-jp/cpp-vim'
+"Plugin 'kien/ctrlp.vim'
+"Plugin 'bruno-/vim-man.git'
+"Plugin 'godlygeek/tabular'
+Plugin 'szw/vim-ctrlspace'
+"Plugin 'vim-scripts/IndentConsistencyCop'
+"Plugin 'ciaranm/detectindent'
+Plugin 'jreybert/vimagit'
+"Plugin 'airblade/vim-gitgutter'
+"Plugin 'rking/ag.vim'
+"Plugin 'Chun-Yang/vim-action-ag'
+"Plugin 'ntpeters/vim-better-whitespace'
+
+"Plugin 'xolox/vim-misc'
+"Plugin 'xolox/vim-easytags' " causes delays on saving a file
+
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'skywind3000/gutentags_plus'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
-if has("patch-8.1.0360")
-	set diffopt+=internal
-	"set diffopt+=algorithm:patience
-endif
+
+
+
+
+set diffopt+=internal
+"set diffopt+=algorithm:patience
 "" pathogen is another package manager
 "execute pathogen#infect()
 "
@@ -752,8 +811,9 @@ if has("cscope")
     "cnoreabbrev css cs show
     "cnoreabbrev csh cs help
 
-    cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
-    cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
+	"cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
+	"cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
+    cscope add ~/code/cscope.out  ~/code/src
 
     "cscope add /usr/include/cscope.out /usr/include
     "cscope add /usr/local/include/cscope.out /usr/local/include
@@ -877,12 +937,10 @@ set tags+=./tags;../../../../
 "set tags+=./tags;../../
 
 " fix locations:
-set tags+=$MS_SRC_BASE/tags
-set tags+=$MS_SRC_BASE/src/tags
+set tags+=$HOME/code/tags
 
 set path^=.
-set path^=$HOME/dev/**5/src
-set path^=$HOME/dev/**5/include
+set path^=$HOME/code/**5
 
 " Alternative: working directory is always the same as the file you are editing
 "   set autochdir
@@ -900,7 +958,7 @@ cabbr <expr> ~~ expand('%:p:h')
 cabbr Ag GrepperAg
 
 "let g:alternateExtensions_hxx = "cpp,cc,CC,c"
-"let g:alternateExtensions_cxx = "h,hpp"
+"let g:alternateExtensions_cxx = "h,hh,hpp"
 
 "let g:alternateSearchPath = 'sfr:../src,sfr:../../src'
 let g:alternateSearchPath = 'sfr:.'
@@ -1256,7 +1314,8 @@ let g:ale_enabled=0
 
 " quickly commenting a block: use TComment, e.g. Ctrl-//
 " do not define Leader related mappings
-let g:tcommentMapLeader2=''
+"let g:tcommentMapLeader2=''
+let g:tcomment_mapleader2=''
 
 "
 
@@ -1284,3 +1343,43 @@ highlight link multiple_cursors_cursor InsertMode
 " IsertMode     cterm=reverse ctermfg=37 ctermbg=230 gui=reverse guifg=#2aa198 guibg=#fdf6e3
 " ReplaceMode    cterm=reverse ctermfg=166 ctermbg=230 gui=reverse guifg=#cb4b16 guibg=#fdf6e3
 " VisualMode     cterm=reverse ctermfg=162 ctermbg=230 gui=reverse guifg=#d33682 guibg=#fdf6e33 guibg=#202020n
+
+" YouCompleteMe Setup {{{
+"set completeopt-=preview
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_seed_identifiers_with_syntax = 1   "add keywords to completion database
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_semantic_triggers = {'haskell' : ['.']}
+nnoremap <leader>h :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>e :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
+hi YcmErrorSection term=reverse cterm=reverse gui=reverse
+" }}}
+
+" ClangFormat Setup {{{
+let g:clang_format#code_style = "Google"
+
+"Not supported in current clang-format version
+"\ "AllowShortLoopsOnASingleLine": "false",
+"\ "AllowShortBlocksOnASingleLine" : "false",
+"\ "AllowShortFunctionsOnASingleLine": "None",
+"\ "AllowShortIfStatementsOnASingleLine": "false",
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset": -4,
+            \ "AlwaysBreakTemplateDeclarations": "true",
+            \ "DerivePointerBinding": "false",
+            \ "PointerBindsToType": "false",
+            \ "BinPackParameters" : "false",
+            \ "ColumnLimit": 120,
+            \ "TabWidth": 4,
+            \ "IndentCaseLabels": "false",
+            \ "BreakBeforeBraces": "Allman",
+            \ "Standard": "C++11" }
+au FileType c,cpp,objc,objcpp noremap  <silent> <buffer> <leader>f :ClangFormat<cr>
+au FileType c,cpp,objc,objcpp noremap! <silent> <buffer> <leader>f <c-o>:ClangFormat<cr>
+" }}}
+
