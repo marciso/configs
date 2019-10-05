@@ -173,7 +173,7 @@ Plugin 'rafi/awesome-vim-colorschemes'
 " place, toggle and display marks.
 Plugin 'kshenoy/vim-signature'
 
-" relative/hybrid numbers
+" relative/hybrid numbers but only in the active window
 Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 
 " Different kind of navigation/search

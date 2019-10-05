@@ -6,6 +6,7 @@ which rsync || die "rsync needed" # could use simple cp
 which curl || die "curl needed" # could use wget
 which vim || die "vim needed"
 which git || die "git needed"
+which pip || die "pip needed (to install pynvim)"
 
 src_dir=$(cd $(dirname "$(readlink -f "$0")") && git rev-parse --show-toplevel)
 dst_dir=${HOME:-~}
@@ -17,12 +18,17 @@ rsync -vari --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=READ
 mkdir -p ${dst_dir}/.vim/bundle/
 git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
 
+pip install --user pynvim
+
 vim +PluginInstall +qall
 
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh > ${dst_dir}/.git-prompt.sh
 
 mkdir ${dst_dir}/.zsh/
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dst_dir}/.zsh/zsh-syntax-highlighting
+
+mkdir -p ${dst_dir}/.tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ${dst_dir}/.tmux/plugins/tpm
 
 # python is needed in a zsh, and vim
 which python || die "Please install python"

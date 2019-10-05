@@ -22,13 +22,22 @@
     last = log -1 HEAD
     # you can use the following to do branch diff: git lg feature...master
     l = log
-    lp = log -p --stat
-    lpp = log -p --stat --color-words=.
-    lpw = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
-    lg = log --left-right --cherry-mark --pretty=la --graph
-    lg-l = log --left-right --cherry-mark --graph
+    lp = log -p
+    ls = log --stat
+    lsp = log -p --stat
+    lps = log -p --stat
+    lpp = log -p --color-words=.
+    ll = log -p --color-words=.
+    lpps = log -p --stat --color-words=.
+    lspp = log -p --stat --color-words=.
+    lpw = log -p --word-diff-regex='[a-zA-Z0-9_]+'
+    lpws = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
+    lspw = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
+    lg = log --left-right --cherry-mark --pretty=la --graph --abbrev-commit --date=short
+    lgl = log --left-right --cherry-mark --graph --stat
     la = log --pretty=la --decorate
-    l-gb = log --graph --boundary --full-history --simplify-merges 
+    las = log --pretty=la --decorate --stat
+    lgb = log --graph --boundary --full-history --simplify-merges
     bf = !git branch -a | grep --color=auto -i
     dd = diff --color-words=.
     dd- = diff --cached --color-words=.
@@ -44,6 +53,7 @@
     pul = pull
     ph = push
     pus = push
+    puhs = push
     fe = fetch
     fet = fetch
     mt = mergetool
