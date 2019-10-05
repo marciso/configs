@@ -12,6 +12,7 @@
 [alias]
     ch = checkout
     co = commit
+    commit-m = commit -m
     cp = cherry-pick
     br = branch
     st = status
