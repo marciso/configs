@@ -1,6 +1,7 @@
 # vim: set ts=4 sw=4 sts=4 et :
 [user]
     name = Marcin Sobieszczanski
+    email = marciso@gmail.com
 [push]
     #default = simple
     default = matching
@@ -34,6 +35,7 @@
     lpws = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
     lspw = log -p --stat --word-diff-regex='[a-zA-Z0-9_]+'
     lg = log --left-right --cherry-mark --pretty=la --graph --abbrev-commit --date=short
+    lgs = log --left-right --cherry-mark --pretty=la --graph --abbrev-commit --date=short --stat
     lgl = log --left-right --cherry-mark --graph --stat
     la = log --pretty=la --decorate
     las = log --pretty=la --decorate --stat
