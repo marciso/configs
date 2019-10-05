@@ -30,6 +30,8 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dst_dir}/.z
 mkdir -p ${dst_dir}/.tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ${dst_dir}/.tmux/plugins/tpm
 
+${dst_dir}/.tmux/plugins/tpm/bin/install_plugins
+
 # python is needed in a zsh, and vim
 which python || die "Please install python"
 which tmux || die "Please install tmux"
