@@ -6,7 +6,13 @@ which rsync || die "rsync needed" # could use simple cp
 which curl || die "curl needed" # could use wget
 which vim || die "vim needed"
 which git || die "git needed"
-which pip || die "pip needed (to install pynvim)"
+# vim needs pynvim, and that is why we need pip
+which pip || die "pip needed"
+# YouCompleteMe needs cmake g++ python
+which cmake || die "cmake needed"
+which g++ || die "g++ needed"
+which python || die "python needed"
+
 
 src_dir=$(cd $(dirname "$(readlink -f "$0")") && git rev-parse --show-toplevel)
 dst_dir=${HOME:-~}
@@ -21,6 +27,11 @@ git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vun
 pip install --user pynvim
 
 vim +PluginInstall +qall
+
+pushd ${dst_dir}/.vim/bundle/YouCompleteMe
+python3 install.py --clangd-completer --cs-completer
+popd
+
 
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh > ${dst_dir}/.git-prompt.sh
 

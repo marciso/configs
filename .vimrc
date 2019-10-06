@@ -77,6 +77,9 @@ Plugin 'gregsexton/gitv'
 Plugin 'tpope/vim-dispatch'
 
 " surroungings: https://vim.sourceforge.io/scripts/script.php?script_id=1697
+" Surround.vim is all about "surroundings": parentheses, brackets, quotes, XML tags, and more. The plugin provides mappings to easily delete, change and add such surroundings in pairs.
+" Commands: cs, ds, ys
+" Visual: v <select> S <delim>
 Plugin 'tpope/vim-surround'
 
 " git browser (like tig) in vim
@@ -405,6 +408,25 @@ Plugin 'skywind3000/gutentags_plus'
 
 "lets_se_howTHIS_workWithCanCase
 Plugin 'bkad/CamelCaseMotion'
+
+" :Delete: Delete a buffer and the file on disk simultaneously.
+" :Unlink: Like :Delete, but keeps the now empty buffer.
+" :Move: Rename a buffer and the file on disk simultaneously.
+" :Rename: Like :Move, but relative to the current file's containing directory.
+" :Chmod: Change the permissions of the current file.
+" :Mkdir: Create a directory, defaulting to the parent of the current file.
+" :Cfind: Run find and load the results into the quickfix list.
+" :Clocate: Run locate and load the results into the quickfix list.
+" :Lfind/:Llocate: Like above, but use the location list.
+" :Wall: Write every open window. Handy for kicking off tools like guard.
+" :SudoWrite: Write a privileged file with sudo.
+" :SudoEdit: Edit a privileged file with sudo.
+Plugin 'tpope/vim-eunuch'
+
+
+Plugin 'sjl/badwolf'
+
+"Plugin 'Valloric/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
