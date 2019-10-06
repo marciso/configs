@@ -52,8 +52,6 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 
 " Vimux - vim+tmux split window
-"Plugin 'benmills/vimus'
-"
 " drop into tmux from inside the vim
 Plugin 'benmills/vimux'
 
@@ -177,6 +175,7 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'jeffkreeftmeijer/vim-numbertoggle'
 
 " Different kind of navigation/search
+" mapped to <lader>l (goto to line) and "z/" "z?" -- as it would correspond "/" and "?"
 Plugin 'easymotion/vim-easymotion'
 
 " improvement over incsearch
@@ -189,9 +188,15 @@ Plugin 'tpope/vim-unimpaired'
 " Preview registers when you hit " or @, or CTRL-R
 Plugin 'junegunn/vim-peekaboo'
 
-"Plugin 'neovim/python-client'
+"Plugin 'neovim/pynvim' - better to install over pip ?
+" This needs integration with neovim (over python)
+" Verify if neovim complains (type :messages)
+" If so, you need to install pynvim:
+"     pip install --user pynvim
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
+" this is context completion but it is somehow buggy and jumps into less
+" predicted way
 Plugin 'Shougo/deoplete.nvim'
 
 " Aligning plugin
@@ -348,8 +353,14 @@ Plugin 'chrisbra/csv.vim'
 "Plugin 'jlanzarotta/bufexplorer'
 "Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'christoomey/vim-tmux-navigator'
+
+" displays nice palette of colors
 Plugin 'guns/xterm-color-table.vim'
+
+
+" uses clang-format 
 Plugin 'rhysd/vim-clang-format'
+
 "Plugin 'junegunn/limelight.vim'
 "Plugin 'dietsche/vim-lastplace'
 "Plugin 'Valloric/YouCompleteMe'
@@ -391,11 +402,23 @@ Plugin 'jreybert/vimagit'
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'skywind3000/gutentags_plus'
 
+
+"lets_se_howTHIS_workWithCanCase
+Plugin 'bkad/CamelCaseMotion'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 
-
+" remap w b e ge
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap b
+sunmap e
+sunmap ge
 
 
 set diffopt+=internal
@@ -955,6 +978,9 @@ set path^=$HOME/code/**5
 cabbr <expr> %% expand('%:p:h')
 cabbr <expr> ~~ expand('%:p:h')
 
+"set grepprg=ag\ --vimgrep\ $*
+"set grepformat=%f:%l:%c:%m
+
 cabbr Ag GrepperAg
 
 "let g:alternateExtensions_hxx = "cpp,cc,CC,c"
@@ -1312,7 +1338,7 @@ let g:ale_c_build_dir="$MS_SRC_BASE"
 let g:ale_enabled=0
 
 
-" quickly commenting a block: use TComment, e.g. Ctrl-//
+" quickly commenting a block: use TComment, e.g. Ctrl-//, or ctrl-_ ctrl-_
 " do not define Leader related mappings
 "let g:tcommentMapLeader2=''
 let g:tcomment_mapleader2=''
@@ -1343,6 +1369,13 @@ highlight link multiple_cursors_cursor InsertMode
 " IsertMode     cterm=reverse ctermfg=37 ctermbg=230 gui=reverse guifg=#2aa198 guibg=#fdf6e3
 " ReplaceMode    cterm=reverse ctermfg=166 ctermbg=230 gui=reverse guifg=#cb4b16 guibg=#fdf6e3
 " VisualMode     cterm=reverse ctermfg=162 ctermbg=230 gui=reverse guifg=#d33682 guibg=#fdf6e33 guibg=#202020n
+
+" CtrlSpace config:
+"  use ag to collect files in project
+if executable("ag")
+    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
+let g:CtrlSpaceSearchTiming = 500
 
 " YouCompleteMe Setup {{{
 "set completeopt-=preview
