@@ -26,6 +26,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vun
 
 pip install --user pynvim
 
+mkdir -p ${dst_dir}/.vim/spell/
 vim +PluginInstall +qall
 
 pushd ${dst_dir}/.vim/bundle/YouCompleteMe

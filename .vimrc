@@ -424,9 +424,16 @@ Plugin 'bkad/CamelCaseMotion'
 Plugin 'tpope/vim-eunuch'
 
 
+" colorcheme badwolf
 Plugin 'sjl/badwolf'
 
-"Plugin 'Valloric/YouCompleteMe'
+" Install the plugin here - remember you also need to install the backends
+" It's fine to run vim without the backend but of course YouCompleteMe will
+" not work.
+" To install:
+"   cd ~/.vim/bundle/YouCompleteMe
+"   python install.py  # --cs-completer --clangd-completer
+Plugin 'Valloric/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -1069,9 +1076,13 @@ function! AppendModeline()
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
+" The following escape codes should enable curly underlines
 "let &t_Cs = "\e[4:3m"
 "let &t_Ce = "\e[4:0m"
 
+set spelllang=en
+" spellfile myst end with .${spelllang}.add
+set spellfile=$HOME/.vim/spell/spell_dict.en.add
 if has("spell")
   " turn spelling on by default
   set spell
