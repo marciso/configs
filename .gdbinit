@@ -63,10 +63,13 @@ end
 #  To print the classes in the old style, use the /r (raw) switch in the print command (i.e., print /r foo). This will
 #  print the classes as if the Python pretty-printers were not loaded
 set auto-load safe-path /
-#python
-#import sys
-#import os
-#sys.path.insert(0, '/usr/share/gcc-%s/python/' % (os.popen('gcc -dumpversion').read().strip(),))
-#from libstdcxx.v6.printers import register_libstdcxx_printers
-#register_libstdcxx_printers(None)
-#end
+
+python
+import sys
+import os
+sys.path.insert(0, os.getenv('HOME', default='~') + '/.gdb/stlprettyprinter')
+from libstdcxx.v6.printers import register_libstdcxx_printers
+register_libstdcxx_printers(None)
+end
+
+source ~/.gdb/dbinit_stl_views-1.03.txt
