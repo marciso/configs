@@ -135,7 +135,8 @@ function _ms_select_opt
 
 function _ms_get_work_dirs
 {
-	ls -1d ~/dev/*
+	#ls -1d ~/dev/*
+    find ~/dev/* -maxdepth 0 -type d
 }
 
 function _ms_set_work_dir

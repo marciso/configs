@@ -7,6 +7,8 @@
 " Necesary  for lots of cool vim things (always set for nvim)
 set nocompatible
 
+set encoding=utf-8
+
 "filetype off  "needed by Vundle?
 
 " General Hints:
@@ -200,7 +202,7 @@ Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 " this is context completion but it is somehow buggy and jumps into less
 " predicted way
-Plugin 'Shougo/deoplete.nvim'
+"Plugin 'Shougo/deoplete.nvim'
 
 " Aligning plugin
 "    Try EasyAlign*=
@@ -581,6 +583,9 @@ set background=dark
 "colorscheme desert
 "colorscheme materialbox
 colorscheme solarized8
+" Set high visibility for diff mode
+let g:solarized_diffmode="high"
+
 " OceanicNext default  atom deep-space deus gruvbox materialbox jellybeans
 " pablo solarized8
 
@@ -623,12 +628,19 @@ au BufNewFile,BufRead *.cxx set syntax=cpp11
 au BufNewFile,BufRead *.ixx set syntax=cpp11
 au BufNewFile,BufRead *.hxx set syntax=cpp11
 
+let $MANSECT="3:3posix:3pm:3perl:3am:2:1:n:l:8:5:4:9:6:7"
+
 if &diff
-  colorscheme pablo
+   colorscheme molokai
+  "colorscheme pablo
   " other good cs for vimdiff: murphy pablo slate
 
   " diff mode : ignore spaces
   "set diffopt+=iwhite
+
+  " colorscheme solarized8
+  " NOTE, there is already this set:
+  " let g:solarized_diffmode="high"
 endif
 "if &diff
 "  colorscheme pablo
@@ -726,7 +738,7 @@ let g:indentLine_char = '˸'
 "set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
 "set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
 "set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
-"set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
+set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
 "set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
@@ -836,7 +848,7 @@ if executable('ag')
 endif
 
 " bind K to grep word under cursor
-nnoremap K :GrepperAg "\b<C-R><C-W>\b"<CR>:cw<CR>
+" nnoremap K :GrepperAg "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 command! -nargs=+ -complete=file GrepperGit Grepper -noprompt -tool git -query <args>
 command! -nargs=+ -complete=file GrepperAg Grepper -noprompt -tool ag -query <args>
@@ -865,32 +877,33 @@ if has("cscope")
 
 	"cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
 	"cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
-    cscope add ~/code/cscope.out  ~/code/src
+	" cscope add ~/code/cscope.out  ~/code/
+    cscope add ~/code/_external/cscope.out  ~/code/_external/
 
     "cscope add /usr/include/cscope.out /usr/include
     "cscope add /usr/local/include/cscope.out /usr/local/include
 
-    nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-
-    " Using 'CTRL-spacebar' then a search type makes the vim window
-    " split horizontally, with search result displayed in
-    " the new window.
-
-    nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    " nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    " nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+    "
+    " " Using 'CTRL-spacebar' then a search type makes the vim window
+    " " split horizontally, with search result displayed in
+    " " the new window.
+    "
+    " nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+    " nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+    " nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    " nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
 
     "nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>
     "nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
@@ -927,13 +940,13 @@ if has("cscope")
     "map <F8> :set csto=0<CR>
 endif
 
-set csprg=$HOME/gentoo/usr/bin/gtags-cscope
+" set csprg=$HOME/gentoo/usr/bin/gtags-cscope
 
 "map <F7> :set csto=1<CR>
 
 "if has("rtags")
-	set completefunc=RtagsCompleteFunc
-    set csto=1 " we actually want to search ctags before cscope because rtags binds to ctags
+" set completefunc=RtagsCompleteFunc
+" set csto=1 " we actually want to search ctags before cscope because rtags binds to ctags
 
 	" list of default short cuts
 	" <Leader>ri	-U	Symbol info
@@ -986,10 +999,10 @@ endfunction
 
 " search for the tags in the current directory and recurse up 4 levels:
 set tags+=./tags;../../../../
-"set tags+=./tags;../../
 
 " fix locations:
 set tags+=$HOME/code/tags
+set tags+=$HOME/code/_external/tags
 
 set path^=.
 set path^=$HOME/code/**5
@@ -1006,6 +1019,8 @@ set path^=$HOME/code/**5
 " directory that contains the current file.
 cabbr <expr> %% expand('%:p:h')
 cabbr <expr> ~~ expand('%:p:h')
+
+cabbr mk Make
 
 "set grepprg=ag\ --vimgrep\ $*
 "set grepformat=%f:%l:%c:%m
@@ -1059,6 +1074,9 @@ highlight WildMenu cterm=underline
 nmap <F9> :Make<CR>
 nmap <F10> :cprev<CR>
 nmap <F11> :cnext<CR>
+
+nmap <C-j> :cnext<CR>
+nmap <C-k> :cprev<CR>
 
 
 " enable modelines in the top 3 lines
@@ -1132,6 +1150,9 @@ nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
 "nnoremap <silent> <A-Up> :TmuxNavigateUp<cr>
 "nnoremap <silent> <A-Right> :TmuxNavigateRight<cr>
 "nnoremap <silent> <A-\> :TmuxNavigatePrevious<cr>
+
+" use <F2> as the key to toggle paste mode
+set pastetoggle=<F2>
 
 " fakeclip plugin, if loaded, should allow you to use a new register to
 " copy-paste from/into tmux clipboard using "&" registry name, e.g.
@@ -1354,14 +1375,19 @@ nmap <Leader>l <Plug>(easymotion-overwin-line)
 let g:peekaboo_window = "vert bo 30new"
 
 let g:deoplete#enable_at_startup = 1
+" call deoplete#custom#option({
+" \ 'auto_complete_delay': 200,
+" \ 'smart_case': v:true,
+" \ })
+" "\ 'auto_complete': v:false,
 
 " Linting With ALE:
 " set error in the status line (uses vim-airline)
 let g:airline#extensions#ale#enabled = 1
 
 " jump between the ALE errors quickly
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+"nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+"nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 let g:ale_echo_msg_format = '%linter%: %s'
 
@@ -1409,6 +1435,7 @@ if executable("ag")
     let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
 endif
 let g:CtrlSpaceSearchTiming = 500
+" let g:ctrlspace_use_mouse_and_arrows = 1
 
 " YouCompleteMe Setup {{{
 "set completeopt-=preview
@@ -1417,8 +1444,9 @@ let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_seed_identifiers_with_syntax = 1   "add keywords to completion database
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_show_diagnostics_ui = 0
 let g:ycm_semantic_triggers = {'haskell' : ['.']}
 nnoremap <leader>h :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>e :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -1426,26 +1454,27 @@ nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
 hi YcmErrorSection term=reverse cterm=reverse gui=reverse
 " }}}
 
-" ClangFormat Setup {{{
-let g:clang_format#code_style = "Google"
 
-"Not supported in current clang-format version
-"\ "AllowShortLoopsOnASingleLine": "false",
-"\ "AllowShortBlocksOnASingleLine" : "false",
-"\ "AllowShortFunctionsOnASingleLine": "None",
-"\ "AllowShortIfStatementsOnASingleLine": "false",
-let g:clang_format#style_options = {
-            \ "AccessModifierOffset": -4,
-            \ "AlwaysBreakTemplateDeclarations": "true",
-            \ "DerivePointerBinding": "false",
-            \ "PointerBindsToType": "false",
-            \ "BinPackParameters" : "false",
-            \ "ColumnLimit": 120,
-            \ "TabWidth": 4,
-            \ "IndentCaseLabels": "false",
-            \ "BreakBeforeBraces": "Allman",
-            \ "Standard": "C++11" }
-au FileType c,cpp,objc,objcpp noremap  <silent> <buffer> <leader>f :ClangFormat<cr>
-au FileType c,cpp,objc,objcpp noremap! <silent> <buffer> <leader>f <c-o>:ClangFormat<cr>
+" ClangFormat Setup {{{
+" let g:clang_format#code_style = "Google"
+"
+" "Not supported in current clang-format version
+" "\ "AllowShortLoopsOnASingleLine": "false",
+" "\ "AllowShortBlocksOnASingleLine" : "false",
+" "\ "AllowShortFunctionsOnASingleLine": "None",
+" "\ "AllowShortIfStatementsOnASingleLine": "false",
+" let g:clang_format#style_options = {
+"             \ "AccessModifierOffset": -4,
+"             \ "AlwaysBreakTemplateDeclarations": "true",
+"             \ "DerivePointerBinding": "false",
+"             \ "PointerBindsToType": "false",
+"             \ "BinPackParameters" : "false",
+"             \ "ColumnLimit": 120,
+"             \ "TabWidth": 4,
+"             \ "IndentCaseLabels": "false",
+"             \ "BreakBeforeBraces": "Allman",
+"             \ "Standard": "C++11" }
+" au FileType c,cpp,objc,objcpp noremap  <silent> <buffer> <leader>f :ClangFormat<cr>
+" au FileType c,cpp,objc,objcpp noremap! <silent> <buffer> <leader>f <c-o>:ClangFormat<cr>
 " }}}
 
