@@ -404,8 +404,8 @@ Plugin 'jreybert/vimagit'
 "Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-easytags' " causes delays on saving a file
 
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'skywind3000/gutentags_plus'
+"Plugin 'ludovicchabant/vim-gutentags'
+"Plugin 'skywind3000/gutentags_plus'
 
 
 "lets_se_howTHIS_workWithCanCase
@@ -631,7 +631,7 @@ au BufNewFile,BufRead *.hxx set syntax=cpp11
 let $MANSECT="3:3posix:3pm:3perl:3am:2:1:n:l:8:5:4:9:6:7"
 
 if &diff
-   colorscheme molokai
+  colorscheme molokai
   "colorscheme pablo
   " other good cs for vimdiff: murphy pablo slate
 
@@ -1029,6 +1029,11 @@ cabbr Ag GrepperAg
 
 "let g:alternateExtensions_hxx = "cpp,cc,CC,c"
 "let g:alternateExtensions_cxx = "h,hh,hpp"
+let g:alternateExtensions_cc = "hh,h"
+let g:alternateExtensions_hh = "cc"
+let g:alternateExtensions_cpp = "hpp"
+let g:alternateExtensions_hpp = "cpp"
+
 
 "let g:alternateSearchPath = 'sfr:../src,sfr:../../src'
 let g:alternateSearchPath = 'sfr:.'
