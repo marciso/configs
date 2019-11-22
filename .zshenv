@@ -40,6 +40,10 @@ ulimit -c unlimited
 # Note that interactive shell (.zshrc) clears this variable
 export DISTCC_TCP_CORK=0
 
+NCPU=2
+command -v nproc >/dev/null 2>&1 && NCPU=$(nproc)
+export MAKEFLAGS="-j${NCPU}"
+
 function _ms_get_opts
 {
 	echo ""

@@ -74,11 +74,11 @@ alias ls-la='ls -la'
 alias ls-l='ls -l'
 alias ls-a='ls -a'
 
-alias gls='git ls-files -ovs --abbrev=10'
 # git aliases
 for a in ch co cp bt st sh shr d d- lg la ll dd dd- a au l lp b s vb bf fe pl ph; do
 	alias g$a="git $a"
 done
+alias gls='git ls-files -ovs --abbrev=10'
 
 alias grep='grep --color=auto'
 alias rgrep='grep -rn'
@@ -98,6 +98,7 @@ alias gti=git
 alias gut=git
 
 alias g=git
+alias gg='git grep'
 #alias git='git --work-tree=\$(git rev-parse --show-toplevel)'
 
 alias watch='watch -d'
@@ -123,6 +124,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
+
+alias f='fd -I'
 
 alias h=history -i 0
 alias j=jobs
