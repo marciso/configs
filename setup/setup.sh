@@ -51,6 +51,11 @@ svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python ${dst_dir}/.gdb/stlpr
 
 curl http://www.yolinux.com/TUTORIALS/src/dbinit_stl_views-1.03.txt > ${dst_dir}/.gdb/dbinit_stl_views-1.03.txt
 
+### FZF
+git clone --depth 1 https://github.com/junegunn/fzf.git ${dst_dir}/.fzf
+
+${dst_dir}/.fzf/install
+
 ## VIM - YouCompleteMe
 
 # execute at the end as it take a lot of time (no need to delay other setup)
