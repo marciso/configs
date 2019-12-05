@@ -451,8 +451,17 @@ source ~/.zplug/init.zsh
 # (If the defer tag is given 2 or above, run after compinit command)
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-# forgit 
+# fish-like history search
+#zplug "zsh-users/zsh-history-substring-search"
+
+# forgit
 zplug 'wfxr/forgit'
+
+# curl statistics made simple.
+zplug "b4b4r07/httpstat", \
+    as:command, \
+    use:'(*).sh', \
+    rename-to:'$1'
 
 # Can manage local plugins
 zplug "~/.zsh", from:local
