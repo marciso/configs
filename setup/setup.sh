@@ -37,7 +37,13 @@ vim +PluginInstall +qall
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh > ${dst_dir}/.git-prompt.sh
 
 mkdir ${dst_dir}/.zsh/
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dst_dir}/.zsh/zsh-syntax-highlighting
+# install zsh-syntax-highlighting by zplug
+#git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dst_dir}/.zsh/zsh-syntax-highlighting
+
+## zplug (ZSH plugin manager)
+# by default zplug will use ~/.zplug as the home dir; this can be overriden by $ZPLUG_HOME
+mkdir ${dst_dir}/.zplug
+git clone https://github.com/zplug/zplug ${dst_dir}/.zplug
 
 ## TMUX
 mkdir -p ${dst_dir}/.tmux/plugins
@@ -51,10 +57,12 @@ svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python ${dst_dir}/.gdb/stlpr
 
 curl http://www.yolinux.com/TUTORIALS/src/dbinit_stl_views-1.03.txt > ${dst_dir}/.gdb/dbinit_stl_views-1.03.txt
 
-### FZF
+## FZF
 git clone --depth 1 https://github.com/junegunn/fzf.git ${dst_dir}/.fzf
 
 ${dst_dir}/.fzf/install
+
+## forgit (https://github.com/wfxr/forgit) will be installed by zplug
 
 ## VIM - YouCompleteMe
 

@@ -11,10 +11,12 @@
 #fi
 
 # See .zshenv for more details about DISTCC_TCP_CORK
-unset DISTCC_TCP_CORK
+#unset DISTCC_TCP_CORK
 
 # I want to see test colors in the interactive shell
 export GTEST_COLOR=yes
+
+export MANPATH=$MANPATH:/usr/share/man:/usr/local/share/man
 
 # allows editing command in external editor
 autoload edit-command-line
@@ -437,4 +439,34 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 #plugins=( zsh-syntax-highlighting)
 
 #source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source ~/.zplug/init.zsh
+
+# Set the priority when loading
+# e.g., zsh-syntax-highlighting must be loaded
+# after executing compinit command and sourcing other plugins
+# (If the defer tag is given 2 or above, run after compinit command)
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+# forgit 
+zplug 'wfxr/forgit'
+
+# Can manage local plugins
+zplug "~/.zsh", from:local
+
+
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
