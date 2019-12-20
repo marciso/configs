@@ -38,7 +38,7 @@ ulimit -c unlimited
 
 # This is to avoid annoying error in distcc when connection over ssh in non-interactive mode.
 # Note that interactive shell (.zshrc) clears this variable
-export DISTCC_TCP_CORK=0
+#export DISTCC_TCP_CORK=0
 
 NCPU=2
 command -v nproc >/dev/null 2>&1 && NCPU=$(nproc)
