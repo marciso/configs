@@ -30,9 +30,11 @@ log "zcat /proc/config.gz > /usr/src/linux/.config"
 zcat /proc/config.gz > /usr/src/linux/.config
 
 run_log cd /usr/src/linux
-# convert old config into new, alternative target: olddefconfig
-run_log make syncconfig
-#make olddefconfig
+# convert old config into new
+# syncconfig = updates some sources (renamed from silentoldconfig)
+# run_log make syncconfig
+# olddefconfig = syncconfig + set NEW to default values
+run_log make olddefconfig
 
 # NOTE: https://wiki.gentoo.org/wiki/Kernel/Upgrade
 # see how to install portage hook to build kernel on emerge
