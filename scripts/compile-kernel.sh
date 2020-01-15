@@ -8,6 +8,11 @@ done
 
 verbose=1
 
+command -v genkernel >/dev/null 2>&1 || die "Missing genkernel: emerge sys-kernel/genkernel"
+command -v make >/dev/null 2>&1 || die "Missing make: emerge sys-devel/make"
+command -v zcat >/dev/null 2>&1 || die "Missing zcat: emerge app-arch/gzip"
+command -v eselect >/dev/null 2>&1 || die "Missing eselect: emerge app-admin/eselect"
+
 set -e
 
 uid=$(id -u)
@@ -17,8 +22,7 @@ test $uid -eq 0 || die "Run this as root"
 run_log eselect kernel list
 echo "Make sure the correct kernel will be build"
 echo "Run ${green} eselect kernel set NUMBER ${normal} to change"
-echo "Press <Ctrl-C> or <Enter>"
-read
+read -p "${pink}Press <Ctrl-C> or <Enter>${normal}"
 eselect kernel show
 # copy old config
 
