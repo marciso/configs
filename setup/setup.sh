@@ -1,6 +1,12 @@
 #!/bin/bash
 
-die() { echo "ERROR: $*" ; exit 1; }
+DIR="$( cd "$( dirname "$( readlink -f ${BASH_SOURCE[0]})" )" >/dev/null 2>&1 && pwd )"
+
+for s in $DIR/../scripts/_logger.sh ~/bin/_logger.sh ; do
+    test -f $s && source $s && break
+done
+
+verbose=1
 
 which rsync || die "rsync needed" # could use simple cp
 which curl || die "curl needed" # could use wget
@@ -20,54 +26,60 @@ dst_dir=${HOME:-~}
 
 test -n "$src_dir" || die "Could not locate directory with configs"
 
-rsync -vari --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md ${src_dir}/.* ${dst_dir}/
+rsync --dry-run -varic --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md ../.* ~/ | grep '^>fc' | awk '{print $2}' | xargs -I{} diff --color=auto -uNa ~/{} ../{}
+
+echo
+echo "${yellow}Apply the changes above? <Ctrl-C> or <Enter>${normal}"
+read
+
+run_log rsync -varic --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md ${src_dir}/.* ${dst_dir}/
 
 ## VIM
 
-mkdir -p ${dst_dir}/.vim/bundle/
-git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
+run_log mkdir -p ${dst_dir}/.vim/bundle/
+run_log git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
 
-pip install --user pynvim
+run_log pip install --user pynvim
 
-mkdir -p ${dst_dir}/.vim/spell/
-vim +PluginInstall +qall
+run_log mkdir -p ${dst_dir}/.vim/spell/
+run_log vim +PluginInstall +qall
 
 ## ZSH
 
-curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh > ${dst_dir}/.git-prompt.sh
+run_log curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh > ${dst_dir}/.git-prompt.sh
 
-mkdir ${dst_dir}/.zsh/
+# run_log mkdir ${dst_dir}/.zsh/
 # install zsh-syntax-highlighting by zplug
 #git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${dst_dir}/.zsh/zsh-syntax-highlighting
 
 ## zplug (ZSH plugin manager)
 # by default zplug will use ~/.zplug as the home dir; this can be overriden by $ZPLUG_HOME
-mkdir ${dst_dir}/.zplug
-git clone https://github.com/zplug/zplug ${dst_dir}/.zplug
+run_log mkdir ${dst_dir}/.zplug
+run_log git clone https://github.com/zplug/zplug ${dst_dir}/.zplug
 
 ## TMUX
-mkdir -p ${dst_dir}/.tmux/plugins
-git clone https://github.com/tmux-plugins/tpm ${dst_dir}/.tmux/plugins/tpm
+run_log mkdir -p ${dst_dir}/.tmux/plugins
+run_log git clone https://github.com/tmux-plugins/tpm ${dst_dir}/.tmux/plugins/tpm
 
-${dst_dir}/.tmux/plugins/tpm/bin/install_plugins
+run_log ${dst_dir}/.tmux/plugins/tpm/bin/install_plugins
 
 ## GDB
-mkdir -p ${dst_dir}/.gdb/stlprettyprinter/
-svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python ${dst_dir}/.gdb/stlprettyprinter
+run_log mkdir -p ${dst_dir}/.gdb/stlprettyprinter/
+run_log svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python ${dst_dir}/.gdb/stlprettyprinter
 
-curl http://www.yolinux.com/TUTORIALS/src/dbinit_stl_views-1.03.txt > ${dst_dir}/.gdb/dbinit_stl_views-1.03.txt
+run_log curl http://www.yolinux.com/TUTORIALS/src/dbinit_stl_views-1.03.txt > ${dst_dir}/.gdb/dbinit_stl_views-1.03.txt
 
 ## FZF
-git clone --depth 1 https://github.com/junegunn/fzf.git ${dst_dir}/.fzf
+run_log git clone --depth 1 https://github.com/junegunn/fzf.git ${dst_dir}/.fzf
 
-${dst_dir}/.fzf/install
+run_log ${dst_dir}/.fzf/install
 
 ## forgit (https://github.com/wfxr/forgit) will be installed by zplug
 
 ## VIM - YouCompleteMe
 
 # execute at the end as it take a lot of time (no need to delay other setup)
-(cd ${dst_dir}/.vim/bundle/YouCompleteMe ; python3 install.py --clangd-completer --cs-completer )
+(cd ${dst_dir}/.vim/bundle/YouCompleteMe ; run_log python3 install.py --clangd-completer --cs-completer )
 
 # python is needed in a zsh, and vim
 which python || die "Please install python"
