@@ -26,13 +26,23 @@ dst_dir=${HOME:-~}
 
 test -n "$src_dir" || die "Could not locate directory with configs"
 
-rsync --dry-run -varic --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md ../.* ~/ | grep '^>fc' | awk '{print $2}' | xargs -I{} diff --color=auto -uNa ~/{} ../{}
+rsync_opts="-varic --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md"
 
-echo
-echo "${yellow}Apply the changes above? <Ctrl-C> or <Enter>${normal}"
-read
+echo "Calculating difference in dot files:"
+files_to_update=$(rsync --dry-run $rsync_opts --filter=":- ${src_dir}/.gitignore" ${src_dir}/.* ${dst_dir}/ | grep '^>fc' | awk '{print $2}')
+if [[ -n "$files_to_update" ]] ; then
+    for d in $files_to_update ; do
+        echo "diff --color=auto -uNa ${dst_dir}/${d} ${src_dir}/${d}"
+        diff --color=auto -uNa ${dst_dir}/${d} ${src_dir}/${d}
+    done
+    echo
+    echo "${yellow}Apply the changes above? <Ctrl-C> or <Enter>${normal}"
+    read
+else
+    echo "Dot files did not change"
+fi
 
-run_log rsync -varic --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md ${src_dir}/.* ${dst_dir}/
+run_log rsync $rsync_opts --filter=":- ${src_dir}/.gitignore" ${src_dir}/.* ${dst_dir}/
 
 ## VIM
 
@@ -42,7 +52,8 @@ run_log git clone https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bu
 run_log pip install --user pynvim
 
 run_log mkdir -p ${dst_dir}/.vim/spell/
-run_log vim +PluginInstall +qall
+run_log vim +PluginUpdate +qall
+#run_log vim +PluginInstall +qall
 
 ## ZSH
 
