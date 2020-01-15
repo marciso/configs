@@ -46,7 +46,7 @@ run_log vim +PluginInstall +qall
 
 ## ZSH
 
-run_log curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh > ${dst_dir}/.git-prompt.sh
+run_log curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ${dst_dir}/.git-prompt.sh
 
 # run_log mkdir ${dst_dir}/.zsh/
 # install zsh-syntax-highlighting by zplug
