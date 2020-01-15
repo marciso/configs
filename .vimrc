@@ -48,7 +48,7 @@ call vundle#begin()
 Plugin 'vim-scripts/a.vim'
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " Tmux integration
 Plugin 'christoomey/vim-tmux-navigator'
@@ -193,14 +193,14 @@ Plugin 'tpope/vim-unimpaired'
 " Preview registers when you hit " or @, or CTRL-R
 Plugin 'junegunn/vim-peekaboo'
 
-if !empty($VIM_EXTENDED_VIMRC)
+if !empty($MS_EXTENDED_VIMRC)
 "Plugin 'neovim/pynvim' - better to install over pip ?
 " This needs integration with neovim (over python)
 " Verify if neovim complains (type :messages)
 " If so, you need to install pynvim:
 "     pip install --user pynvim
-Plugin 'roxma/nvim-yarp'  " -- these plugins take a lot of time to load
-Plugin 'roxma/vim-hug-neovim-rpc'  -- these plugins take a lot of time to load
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
 " this is context completion but it is somehow buggy and jumps into less
 " predicted way
 Plugin 'Shougo/deoplete.nvim'
@@ -394,7 +394,7 @@ Plugin 'rhysd/vim-clang-format'
 "Plugin 'kien/ctrlp.vim'
 "Plugin 'bruno-/vim-man.git'
 "Plugin 'godlygeek/tabular'
-if !empty($VIM_EXTENDED_VIMRC)
+if !empty($MS_EXTENDED_VIMRC)
 Plugin 'szw/vim-ctrlspace'
 endif
 "Plugin 'vim-scripts/IndentConsistencyCop'
@@ -433,7 +433,7 @@ Plugin 'tpope/vim-eunuch'
 " colorcheme badwolf
 Plugin 'sjl/badwolf'
 
-if !empty($VIM_EXTENDED_VIMRC)
+if !empty($MS_EXTENDED_VIMRC)
 " Install the plugin here - remember you also need to install the backends
 " It's fine to run vim without the backend but of course YouCompleteMe will
 " not work.
