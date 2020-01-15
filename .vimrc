@@ -198,8 +198,8 @@ Plugin 'junegunn/vim-peekaboo'
 " Verify if neovim complains (type :messages)
 " If so, you need to install pynvim:
 "     pip install --user pynvim
-Plugin 'roxma/nvim-yarp'
-Plugin 'roxma/vim-hug-neovim-rpc'
+"Plugin 'roxma/nvim-yarp'  " -- these plugins take a lot of time to load
+"Plugin 'roxma/vim-hug-neovim-rpc'  -- these plugins take a lot of time to load
 " this is context completion but it is somehow buggy and jumps into less
 " predicted way
 "Plugin 'Shougo/deoplete.nvim'
