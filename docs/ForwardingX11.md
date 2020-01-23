@@ -10,7 +10,7 @@
    1. `export DISPLAY=localhost:0`
       * `DISPLAY=:0` does not always work because it assumes using Unix pipes; this does not play well with cygwin and non-cygwin X server
    1. `ssh -Y server xclock`  # that shoud be enough
-      * Note, `-Y` option (`ForwardX11Trusted yes` /and/ `ForwardX11 yes` in `.ssh/config`: `ForwardX11Trusted` does not imply `ForwardX11` but -Y option enables both)
+      * Note, `-Y` option (`ForwardX11Trusted yes` _and_ `ForwardX11 yes` in `.ssh/config`: `ForwardX11Trusted` does not imply `ForwardX11` but -Y option enables both)
       * `-X` option is only `ForwardX11 yes`
       * Once on the server, the display will be offset by 10 or more (this is configuratble in `/etc/ssh/sshd_config`) and you should see `DISPLAY=localhost:10.0`
       
