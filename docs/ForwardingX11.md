@@ -24,7 +24,7 @@ Now try to connect with `-Y`:
 
 Sometimes this fails:
 ```
-sudo xclock                                                                                                                                                                        15:45:39^1
+$ sudo xclock
 X11 connection rejected because of wrong authentication.
 Error: Can't open display: localhost:10.0
 ```
