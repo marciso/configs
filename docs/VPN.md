@@ -79,4 +79,32 @@ Noted that there are some limitations of IPsec VPN pass-through due to the incom
 `nmtui-connect` 
 - select your connection and activate
 
+# Permisions
+When you log in with SSH, NetworkManager does not allow you to change network permissions
+
+1. Add user to `netdev` group
+   1. `sudo usermod -G netdev -a $USER`
+   1. Re-login
+1. Change polkit permissions
+   1. `sudo vim /etc/polkit-1/localauthority/50-local.d/allow-ssh-networking.pkla`
+      ```
+      [Let adm group modify system settings for network]
+      Identity=unix-group:adm
+      Action=org.freedesktop.NetworkManager.network-control
+      ResultAny=yes
+      ```
+   1. restart polkit
+   `sudo systemctl restart polkit.service`
+
+# Autoconnect
+```
+[connection]
+autoconnect=true
+
+[vpn]
+password-flags=0  # 0 = do not ask for password
+
+[vpn-secrets]
+password=$user_password
+```
 
