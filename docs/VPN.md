@@ -107,4 +107,43 @@ password-flags=0  # 0 = do not ask for password
 [vpn-secrets]
 password=$user_password
 ```
+# Verify
 
+```
+$ ifconfig
+ppp0: flags=4305<UP,POINTOPOINT,RUNNING,NOARP,MULTICAST>  mtu 1400
+        inet 10.2.0.2  netmask 255.255.255.255  destination 10.2.0.1
+        ppp  txqueuelen 3  (Point-to-Point Protocol)
+        RX packets 353  bytes 25485 (24.8 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 319  bytes 154172 (150.5 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+$ route
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         _gateway        0.0.0.0         UG    100    0        0 enp6s0
+default         _gateway        0.0.0.0         UG    600    0        0 wlxd0374535bd1b
+default         0.0.0.0         0.0.0.0         U     800    0        0 ppp0
+10.2.0.1        0.0.0.0         255.255.255.255 UH    800    0        0 ppp0
+10.3.0.0        0.0.0.0         255.255.0.0     U     600    0        0 wlxd0374535bd1b
+10.31.110.0     0.0.0.0         255.255.255.0   U     100    0        0 enp6s0
+_gateway        0.0.0.0         255.255.255.255 UH    100    0        0 enp6s0
+cpc86635-seve26 _gateway        255.255.255.255 UGH   100    0        0 enp6s0
+link-local      0.0.0.0         255.255.0.0     U     1000   0        0 enp6s0
+
+$ resolvectl
+Link 7 (ppp0)
+      Current Scopes: DNS
+DefaultRoute setting: yes
+       LLMNR setting: yes
+MulticastDNS setting: no
+  DNSOverTLS setting: no
+      DNSSEC setting: no
+    DNSSEC supported: no
+  Current DNS Server: 10.31.104.16
+         DNS Servers: 10.0.0.129
+                      10.43.22.56
+                      10.31.104.16
+          DNS Domain: ~.
+                      example.net
+```
