@@ -1,7 +1,7 @@
 
-# Configure machine to connect to
+Applies to Ubuntu 19.10
 
-In this case this is Ubuntu 18.10
+# Configure machine to connect to
 
 `ssh target`
 
