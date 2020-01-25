@@ -4,12 +4,18 @@
 # ".zprofile is meant as an alternative to `.zlogin' for ksh fans; the two are not intended
 # to be used together, although this could certainly be done if desired."
 
-OS_PATH=$PATH
+test -d /opt/local/bin && export PATH=/opt/local/bin:$PATH
+test -d /opt/local/sbin && export PATH=/opt/local/sbin:$PATH
+test -d /opt/X11/bin && export PATH=/opt/X11/bin:$PATH
+test -d /usr/local/bin && export PATH=/usr/local/bin:$PATH
+test -d /usr/local/sbin && export PATH=/usr/local/sbin:$PATH
+
 
 # bring gentoo prefix profile as the primary env
-test -f $HOME/gentoo/etc/profile && source $HOME/gentoo/etc/profile
-
-GENTOO_PATH=$PATH
-
-export PATH=$GENTOO_PATH:$OS_PATH:$HOME/bin
+if [[ -f $HOME/gentoo/etc/profile ]] ; then
+    OS_PATH=$PATH
+    source $HOME/gentoo/etc/profile
+    GENTOO_PATH=$PATH
+    export PATH=$GENTOO_PATH:$OS_PATH:$HOME/bin
+fi
 

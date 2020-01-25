@@ -62,6 +62,9 @@ setopt pushd_to_home            # `pushd` = `pushd $HOME`
 # NOTE: see alias p=pushd, b=popd, d=dirs
 
 alias ls='ls -F --color=auto'
+OS=$(uname -s)
+[[ "${OS}" = "Darwin" ]] && alias ls='ls -F'
+
 #alias ls='ls -F'
 #alias ll='ls -lh'
 alias la='ls -FArt'

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$( readlink -f ${BASH_SOURCE[0]})" )" >/dev/null 2>&1 && pwd )"
+readlink=readlink
+[[ "$(uname -s)" = "Darwin" ]] && readlink=greadlink # brew install coreutils for greadlink
+
+DIR="$( cd "$( dirname "$( $readlink -f ${BASH_SOURCE[0]})" )" >/dev/null 2>&1 && pwd )"
 
 for s in $DIR/../scripts/_logger.sh ~/bin/_logger.sh ; do
     test -f $s && source $s && break
@@ -19,6 +22,10 @@ which cmake || die "cmake needed"
 which g++ || die "g++ needed"
 which python || die "python needed"
 which svn || die "svn (subversion) needed" # for setting up gdb pretty printers
+
+diff_color_opt="--color=auto"
+[[ "$(uname -s)" = "Darwin" ]] && diff_color_opt=
+
 
 git_clone_or_pull() {
     local url=${1}
@@ -51,34 +58,45 @@ download_file() {
     local fn=${2}
     local tmp=$(mktemp)
     run_log curl "${url}" -o "${tmp}"
-    diff --color=auto -uNa "${fn}" "${tmp}" || read -p "${pink}Continue? <Ctrl-C> or <Enter>${normal}"
+    diff ${diff_color_opt} -uNa "${fn}" "${tmp}" || read -p "${pink}Continue? <Ctrl-C> or <Enter>${normal}"
     run_log mv -v "${tmp}" "${fn}"
 }
 
 
-src_dir=$(cd $(dirname "$(readlink -f "$0")") && git rev-parse --show-toplevel)
+src_dir=$(cd $(dirname "$($readlink -f "$0")") && git rev-parse --show-toplevel)
 dst_dir=${HOME:-~}
 
 test -n "$src_dir" || die "Could not locate directory with configs"
 
 rsync_opts="-varic --exclude=.git/ --exclude=.gitignore --exclude=setup/ --exclude=README.md"
 
-echo "Calculating difference in dot files:"
-files_to_update=$(rsync --dry-run $rsync_opts --filter=":- ${src_dir}/.gitignore" ${src_dir}/.* ${dst_dir}/ | grep '^>fc' | awk '{print $2}')
-if [[ -n "$files_to_update" ]] ; then
-    for d in $files_to_update ; do
-        echo "diff --color=auto -uNa ${dst_dir}/${d} ${src_dir}/${d}"
-        diff --color=auto -uNa ${dst_dir}/${d} ${src_dir}/${d}
-    done
-    echo
-    echo "${pink}Apply the changes above? <Ctrl-C> or <Enter>${normal}"
-    read
-else
-    echo "Dot files did not change"
-fi
+files_to_update="
+.gdbinit
+.vimrc
+.zprofile
+.zshenv
+.zshrc
+.gdb/dbinit_stl_views-1.03.txt
+scripts/_logger.sh
+scripts/check-ssh-ban.sh
+scripts/compile-kernel.sh
+scripts/generate-tags.sh
+scripts/system-update.sh
+scripts/term-encodning.sh
+"
 
-log rsync $rsync_opts --filter=":- ${src_dir}/.gitignore" ${src_dir}/.* ${dst_dir}/
-    rsync $rsync_opts --filter=":- ${src_dir}/.gitignore" ${src_dir}/.* ${dst_dir}/
+echo "Calculating difference in dot files:"
+for d in $files_to_update ; do
+    echo "diff ${diff_color_opt} -uNa ${dst_dir}/${d} ${src_dir}/${d}"
+    diff ${diff_color_opt} -uNa ${dst_dir}/${d} ${src_dir}/${d}
+done
+echo
+echo "${pink}Apply the changes above? <Ctrl-C> or <Enter>${normal}"
+read
+
+for d in $files_to_update ; do
+    run_log rsync $rsync_opts ${src_dir}/${d} ${dst_dir}/${d}
+done
 
 for file in "${dst_dir}/.bashrc" "${dst_dir}/.zshrc" ; do
     log "Patching $file for MS_EXTENDED_VIMRC=$MS_EXTENDED_VIMRC"
@@ -112,7 +130,6 @@ download_file https://raw.githubusercontent.com/git/git/master/contrib/completio
 
 ## zplug (ZSH plugin manager)
 # by default zplug will use ~/.zplug as the home dir; this can be overriden by $ZPLUG_HOME
-run_log mkdir -p ${dst_dir}/.zplug
 git_clone_or_pull https://github.com/zplug/zplug ${dst_dir}/.zplug
 
 ## TMUX
