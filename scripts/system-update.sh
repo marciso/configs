@@ -1,6 +1,9 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$( readlink -f ${BASH_SOURCE[0]})" )" >/dev/null 2>&1 && pwd )"
+readlink=readlink
+[[ "$(uname -s)" = "Darwin" ]] && readlink=greadlink
+
+DIR="$( cd "$( dirname "$( $readlink -f ${BASH_SOURCE[0]})" )" >/dev/null 2>&1 && pwd )"
 
 for s in $DIR/../scripts/_logger.sh ~/bin/_logger.sh ; do
     test -f $s && source $s && break
