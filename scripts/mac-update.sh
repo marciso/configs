@@ -1,5 +1,7 @@
 #!/bin/bash
 
+xcode-select --install
+
 if [[ -x /opt/local/bin/port ]] ; then
     sudo port selfupdate
     sudo port upgrade outdated
