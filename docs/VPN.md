@@ -58,7 +58,7 @@ IPSec IKE | 500 | UDP
 PPTP | 1723 | TCP
 ~~PPTP~~ | ~~47~~ | ~~IP (UDP)~~ | IP port, should be forwarded by the router automatically
 
-* For OpenVPN, we allow connections via TCP or UDP protocols on ports 443 or 1194. The IPVanish software uses port 443
+* For OpenVPN, this depends on the configuratiohn, default port is 1194 (TCP or UDP).
 * Both PPTP and L2TP need the PPTP & L2TP pass-through options in the firewall/router's management interface to be enabled (if applicable). Routers without these options may not support PPTP or L2TP traffic
     * To allow PPTP traffic, open TCP port 1723
     * To allow L2TP w/ IPSec traffic, open UDP ports 500, 1701 & 4500
