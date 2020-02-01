@@ -322,11 +322,14 @@ precmd () {
     if [ $? -eq 0 ] ; then LAST_CMD_STATUS="$(last-command-ok)" else LAST_CMD_STATUS="$(last-command-err)" fi
 	PS1="%F{green}%n@$PS1_HOSTCOLOR%m: %F{yellow}%~%f $(__git_ps1)$prompt_newline%{$terminfo_down_sc$VI_MODE$terminfo[rc]%}$LAST_CMD_STATUS %h%# "
 	#TMUX_HOSTNAME="$( (hostname -s||uname -n)2>/dev/null )"
-	MY_GIT_LOC="$(echo $(git rev-parse --abbrev-ref HEAD 2>/dev/null)|\
-		sed -e 's/feature/f/' -e 's/bugfix/b/' -e 's/hotfix/h/' -e 's/release/r/' -e 's/f587339/-/')"
-	#printf '\033kWINDOW_NAME\033\\'
-	MY_LOC=$(python -c "import sys; dirs = sys.argv[1].split('/'); print(('/'.join(( (d[:1]+'*'+d[-1]) if len(d)>3 else d) for d in dirs[:-1]) + '/' + dirs[-1]) if (len(dirs)>1) else dirs[0])" "${PWD/$HOME/~}")
-	tmux rename-window "${MY_LOC} ${MY_GIT_LOC:+[$MY_GIT_LOC]}" >/dev/null 2>/dev/null
+    if [ "$OSTYPE" != "cygwin" ] ; then
+        # setting tmux window title on cygwin is slow
+        MY_GIT_LOC="$(echo $(git rev-parse --abbrev-ref HEAD 2>/dev/null)|\
+            sed -e 's/feature/f/' -e 's/bugfix/b/' -e 's/hotfix/h/' -e 's/release/r/' -e 's/f587339/-/')"
+        #printf '\033kWINDOW_NAME\033\\'
+        MY_LOC=$(python -c "import sys; dirs = sys.argv[1].split('/'); print(('/'.join(( (d[:1]+'*'+d[-1]) if len(d)>3 else d) for d in dirs[:-1]) + '/' + dirs[-1]) if (len(dirs)>1) else dirs[0])" "${PWD/$HOME/~}")
+        tmux rename-window "${MY_LOC} ${MY_GIT_LOC:+[$MY_GIT_LOC]}" >/dev/null 2>/dev/null
+    fi
 }
 function set-prompt () {
     case ${KEYMAP} in
