@@ -29,6 +29,16 @@ echo 3 > /sys/class/graphics/fbcon/rotate_all
 
 # LightDM
 
+## Configs
+LightDM configuration is provided by the following files:
+```
+/usr/share/lightdm/lightdm.conf.d/*.conf
+/etc/lightdm/lightdm.conf.d/*.conf
+/etc/lightdm/lightdm.conf
+```
+
+# TODO
+
 Modify `/etc/lightdm/ligthdm.conf`
 
 ```
@@ -63,3 +73,13 @@ Note: some alternatives like `[SeatDetaults]` (instead of `[Seat:*]`) or `greete
 
  * Some people suggested copying `~/.config/monitors.xml` into `/var/lib/lightdm/.config/monitors.xml` but it did not seem to work
  * Adding `/etc/X11/Xsession.d/45-marcin_xrandr-settings` with the same content as `/etc/lightdm/rotate-screens.sh` did not make difference but this is probably because Window Manager applies users settings.
+ 
+## Background & Greeter
+LightDM does not configure the look of greeters; to do this configure the appropriate greeter.
+For LightDM GTK+ greeter edit `/etc/lightdm/lightdm-gtk-greeter.conf`
+```
+background=/usr/share/backgrounds/gnome/SeaSunset.jpg
+```
+
+## More info
+https://wiki.ubuntu.com/LightDM
