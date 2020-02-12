@@ -29,7 +29,7 @@ echo 3 > /sys/class/graphics/fbcon/rotate_all
 
 # LightDM
 
-modify `/etc/lightdm/ligthdm.conf`
+Modify `/etc/lightdm/ligthdm.conf`
 
 ```
 [Seat:*]
@@ -45,6 +45,17 @@ xrandr --output DisplayPort-3 --rotate left
 xrandr --output DisplayPort-4 --rotate left
 xrandr --output DisplayPort-5 --rotate right
 ```
+
+Remember to restart the service:
+
+```
+# systemctl status lightdm
+systemctl restart lightdm  # will close your current X11 session
+```
+
+## Logfiles
+* `/var/log/lightdm/lightdm.log`
+* `/var/log/lightdm/seat*.log`
 
 Note: some alternatives like `[SeatDetaults]` (instead of `[Seat:*]`) or `greeter-setup-script` did not work.
 
