@@ -29,16 +29,6 @@ echo 3 > /sys/class/graphics/fbcon/rotate_all
 
 # LightDM
 
-## Configs
-LightDM configuration is provided by the following files:
-```
-/usr/share/lightdm/lightdm.conf.d/*.conf
-/etc/lightdm/lightdm.conf.d/*.conf
-/etc/lightdm/lightdm.conf
-```
-
-# TODO
-
 Modify `/etc/lightdm/ligthdm.conf`
 
 ```
@@ -63,6 +53,14 @@ Remember to restart the service:
 systemctl restart lightdm  # will close your current X11 session
 ```
 
+## Configs
+LightDM configuration is provided by the following files:
+```
+/usr/share/lightdm/lightdm.conf.d/*.conf
+/etc/lightdm/lightdm.conf.d/*.conf
+/etc/lightdm/lightdm.conf
+```
+
 ## Logfiles
 * `/var/log/lightdm/lightdm.log`
 * `/var/log/lightdm/seat*.log`
@@ -82,4 +80,5 @@ background=/usr/share/backgrounds/gnome/SeaSunset.jpg
 ```
 
 ## More info
-https://wiki.ubuntu.com/LightDM
+- Ubuntu doc: https://wiki.ubuntu.com/LightDM
+- Config with comments: https://github.com/Canonical/lightdm/blob/master/data/lightdm.conf
