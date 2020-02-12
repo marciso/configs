@@ -46,5 +46,9 @@ xrandr --output DisplayPort-4 --rotate left
 xrandr --output DisplayPort-5 --rotate right
 ```
 
+Note: some alternatives like `[SeatDetaults]` (instead of `[Seat:*]`) or `greeter-setup-script` did not work.
 
-Some people suggested copying `~/.config/monitors.xml` into `/var/lib/lightdm/.config/monitors.xml` but it did not seem to work
+## Did not work
+
+ * Some people suggested copying `~/.config/monitors.xml` into `/var/lib/lightdm/.config/monitors.xml` but it did not seem to work
+ * Adding `/etc/X11/Xsession.d/45-marcin_xrandr-settings` with the same content as `/etc/lightdm/rotate-screens.sh` did not make difference but this is probably because Window Manager applies users settings.
