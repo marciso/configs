@@ -70,7 +70,8 @@ Plugin 'tpope/vim-git'
 " integration with git:
 Plugin 'tpope/vim-fugitive'
 " Shows git diff in the gatter
-"Plugin 'airblade/vim-gitgutter'
+" NOTE: the gutter is disabled on startup, use :GitGutterEnable or :GitGutterBufferEnable
+Plugin 'airblade/vim-gitgutter'
 
 " gtiv - extension to vim-fugitive
 Plugin 'gregsexton/gitv'
@@ -211,7 +212,8 @@ endif
 Plugin 'junegunn/vim-easy-align'
 
 " Fancy status line
-Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline'
+Plugin 'itchyny/lightline.vim'
 
 
 " Mark--Karkat
@@ -340,6 +342,8 @@ Plugin 'chrisbra/vim-diff-enhanced'
 " NOTE: Please make sure to always map something to g:multi_cursor_quit_key, otherwise you'll have a tough time quitting from multicursor mode.
 Plugin 'terryma/vim-multiple-cursors'
 
+" braces in different colors
+Plugin 'frazrepo/vim-rainbow'
 
 " Rainbow CSV: CSV query language
 "  * Highlight csv columns in different rainbow colors.
@@ -443,6 +447,8 @@ if !empty($MS_EXTENDED_VIMRC)
 Plugin 'Valloric/YouCompleteMe'
 endif
 
+Plugin 'vim-scripts/taglist.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
@@ -457,8 +463,9 @@ sunmap b
 sunmap e
 sunmap ge
 
-
+if has("patch-8.1.0360")
 set diffopt+=internal
+endif
 "set diffopt+=algorithm:patience
 "" pathogen is another package manager
 "execute pathogen#infect()
@@ -517,12 +524,14 @@ set numberwidth=3 " size of gutter
 
 if !has('nvim')
 	set t_vb=
+
 	if &term =~ '256color'
 		" disable Background Color Erase (BCE) so that color schemes
 		" render properly when inside 256-color tmux and GNU screen.
 		" see also http://snk.tuxfamily.org/log/vim-256color-bce.html
 		set t_ut=
 	endif
+
 	" set title of the terminal (always set for nvim)
 	set ttyfast
 endif
@@ -541,6 +550,15 @@ if has('nvim')
     tnoremap <C-w>j <C-\><C-n><C-w>j
     tnoremap <C-w>k <C-\><C-n><C-w>k
     tnoremap <C-w>l <C-\><C-n><C-w>l
+endif
+
+if !exists('$TMUX') || has("gui_running")
+	" when not inside TMUX or when in GUI
+	" then define Alt-arrow mapping
+    nmap <A-Left> <C-w>h
+    nmap <A-Down> <C-w>j
+    nmap <A-Up> <C-w>k
+    nmap <A-Right> <C-w>l
 endif
 
 " ~/.vimrc
@@ -723,6 +741,8 @@ set mat=2
 set noerrorbells visualbell t_vb=
 " set noeb vb t_vb=
 set tm=500
+
+set belloff=all
 
 " Do not write backup or swap files... useless feature nowadays?
 set nobackup
@@ -1008,10 +1028,11 @@ set tags+=./tags;../../../../
 
 " fix locations:
 set tags+=$HOME/code/tags
+set tags+=$HOME/code/*/tags
 set tags+=$HOME/code/_external/tags
 
-set path^=.
 set path^=$HOME/code/**5
+set path^=.
 
 " Alternative: working directory is always the same as the file you are editing
 "   set autochdir
@@ -1488,4 +1509,14 @@ hi YcmErrorSection term=reverse cterm=reverse gui=reverse
 " au FileType c,cpp,objc,objcpp noremap  <silent> <buffer> <leader>f :ClangFormat<cr>
 " au FileType c,cpp,objc,objcpp noremap! <silent> <buffer> <leader>f <c-o>:ClangFormat<cr>
 " }}}
+
+let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+
+if executable('git')
+   " let g:gitgutter_highlight_lines = 1  " Turn on gitgutter highlighting
+else
+    let g:gitgutter_git_executable = '/bin/true'
+    let g:gitgutter_enabled = 0
+endif
+let g:gitgutter_enabled = 0
 

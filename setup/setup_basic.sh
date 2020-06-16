@@ -89,13 +89,18 @@ echo "Calculating difference in dot files:"
 for d in $files_to_update ; do
     echo "diff ${diff_color_opt} -uNa ${dst_dir}/${d} ${src_dir}/${d}"
     diff ${diff_color_opt} -uNa ${dst_dir}/${d} ${src_dir}/${d}
-done
-echo
-echo "${pink}Apply the changes above? <Ctrl-C> or <Enter>${normal}"
-read
-
-for d in $files_to_update ; do
-    run_log rsync $rsync_opts ${src_dir}/${d} ${dst_dir}/${d}
+    echo
+    ANS=
+    while [[ -z $ANS ]] ; do
+        ANS=n
+        read -p "${pink}Apply the changes above? y/[n]${normal}" ANS
+        if [[ "$ANS" = "y" ]] ; then
+            run_log rsync $rsync_opts ${src_dir}/${d} ${dst_dir}/${d}
+        elif [[ "$ANS" != "n" ]] ; then
+            err "Answer 'y' or 'n'"
+            ANS=
+        fi
+    done
 done
 
 for file in "${dst_dir}/.bashrc" "${dst_dir}/.zshrc" ; do

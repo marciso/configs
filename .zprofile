@@ -19,3 +19,13 @@ if [[ -f $HOME/gentoo/etc/profile ]] ; then
     export PATH=$GENTOO_PATH:$OS_PATH:$HOME/bin
 fi
 
+#export XDG_DATA_DIRS=/usr/share/unity:/usr/local/share:/usr/share:/var/lib/snapd/desktop:$XDG_DATA_DIRS
+
+
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add
+fi
+trap 'test -n "$SSH_AUTH_SOCK" && eval `/usr/bin/ssh-agent -k`' 0
+
+#source $HOME/gentoo/startprefix
