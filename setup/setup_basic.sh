@@ -21,6 +21,7 @@ which pip || die "pip needed"
 which cmake || die "cmake needed"
 which g++ || die "g++ needed"
 which python || die "python needed"
+which python3 || die "python3 needed"
 which svn || die "svn (subversion) needed" # for setting up gdb pretty printers
 
 diff_color_opt="--color=auto"
@@ -168,4 +169,6 @@ fi
 
 # python is needed in a zsh, and vim
 # which python || die "Please install python"
-which tmux || die "Please install tmux"
+which tmux || err "Please install tmux"
+which ctags || err "Please install ctags"
+which cscope || err "Please install cscope"
