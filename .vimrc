@@ -38,6 +38,9 @@ set encoding=utf-8
 "`< or `>	jump to beginning/end of last visual selection
 
 
+" fzf tool needs to be installed there: ~/.fzf/bin/fzf
+set rtp+=~/.fzf
+
 " Vundle Plugins:
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -160,6 +163,8 @@ Plugin 'Yggdroot/LeaderF'
 "Plugin 'L9'
 "Plugin 'FuzzyFinder' " not that great...
 "Plugin 'SkidanovAlex/CtrlK'
+
+Plugin 'junegunn/fzf.vim'
 
 " <leader>t - start command-t
 " try: :CommandT*
@@ -380,7 +385,7 @@ Plugin 'rhysd/vim-clang-format'
 "Plugin 'edkolev/tmuxline.vim'
 "Plugin 'davidhalter/jedi-vim'
 "Plugin 'scrooloose/nerdtree'
-"Plugin 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'  "  Open tag navigation split with :Tagbar
 "Plugin 'Shougo/vimshell.vim'
 "Plugin 'jalcine/cmake.vim'
 "Plugin 'tpope/vim-obsession'
@@ -448,6 +453,11 @@ Plugin 'Valloric/YouCompleteMe'
 endif
 
 Plugin 'vim-scripts/taglist.vim'
+
+" call graph
+Plugin 'hari-rangarajan/CCTree'
+
+Plugin 'yegappan/taglist'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -1100,7 +1110,7 @@ highlight WildMenu cterm=underline
 "nmap <Tab> :wincmd w<CR>
 "nmap <S-Tab> :wincmd W<CR>
 "
-"nmap <F12> :TagbarToggle<CR>
+nmap <F12> :TagbarToggle<CR>
 "nmap <F12> :TagExplorer<CR>
 
 nmap <F9> :Make<CR>
@@ -1236,38 +1246,6 @@ nmap <silent> <leader>dr :call DiffToggle(3)<cr>
 " MRU - Most Recently Used
 let MRU_Window_Height = 15
 
-" FuzzyFinder, http://www.vim.org/scripts/script.php?script_id=1984
-"let g:fuf_modesDisable = []
-"let g:fuf_mrufile_maxItem = 1000
-"let g:fuf_mrucmd_maxItem = 400
-"let g:fuf_mrufile_exclude = '\v\~$|\.(bak|sw[po])$|^(\/\/|\\\\|\/mnt\/)'
-"nnoremap <silent> <C-n>      :FufBuffer<CR>
-"nnoremap <silent> <C-p>      :FufFileWithCurrentBufferDir<CR>
-"nnoremap <silent> <C-f><C-p> :FufFileWithFullCwd<CR>
-"nnoremap <silent> <C-f>p     :FufFile<CR>
-"nnoremap <silent> <C-f><C-d> :FufDirWithCurrentBufferDir<CR>
-"nnoremap <silent> <C-f>d     :FufDirWithFullCwd<CR>
-"nnoremap <silent> <C-f>D     :FufDir<CR>
-"nnoremap <silent> <C-j>      :FufMruFile<CR>
-"nnoremap <silent> <C-k>      :FufMruCmd<CR>
-"nnoremap <silent> <C-b>      :FufBookmarkDir<CR>
-"nnoremap <silent> <C-f><C-t> :FufTag<CR>
-"nnoremap <silent> <C-f>t     :FufTag!<CR>
-"noremap  <silent> g]         :FufTagWithCursorWord!<CR>
-"nnoremap <silent> <C-f><C-f> :FufTaggedFile<CR>
-"nnoremap <silent> <C-f><C-j> :FufJumpList<CR>
-"nnoremap <silent> <C-f><C-g> :FufChangeList<CR>
-"nnoremap <silent> <C-f><C-q> :FufQuickfix<CR>
-"nnoremap <silent> <C-f><C-l> :FufLine<CR>
-"nnoremap <silent> <C-f><C-h> :FufHelp<CR>
-"nnoremap <silent> <C-f><C-b> :FufAddBookmark<CR>
-"vnoremap <silent> <C-f><C-b> :FufAddBookmarkAsSelectedText<CR>
-"nnoremap <silent> <C-f><C-e> :FufEditInfo<CR>
-"nnoremap <silent> <C-f><C-r> :FufRenewCache<CR>
-
-"noremap <silent> <C-]> :FufTagWithCursorWord!<CR>
-
-" TODO: try https://github.com/junegunn/fzf
 "
 " LeaderF config:
 "
@@ -1306,6 +1284,18 @@ let g:Lf_StlSeparator = { 'left': '►', 'right': '◄', 'font': '' }
 let g:Lf_StlColorscheme = 'powerline'
 let g:Lf_PreviewCode = 1
 let g:Lf_UseVersionControlTool = 1
+"let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+"let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
+
+"let g:LF_WindowPosition = 'popup'
+"let g:Lf_PreviewInPopup = 1
+
+" Show icons, icons are shown by default
+"let g:Lf_ShowDevIcons = 1
+" For GUI vim, the icon font can be specify like this, for example
+"let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
+" If needs
+"set ambiwidth=double
 
 " let g:Lf_PreviewResult = {
 " 			\ 'File': 0,

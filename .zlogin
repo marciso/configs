@@ -2,6 +2,9 @@
 # It should contain commands that should be executed only in login shells.
 # (Note: `.zprofile' is similar to `.zlogin', except that it is sourced before `.zshrc'.)
 
+
+export LANG=en_GB.UTF-8
+
 if [[ -o interactive ]] ; then
   cal
 
@@ -10,7 +13,3 @@ if [[ -o interactive ]] ; then
   echo "tmux sessions:"
   tmux ls
 fi
-
-#setup_autossh(){
-#  sport
-#}

@@ -4,8 +4,8 @@
     email = marciso@gmail.com
 [push]
     #default = simple
-    default = matching
-    # default = current
+    # default = matching
+    default = current
 [pull]
     rebase = true
     default = matching
@@ -105,8 +105,8 @@
     #tool = diffconflicts
     tool = vimdiff3
     conflictstyle = diff3
-    #default = rebase
-    #ff = only
+    default = rebase
+    ff = only
 [credential]
     helper = store
 [color]

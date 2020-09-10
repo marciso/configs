@@ -99,7 +99,7 @@ set auto-load safe-path /
 # register_libstdcxx_printers(None)
 # end
 
-source ~/.gdb/dbinit_stl_views-1.03.txt
+#source ~/.gdb/dbinit_stl_views-1.03.txt
 
 # Mono support libraries use a couple of signals internally that confuse gdb, to work around this:
 #handle SIGXCPU SIG33 SIG35 SIG36 SIG37 SIG38 SIGPWR nostop noprint

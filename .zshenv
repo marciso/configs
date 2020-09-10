@@ -14,6 +14,8 @@ export PAGER=less
 #export PAGER=most
 export LESS=FRX
 
+export XDG_DATA_DIRS=/usr/share/unity:/usr/local/share:/usr/share:/var/lib/snapd/desktop:$XDG_DATA_DIRS
+
 # The maximum size of files written by the shell and its children
 ulimit -f unlimited
 # The maximum number of open file descriptors (most systems do not allow this value to be set)
@@ -39,6 +41,8 @@ ulimit -c unlimited
 # This is to avoid annoying error in distcc when connection over ssh in non-interactive mode.
 # Note that interactive shell (.zshrc) clears this variable
 #export DISTCC_TCP_CORK=0
+#
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:range1=32:range2=34:locus=01:quote=01:path=01;36:fixit-insert=32:fixit-delete=31:diff-filename=01:diff-hunk=32:diff-delete=31:diff-insert=32:type-diff=01;32'
 
 NCPU=2
 command -v nproc >/dev/null 2>&1 && NCPU=$(nproc)
