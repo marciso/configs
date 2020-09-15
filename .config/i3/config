@@ -199,6 +199,7 @@ exec --no-startup-id /snap/bin/slack
 exec --no-startup-id parcellite
 
 # dunst is a notification daemon, without it slack has a huge delays
+# to test notifications: notify-send --icon=gtk-info Test "This is a test"
 # try twmn in the future (when .deb available for ubuntu)
 exec --no-startup-id dunst
 
