@@ -181,6 +181,11 @@ bar {
 # tray_output primary
 # set system tray outpout on specified display (check with xrandr -q)
 tray_output DisplayPort-2
+
+# hide i3bar
+    mode hide
+    hidden_state hide
+    modifier $mod
 }
 
 # could use arandr tool to generate the script
