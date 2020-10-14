@@ -1,4 +1,4 @@
-#!/bin/bash
+g!/bin/bash
 
 readlink=readlink
 [[ "$(uname -s)" = "Darwin" ]] && readlink=greadlink # brew install coreutils for greadlink
@@ -78,6 +78,7 @@ files_to_update="
 .zshenv
 .zshrc
 .gdb/dbinit_stl_views-1.03.txt
+.config/i3/config
 scripts/_logger.sh
 scripts/check-ssh-ban.sh
 scripts/compile-kernel.sh
