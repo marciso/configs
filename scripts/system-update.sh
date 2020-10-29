@@ -22,11 +22,17 @@ command -v revdep-rebuild >/dev/null 2>&1 || die "Missing revdep-rebuild: emerge
 command -v eix-sync >/dev/null 2>&1 || die "Missing eix-sync: emerge app-portage/eix"
 #command -v eclean >/dev/null 2>&1 || die "Missing eclean: emerge app-portage/gentoolkit"
 
-run_log eix-sync -v &&
+#run_log eix-sync -v &&
+run_log emaint sync -a &&
+run_log emerge -v --oneshot portage &&
+run_log eix-update &&
+run_log updatedb &&
 run_log emerge -v --newuse --update --deep --with-bdeps=y --quiet-build --keep-going --backtrack=100 --autounmask-keep-masks=y @world &&
 run_log emerge --depclean &&
 run_log revdep-rebuild -v &&
 run_log emerge -v --quiet-build @preserved-rebuild &&
 run_log eclean -v --deep distfiles &&
+run_log eix-test-obsolete &&
+run_log updatedb &&
 
 exit 0
