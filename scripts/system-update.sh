@@ -27,7 +27,10 @@ run_log emaint sync -a &&
 run_log emerge -v --oneshot portage &&
 run_log eix-update &&
 run_log updatedb &&
+run_log fixpackages &&
 run_log emerge -v --newuse --update --deep --with-bdeps=y --quiet-build --keep-going --backtrack=100 --autounmask-keep-masks=y @world &&
+run_log eselect python update &&
+run_log perl-cleaner --all -- -v &&
 run_log emerge --depclean &&
 run_log revdep-rebuild -v &&
 run_log emerge -v --quiet-build @preserved-rebuild &&
