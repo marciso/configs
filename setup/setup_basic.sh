@@ -1,4 +1,4 @@
-#!/bin/bash
+g!/bin/bash
 
 readlink=readlink
 [[ "$(uname -s)" = "Darwin" ]] && readlink=greadlink # brew install coreutils for greadlink
@@ -16,7 +16,7 @@ which curl || die "curl needed" # could use wget
 which vim || die "vim needed"
 which git || die "git needed"
 # vim needs pynvim, and that is why we need pip
-which pip || die "pip needed"
+which pip || which pip3 || die "pip needed"
 # YouCompleteMe needs cmake g++ python
 which cmake || die "cmake needed"
 which g++ || die "g++ needed"
@@ -78,6 +78,7 @@ files_to_update="
 .zshenv
 .zshrc
 .gdb/dbinit_stl_views-1.03.txt
+.config/i3/config
 scripts/_logger.sh
 scripts/check-ssh-ban.sh
 scripts/compile-kernel.sh
@@ -120,7 +121,8 @@ done
 run_log mkdir -p ${dst_dir}/.vim/bundle/
 git_clone_or_pull https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
 
-run_log pip install --user pynvim
+which pip && run_log pip install --user pynvim
+which pip3 && run_log pip3 install --user pynvim
 
 run_log mkdir -p ${dst_dir}/.vim/spell/
 test -z "$SKIP_VIM_PLUGIN_UPDATE" && run_log vim "+PluginUpdate" "+PluginClean!" "+qall"
