@@ -30,7 +30,8 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+#bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec --no-startup-id urxvt
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -180,7 +181,8 @@ bar {
 # the following displays system tray on primary screen (need to modify xrandr to set primary corrently)
 # tray_output primary
 # set system tray outpout on specified display (check with xrandr -q)
-tray_output DisplayPort-2
+#tray_output DisplayPort-2
+tray_output primary
 
 # hide i3bar
     mode hide
@@ -197,10 +199,16 @@ tray_output DisplayPort-2
 exec_always nm-applet
 exec --no-startup-id volumeicon
 
-exec x-terminal-emulator
+#exec x-terminal-emulator
 
-exec --no-startup-id zoom
-exec --no-startup-id /snap/bin/slack
+# start urxvt with tmux that attaches or creates "main" session
+exec urxvt -e tmux new-session -A -s main
+exec urxvt -title Primary
+
+exec firefox
+
+#exec --no-startup-id zoom
+#exec --no-startup-id /snap/bin/slack
 exec --no-startup-id parcellite
 
 # dunst is a notification daemon, without it slack has a huge delays
@@ -211,8 +219,10 @@ exec --no-startup-id dunst
 # use xprop to get windows class name
 
 for_window [class=".*"] border pixel 1
-assign [class=URxvt] 1
-assign [class=Firefox|Transmission-gtk|Vivaldi-stable|Chromium|Opera] 2
+assign [class=URxvt] 2
+assign [class=XTerm] 1
+for_window [title="Primary"] move window to output primary
+assign [class=Firefox|Transmission-gtk|Vivaldi-stable|Chromium|Opera] 3
 assign [class=Thunar|File-roller] 3
 assign [class=Geany|Evince|Gucharmap|Soffice|libreoffice*] 4
 assign [class=Audacity|Vlc|mpv|Ghb|Xfburn|Gimp*|Inkscape] 5
