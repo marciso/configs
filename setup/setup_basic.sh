@@ -1,4 +1,4 @@
-g!/bin/bash
+#!/bin/bash
 
 readlink=readlink
 [[ "$(uname -s)" = "Darwin" ]] && readlink=greadlink # brew install coreutils for greadlink
@@ -23,6 +23,7 @@ which g++ || die "g++ needed"
 which python || die "python needed"
 which python3 || die "python3 needed"
 which svn || die "svn (subversion) needed" # for setting up gdb pretty printers
+which cppman || die "cppman needed (`apt install cppman` or `pip install cppman`)"
 
 diff_color_opt="--color=auto"
 [[ "$(uname -s)" = "Darwin" ]] && diff_color_opt=
@@ -168,6 +169,11 @@ else
     log "Skipped YouCompleteMe installation"
     test -n "$MS_EXTENDED_VIMRC" && err "YouCompleteMe should have been installed but it is not"
 fi
+
+# download all C++ man pages from cplusplus.com or cppreference.com
+cppman --cache-all
+
+echo "Add crontab entry: @weekly cppman --force-update"
 
 # python is needed in a zsh, and vim
 # which python || die "Please install python"
