@@ -216,7 +216,10 @@ endif
 "    Try EasyAlign*=
 Plugin 'junegunn/vim-easy-align'
 
-" Fancy status line
+" Provieds gitbranch#name function (used in lightline statusline)
+Plugin 'itchyny/vim-gitbranch'
+
+" Fancy statusline
 "Plugin 'vim-airline/vim-airline'
 Plugin 'itchyny/lightline.vim'
 
@@ -533,7 +536,8 @@ set rnu " relative numbers
 set numberwidth=3 " size of gutter
 
 if !has('nvim')
-	set t_vb=
+        " no visual bell & flash
+	set vb t_vb=
 
 	if &term =~ '256color'
 		" disable Background Color Erase (BCE) so that color schemes
@@ -864,6 +868,35 @@ set statusline +=%1*/%L\ (%2p%%),%*     "total lines
 set statusline +=%1*\ \ C:\ %4v,\ %*    "virtual column number
 set statusline +=%1*0x%04B\ [%3.3b]\ %* "character under cursor
 
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo', 'charvaluehex'  ],
+      \              [ 'bufnum', 'percent' ],
+      \              [ 'gitbranch', 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'inactive': {
+      \   'left': [
+      \             [ 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo', 'charvaluehex'  ],
+      \              [ 'bufnum', 'percent' ],
+      \              [ 'gitbranch', 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+      \ 'component': {
+      \   'charvaluehex': '0x%B',
+      \   'bufnum': 'b%3.3n',
+         \   'lineinfo': '%3l:%-2v%<',
+         \   'filename': '%{expand(''%:p:h:h:t'')}/%{expand(''%:p:h:t'')}/%t'
+      \ },
+      \ }
+
+
 hi User1 ctermfg=yellow ctermbg=darkgray guifg=yellow guibg=darkgray
 hi User2 ctermfg=red ctermbg=darkgray guifg=red guibg=darkgray
 hi User3 ctermfg=cyan ctermbg=darkgray guifg=cyan guibg=darkgray
@@ -1044,6 +1077,11 @@ set tags+=$HOME/code/_external/tags
 set path^=$HOME/code/**5
 set path^=.
 
+for f in split(globpath('$HOME/code', '*/include_paths.vim'), '\n')
+       exe 'source' f
+endfor
+
+
 " Alternative: working directory is always the same as the file you are editing
 "   set autochdir
 "
@@ -1074,6 +1112,10 @@ let g:alternateExtensions_hpp = "cpp"
 
 "let g:alternateSearchPath = 'sfr:../src,sfr:../../src'
 let g:alternateSearchPath = 'sfr:.'
+
+" alternate relatively to the file location
+let g:alternateRelativeFiles = 1
+
 
 " toggle highlight search
 map  <F4> :set hls!<CR>
@@ -1339,7 +1381,19 @@ let g:csv_no_conceal = 1
 " displayed.
 "
 " Note, arranging the columns can be very slow on large files or many columns
-"let b:csv_arrange_use_all_rows = 1
+"let b:csv_arrange_use_all_rows = 1let g:ycm_min_num_of_chars_for_completion = 3
++" try:
++" $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd --help
++let g:ycm_clangd_args = [ '-j=4', '--background-index', '--recovery-ast', '--pch-storage=disk' ]
++
++" 1: Uses ycmd's caching and filtering logic.
++" 0: Uses clangd's caching and filtering logic.
++let g:ycm_clangd_uses_ycmd_caching = 0
++"
++" use tags from inside YCM
++"let g:ycm_collect_identifiers_from_tags_files = 0
++"let g:ycm_semantic_triggers = {'haskell' : ['.']}
+
 
 " auto arrange but only for small (1MB) files
 let g:csv_autocmd_arrange	   = 1
@@ -1469,7 +1523,20 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_show_diagnostics_ui = 0
-let g:ycm_semantic_triggers = {'haskell' : ['.']}
+let g:ycm_min_num_of_chars_for_completion = 3
+" try:
+" $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd --help
+"let g:ycm_clangd_args = [ '-j=4', '--background-index', '--recovery-ast', '--pch-storage=disk' ]
+let g:ycm_clangd_args = [ '--background-index', '--recovery-ast', '--pch-storage=memory' ]
+
+" 1: Uses ycmd's caching and filtering logic.
+" 0: Uses clangd's caching and filtering logic.
+"let g:ycm_clangd_uses_ycmd_caching = 0
+"
+" use tags from inside YCM
+"let g:ycm_collect_identifiers_from_tags_files = 0
+"let g:ycm_semantic_triggers = {'haskell' : ['.']}
+
 nnoremap <leader>h :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>e :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
@@ -1509,4 +1576,8 @@ else
     let g:gitgutter_enabled = 0
 endif
 let g:gitgutter_enabled = 0
+
+" remap F1 to Esc because they are too close on Kinesis
+map <F1> <Esc>
+imap <F1> <Esc>
 
