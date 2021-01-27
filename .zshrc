@@ -16,7 +16,6 @@
 # I want to see test colors in the interactive shell
 export GTEST_COLOR=yes
 
-export MANPATH=$MANPATH:/usr/share/man:/usr/local/share/man
 
 # allows editing command in external editor
 autoload edit-command-line
