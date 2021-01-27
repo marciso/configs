@@ -7,6 +7,9 @@
 
 #export DISPLAY=10.0.2.2:0.0
 
+# may be sometimes necessary to force the terminal type
+#export TERM=xterm-256color
+
 # use vim as the visual editor
 export VISUAL=vim
 export EDITOR=vim
@@ -15,6 +18,9 @@ export PAGER=less
 export LESS=FRX
 
 export XDG_DATA_DIRS=/usr/share/unity:/usr/local/share:/usr/share:/var/lib/snapd/desktop:$XDG_DATA_DIRS
+
+export MANPATH=$MANPATH:/usr/share/man:/usr/local/share/man:$HOME/usr/share/man:$HOME/usr/local/share/man
+export PATH=$PATH:$HOME/bin:$HOME/usr/bin:$HOME/usr/local/bin
 
 # The maximum size of files written by the shell and its children
 ulimit -f unlimited
