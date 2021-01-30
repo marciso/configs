@@ -80,7 +80,7 @@ alias ls-a='ls -a'
 
 # git aliases
 for a in ch co cp bt st sh shr d d- lg la ll dd dd- a au l lp b s vb bf fe pl ph; do
-	alias g$a="git $a"
+    alias g$a="git $a"
 done
 alias gls='git ls-files -ovs --abbrev=10'
 
@@ -110,6 +110,10 @@ alias watch='watch -d'
 alias today="date +'%Y%m%d'"
 alias today-="date +'%Y-%m-%d'"
 
+# rxvt-256color is forced from .Xresources: URxvt:termName
+#alias tmux="TERM=rxvt-256color tmux -2"
+# The following forces TERM inside tmux
+#test -z "$TMUX" || export TERM=rxvt-256color
 
 alias xless='less -CxQai4'
 #alias L=less
@@ -389,3 +393,5 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
+
+export MS_EXTENDED_VIMRC=1
