@@ -462,23 +462,18 @@ Plugin 'hari-rangarajan/CCTree'
 
 Plugin 'yegappan/taglist'
 
+"Argumentative aids with manipulating and moving between function arguments.
+"    Shifting arguments with <, and >,
+"    Moving between argument boundaries with [, and ],
+"    New text objects a, and i,
+Plugin 'PeterRincker/vim-argumentative.git'
+
+"Plugin 'andviro/flake8-vim'
+Plugin 'nvie/vim-flake8'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 
-" remap w b e ge
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-map <silent> ge <Plug>CamelCaseMotion_ge
-sunmap w
-sunmap b
-sunmap e
-sunmap ge
-
-if has("patch-8.1.0360")
-set diffopt+=internal
-endif
 "set diffopt+=algorithm:patience
 "" pathogen is another package manager
 "execute pathogen#infect()
@@ -534,6 +529,30 @@ endif
 set nu
 set rnu " relative numbers
 set numberwidth=3 " size of gutter
+
+" remap w b e ge
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap b
+sunmap e
+sunmap ge
+
+if has("patch-8.1.0360")
+	set diffopt+=internal
+endif
+
+" Vimdiff Hints:
+" ]c               - advance to the next block with differences
+" [c               - reverse search for the previous block with differences
+" do (diff obtain) - bring changes from the other file to the current file
+" dp (diff put)    - send changes from the current file to the other file
+" zo               - unfold/unhide text
+" zc               - refold/rehide text
+" zr               - unfold both files completely
+" zm               - fold both files completely
 
 if !has('nvim')
         " no visual bell & flash
@@ -1382,17 +1401,17 @@ let g:csv_no_conceal = 1
 "
 " Note, arranging the columns can be very slow on large files or many columns
 "let b:csv_arrange_use_all_rows = 1let g:ycm_min_num_of_chars_for_completion = 3
-+" try:
-+" $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd --help
-+let g:ycm_clangd_args = [ '-j=4', '--background-index', '--recovery-ast', '--pch-storage=disk' ]
-+
-+" 1: Uses ycmd's caching and filtering logic.
-+" 0: Uses clangd's caching and filtering logic.
-+let g:ycm_clangd_uses_ycmd_caching = 0
-+"
-+" use tags from inside YCM
-+"let g:ycm_collect_identifiers_from_tags_files = 0
-+"let g:ycm_semantic_triggers = {'haskell' : ['.']}
+" try:
+" $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd --help
+let g:ycm_clangd_args = [ '-j=4', '--background-index', '--recovery-ast', '--pch-storage=disk' ]
+
+" 1: Uses ycmd's caching and filtering logic.
+" 0: Uses clangd's caching and filtering logic.
+let g:ycm_clangd_uses_ycmd_caching = 0
+"
+" use tags from inside YCM
+"let g:ycm_collect_identifiers_from_tags_files = 0
+"let g:ycm_semantic_triggers = {'haskell' : ['.']}
 
 
 " auto arrange but only for small (1MB) files
@@ -1577,7 +1596,11 @@ else
 endif
 let g:gitgutter_enabled = 0
 
-" remap F1 to Esc because they are too close on Kinesis
+" It can be really annoying to hit F1 instead of Esc (especially on Kinesis
+" keyboard): remap F1 into <Esc>:
+"
 map <F1> <Esc>
 imap <F1> <Esc>
 
+
+autocmd BufWritePost *.py call flake8#Flake8()
