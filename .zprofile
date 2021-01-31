@@ -12,15 +12,18 @@ test -d /usr/local/sbin && export PATH=/usr/local/sbin:$PATH
 
 
 # bring gentoo prefix profile as the primary env
-if [[ -f $HOME/gentoo/etc/profile ]] ; then
-    OS_PATH=$PATH
+OS_PATH=$PATH
+if [[ -f $HOME/gentoo/zsh/etc/zprofile ]] ; then
+    source $HOME/gentoo/zsh/etc/zprofile
+    GENTOO_PATH=$PATH
+    export PATH=$GENTOO_PATH:$OS_PATH:$HOME/bin
+elif [[ -f $HOME/gentoo/etc/profile ]] ; then
     source $HOME/gentoo/etc/profile
     GENTOO_PATH=$PATH
     export PATH=$GENTOO_PATH:$OS_PATH:$HOME/bin
 fi
 
 #export XDG_DATA_DIRS=/usr/share/unity:/usr/local/share:/usr/share:/var/lib/snapd/desktop:$XDG_DATA_DIRS
-
 
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
