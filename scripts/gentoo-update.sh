@@ -37,7 +37,6 @@ run_log emerge --depclean &&
 run_log revdep-rebuild -v &&
 run_log emerge -v --quiet-build @preserved-rebuild &&
 run_log eclean -v --deep distfiles &&
-run_log eix-test-obsolete &&
-run_log updatedb &&
+run_log eix-test-obsolete
 
 exit 0
