@@ -1393,7 +1393,7 @@ let g:Lf_WorkingDirectoryMode = 'ac'
 " set working directory - this will ignore the root markers
 let g:Lf_WorkingDirectory = $HOME . '/code'
 
-"let g:Lf_StlSeparator = { 'left': 'â–º', 'right': 'â—„', 'font': '' }
+"let g:Lf_StlSeparator = { 'left': '►', 'right': '◄', 'font': '' }
 let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 
 
