@@ -19,6 +19,7 @@ set encoding=utf-8
 " CTRL-R [0-9a-z] : pull named registers
 " CTRL-R %        : pull file name (also #)
 "
+" gq - reformat paragraph
 "
 " Hint Substitution:
 "  * Limit substitution to the visually selected text using \%V
@@ -61,6 +62,29 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'benmills/vimux'
 
 Plugin 'mhinz/vim-grepper'
+
+" Quick directory access
+"   * Press - in any buffer to hop up to the directory listing and seek to the
+"   file you just came from. Keep bouncing to go up, up, up. Having rapid
+"   directory access available changes everything.
+"   * All that annoying crap at the top is turned off, leaving you with
+"   nothing but a list of files. This is surprisingly disorienting, but
+"   ultimately very liberating. Press I to toggle until you adapt.
+"   * The oddly C-biased default sort order is replaced with a sensible
+"   application of 'suffixes'.
+"   * File hiding: files are not listed that match with one of the patterns in
+"   'wildignore'.
+"   * If you put let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+' in your vimrc,
+"   vinegar will initialize with dot files hidden. Press gh to toggle dot file
+"   hiding.
+"   * Press . on a file to pre-populate it at the end of a : command line.
+"   This is great, for example, to quickly initiate a :grep of the file or
+"   directory under the cursor. There's also !, which starts the line off with
+"   a bang. Type !chmod +x and get :!chmod +x path/to/file.
+"   * Press y. to yank an absolute path for the file under the cursor.
+"   * Press ~ to go home.
+"   * Use Vim's build-in Ctrl-6 to swithc to previous buffer
+Plugin 'tpope/vim-vinegar'
 
 " provides Subvert command, e.g.:
 "	%Subvert/facilit{y,ies}/building{,s}/g
@@ -388,7 +412,9 @@ Plugin 'rhysd/vim-clang-format'
 "Plugin 'edkolev/tmuxline.vim'
 "Plugin 'davidhalter/jedi-vim'
 "Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'  "  Open tag navigation split with :Tagbar
+
+"  Open tag navigation split with :Tagbar
+Plugin 'majutsushi/tagbar'  
 "Plugin 'Shougo/vimshell.vim'
 "Plugin 'jalcine/cmake.vim'
 "Plugin 'tpope/vim-obsession'
@@ -445,7 +471,7 @@ Plugin 'tpope/vim-eunuch'
 " colorcheme badwolf
 Plugin 'sjl/badwolf'
 
-if !empty($MS_EXTENDED_VIMRC)
+"if !empty($MS_EXTENDED_VIMRC)
 " Install the plugin here - remember you also need to install the backends
 " It's fine to run vim without the backend but of course YouCompleteMe will
 " not work.
@@ -453,14 +479,17 @@ if !empty($MS_EXTENDED_VIMRC)
 "   cd ~/.vim/bundle/YouCompleteMe
 "   python install.py  # --cs-completer --clangd-completer
 Plugin 'Valloric/YouCompleteMe'
-endif
+"endif
 
 Plugin 'vim-scripts/taglist.vim'
 
 " call graph
 Plugin 'hari-rangarajan/CCTree'
 
-Plugin 'yegappan/taglist'
+" :help taglist
+"Plugin 'yegappan/taglist'
+
+Plugin 'blueyed /vim-diminactive
 
 "Argumentative aids with manipulating and moving between function arguments.
 "    Shifting arguments with <, and >,
@@ -473,6 +502,36 @@ Plugin 'nvie/vim-flake8'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
+
+" Mappings In Vim:
+"  :help map-overview
+"
+
+" remap w b e ge
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+map <silent> ge <Plug>CamelCaseMotion_ge
+sunmap w
+sunmap b
+sunmap e
+sunmap ge
+
+" sudo write!
+noremap <Leader>W :w !sudo tee % > /dev/null
+
+if has("patch-8.1.0360")
+	set diffopt+=internal
+endif
+
+if &diff
+	" diffoff on the other window when one of the window closes
+	set diffopt+=closeoff
+	set diffopt+=filler
+    set diffopt+=iwhite
+    set diffopt+=iwhiteall
+	set diffopt+=indent-heuristic
+endif
 
 "set diffopt+=algorithm:patience
 "" pathogen is another package manager
@@ -530,30 +589,6 @@ set nu
 set rnu " relative numbers
 set numberwidth=3 " size of gutter
 
-" remap w b e ge
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-map <silent> ge <Plug>CamelCaseMotion_ge
-sunmap w
-sunmap b
-sunmap e
-sunmap ge
-
-if has("patch-8.1.0360")
-	set diffopt+=internal
-endif
-
-" Vimdiff Hints:
-" ]c               - advance to the next block with differences
-" [c               - reverse search for the previous block with differences
-" do (diff obtain) - bring changes from the other file to the current file
-" dp (diff put)    - send changes from the current file to the other file
-" zo               - unfold/unhide text
-" zc               - refold/rehide text
-" zr               - unfold both files completely
-" zm               - fold both files completely
-
 if !has('nvim')
         " no visual bell & flash
 	set vb t_vb=
@@ -583,6 +618,7 @@ if has('nvim')
     tnoremap <C-w>j <C-\><C-n><C-w>j
     tnoremap <C-w>k <C-\><C-n><C-w>k
     tnoremap <C-w>l <C-\><C-n><C-w>l
+
 endif
 
 if !exists('$TMUX') || has("gui_running")
@@ -642,6 +678,12 @@ set background=dark
 colorscheme solarized8
 " Set high visibility for diff mode
 let g:solarized_diffmode="high"
+
+" delete ctermbg in Normal mode so tmux active/inactive pane setting can take precedence
+"hi Normal  ctermfg=247 ctermbg=235
+"
+" clear italic from Comment highlight (causes nvim to set gray background)
+hi Comment cterm=none ctermfg=242
 
 " OceanicNext default  atom deep-space deus gruvbox materialbox jellybeans
 " pablo solarized8
@@ -785,35 +827,36 @@ set noswapfile
 cmap w!! w !sudo tee % >/dev/null
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
-"let g:indentLine_char = '┊'
+"let g:indentLine_char = 'â”Š'
 "let g:indentLine_setColors = 0
 "set showbreak=
-"set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
-"let g:indentLine_char = '¦'
-"let g:indentLine_char = '˽'
-"let g:indentLine_char = '·'
-"let g:indentLine_char = '⁞'
-let g:indentLine_char = '˸'
-"set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
-"set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
-"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
-set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
-"set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
-"set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
-"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
-"ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
-" ‐ ․•‡†‥…‧⁚⁝⁞₋₌₊⁼⁻⁺
-" ∙∕∖∎∴∵∶∷⋅⋮⋯⋰⋱
-" ␀␤␣
+"set listchars=tab:â†’\ ,eol:â†²,nbsp:,â£trail:â€¢,extends:â€º,precedes:â€¹
+"let g:indentLine_char = 'Â¦'
+"let g:indentLine_char = 'Ë½'
+"let g:indentLine_char = 'Â·'
+"let g:indentLine_char = 'âž'
+let g:indentLine_char = 'Ë¸'
+"let g:indentLine_char = 'â‹®'
+"set listchars=tab:Â»\ ,trail:Â·,extends:\#,nbsp:.
+"set listchars=tab:â–¶\ ,trail:Â·,extends:\#,nbsp:.
+"set listchars=tab:â†’\ ,eol:â†²,nbsp:â£,trail:â€¢,extends:â€º,precedes:â€¹
+set listchars=tab:Â»âˆ¶,eol:â€¸,trail:â€¢,extends:â€º,precedes:â€¹
+"set listchars=tab:Â»âˆ¶,eol:Ë«,trail:â€¢,extends:â€º,precedes:â€¹
+"set listchars=tab:Â»âˆ¶,eol:Ë­,trail:â€¢,extends:â€º,precedes:â€¹
+"set listchars=tab:Â»âˆ¶,eol:Î‡,trail:â€¢,extends:â€º,precedes:â€¹
+"ËËˆâ†™âŒŸâŒâŒ‡âŒ˜â”Šâ£â—ƒâ–¿Ë£â–«â––â–‚â—»â™®â™¯â™­â™¬â™«â™ªâ™©â™¢â™”â™•â˜¼â™â˜¸â˜â˜‡â˜†â—¿â—°âŸ§âŸ¦â¨â¨‚â¨€
+" â€ â€¤â€¢â€¡â€ â€¥â€¦â€§âšââžâ‚‹â‚Œâ‚Šâ¼â»âº
+" âˆ™âˆ•âˆ–âˆŽâˆ´âˆµâˆ¶âˆ·â‹…â‹®â‹¯â‹°â‹±
+" â€â¤â£
 "		example  asd   
 "         asdf
 "   asdfa
-"set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
+"set listchars=tab:Â»âˆ¶,eol:âŒŸ,trail:Ë,extends:â€º,precedes:â€¹
 "
-" set listchars=tab:»·,eol:·,trail:·,extends:›,precedes:‹
-" set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
-" ₌₋₊⁼⁻⁺⁞‹›‧․‥•‡†‐‑Ⅹ↲↵∙⊢⋮⋯␣⣿⠿﹒
-set listchars=tab:»⋅,eol:₋,trail:·,extends:›,precedes:‹
+" set listchars=tab:Â»Î‡,eol:Î‡,trail:Â·,extends:â€º,precedes:â€¹
+" set listchars=tab:Â»âˆ¶,eol:Î‡,trail:â€¢,extends:â€º,precedes:â€¹
+" â‚Œâ‚‹â‚Šâ¼â»âºâžâ€¹â€ºâ€§â€¤â€¥â€¢â€¡â€ â€â€‘â…©â†²â†µâˆ™âŠ¢â‹®â‹¯â£â£¿â ¿ï¹’
+set listchars=tab:Â»â‹…,eol:â‚‹,trail:Â·,extends:â€º,precedes:â€¹
 
 hi NonText ctermfg=22 guifg=#4a4a59
 hi SpecialKey ctermfg=22 guifg=#4a4a59
@@ -911,10 +954,10 @@ let g:lightline = {
       \   'charvaluehex': '0x%B',
       \   'bufnum': 'b%3.3n',
          \   'lineinfo': '%3l:%-2v%<',
-         \   'filename': '%{expand(''%:p:h:h:t'')}/%{expand(''%:p:h:t'')}/%t'
+	  \   'filename': '%<%F'
       \ },
       \ }
-
+"\   'filename': '%{expand(''%:p:h:h:t'')}/%{expand(''%:p:h:t'')}/%t'
 
 hi User1 ctermfg=yellow ctermbg=darkgray guifg=yellow guibg=darkgray
 hi User2 ctermfg=red ctermbg=darkgray guifg=red guibg=darkgray
@@ -966,7 +1009,7 @@ if has("cscope")
 	"cscope add $MS_SRC_BASE/cscope.out  $MS_SRC_BASE/
 	"cscope add $MS_SRC_BASE/src/cscope.out  $MS_SRC_BASE/src
 	" cscope add ~/code/cscope.out  ~/code/
-    cscope add ~/code/_external/cscope.out  ~/code/_external/
+    "cscope add ~/code/_external/cscope.out  ~/code/_external/
 
     "cscope add /usr/include/cscope.out /usr/include
     "cscope add /usr/local/include/cscope.out /usr/local/include
@@ -1023,7 +1066,7 @@ if has("cscope")
     set cst " use cscope as default tags handler
     " set cscopetag " the same as above
     set csto=0 " do not search ctags before cscope
-    set csprg=$HOME/gentoo/usr/bin/cscope
+    "set csprg=$HOME/gentoo/usr/bin/cscope
 
     "map <F8> :set csto=0<CR>
 endif
@@ -1086,7 +1129,7 @@ endfunction
 "au BufEnter /* call LoadGtags()
 
 " search for the tags in the current directory and recurse up 4 levels:
-set tags+=./tags;../../../../
+set tags+=./tags;tags;../../../../
 
 " fix locations:
 set tags+=$HOME/code/tags
@@ -1099,6 +1142,9 @@ set path^=.
 for f in split(globpath('$HOME/code', '*/include_paths.vim'), '\n')
        exe 'source' f
 endfor
+
+" Make Alt-O work like Ctrl-o (got back)
+noremap <A-o> <C-o>
 
 
 " Alternative: working directory is always the same as the file you are editing
@@ -1120,21 +1166,21 @@ cabbr mk Make
 "set grepformat=%f:%l:%c:%m
 
 cabbr Ag GrepperAg
+cabbr Gg GrepperGit
 
 "let g:alternateExtensions_hxx = "cpp,cc,CC,c"
 "let g:alternateExtensions_cxx = "h,hh,hpp"
-let g:alternateExtensions_cc = "hh,h"
-let g:alternateExtensions_hh = "cc"
-let g:alternateExtensions_cpp = "hpp"
+"let g:alternateExtensions_cc = "hh,h"
+"let g:alternateExtensions_hh = "cc"
+let g:alternateExtensions_cpp = "h,hpp"
 let g:alternateExtensions_hpp = "cpp"
+let g:alternateExtensions_h = "cpp,c"
 
 
 "let g:alternateSearchPath = 'sfr:../src,sfr:../../src'
 let g:alternateSearchPath = 'sfr:.'
-
 " alternate relatively to the file location
 let g:alternateRelativeFiles = 1
-
 
 " toggle highlight search
 map  <F4> :set hls!<CR>
@@ -1337,11 +1383,24 @@ let MRU_Window_Height = 15
 let g:Lf_CommandMap = {'<C-C>': ['<Esc>', '<C-C>']}
 let g:Lf_ShortcutF = '<C-P>'
 
+nnoremap <leader>f :LeaderfFunction<CR>
+nnoremap <leader>g :LeaderfTag<CR>
+
 " c - current working directory, CWD
 " a - the nearest ancestor of CWD that contains g:Lf_RootMarkers (e.g. .git)
+" A - the nearest ancestor of current file that contains g:Lf_RootMarkers (e.g. .git)
+" f - directory of the current file
 let g:Lf_WorkingDirectoryMode = 'ac'
+" Project markers: find the top of the project
+"let g:Lf_RootMarkers = ['.git', '.hg', '.svn']  " default project markers
+"let g:Lf_RootMarkers = ['.leaderf-root-marker', '.ssh']
+" set working directory - this will ignore the root markers
+let g:Lf_WorkingDirectory = $HOME . '/code'
 
-let g:Lf_StlSeparator = { 'left': '►', 'right': '◄', 'font': '' }
+"let g:Lf_StlSeparator = { 'left': 'â–º', 'right': 'â—„', 'font': '' }
+let g:Lf_StlSeparator = { 'left': '', 'right': '' }
+
+
 let g:Lf_StlColorscheme = 'powerline'
 let g:Lf_PreviewCode = 1
 let g:Lf_UseVersionControlTool = 1
@@ -1351,8 +1410,10 @@ let g:Lf_UseVersionControlTool = 1
 "let g:LF_WindowPosition = 'popup'
 "let g:Lf_PreviewInPopup = 1
 
-" Show icons, icons are shown by default
+" Show icons before each item in the preview window, icons are shown by default
 "let g:Lf_ShowDevIcons = 1
+"
+let g:Lf_ShowDevIcons = 0
 " For GUI vim, the icon font can be specify like this, for example
 "let g:Lf_DevIconsFont = "DroidSansMono Nerd Font Mono"
 " If needs
@@ -1400,19 +1461,7 @@ let g:csv_no_conceal = 1
 " displayed.
 "
 " Note, arranging the columns can be very slow on large files or many columns
-"let b:csv_arrange_use_all_rows = 1let g:ycm_min_num_of_chars_for_completion = 3
-" try:
-" $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd --help
-let g:ycm_clangd_args = [ '-j=4', '--background-index', '--recovery-ast', '--pch-storage=disk' ]
-
-" 1: Uses ycmd's caching and filtering logic.
-" 0: Uses clangd's caching and filtering logic.
-let g:ycm_clangd_uses_ycmd_caching = 0
-"
-" use tags from inside YCM
-"let g:ycm_collect_identifiers_from_tags_files = 0
-"let g:ycm_semantic_triggers = {'haskell' : ['.']}
-
+"let b:csv_arrange_use_all_rows = 1
 
 " auto arrange but only for small (1MB) files
 let g:csv_autocmd_arrange	   = 1
@@ -1543,6 +1592,10 @@ let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_min_num_of_chars_for_completion = 3
+
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_cache_omnifunc = 1
+
 " try:
 " $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clangd/output/bin/clangd --help
 "let g:ycm_clangd_args = [ '-j=4', '--background-index', '--recovery-ast', '--pch-storage=disk' ]
@@ -1555,11 +1608,16 @@ let g:ycm_clangd_args = [ '--background-index', '--recovery-ast', '--pch-storage
 " use tags from inside YCM
 "let g:ycm_collect_identifiers_from_tags_files = 0
 "let g:ycm_semantic_triggers = {'haskell' : ['.']}
-
 nnoremap <leader>h :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>e :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>t :YcmCompleter GoToImprecise<CR>
+
 hi YcmErrorSection term=reverse cterm=reverse gui=reverse
+
+" remap tag finding
+"map <C-]> :YcmCompleter GoToImprecise<CR>
+
 " }}}
 
 
