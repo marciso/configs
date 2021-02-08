@@ -827,36 +827,32 @@ set noswapfile
 cmap w!! w !sudo tee % >/dev/null
 
 " for more unicode symbols go to: http://www.utf8-chartable.de/unicode-utf8-table.pl
-"let g:indentLine_char = 'â”Š'
+"let g:indentLine_char = '┊'
 "let g:indentLine_setColors = 0
 "set showbreak=
-"set listchars=tab:â†’\ ,eol:â†²,nbsp:,â£trail:â€¢,extends:â€º,precedes:â€¹
-"let g:indentLine_char = 'Â¦'
-"let g:indentLine_char = 'Ë½'
-"let g:indentLine_char = 'Â·'
-"let g:indentLine_char = 'âž'
-let g:indentLine_char = 'Ë¸'
-"let g:indentLine_char = 'â‹®'
-"set listchars=tab:Â»\ ,trail:Â·,extends:\#,nbsp:.
-"set listchars=tab:â–¶\ ,trail:Â·,extends:\#,nbsp:.
-"set listchars=tab:â†’\ ,eol:â†²,nbsp:â£,trail:â€¢,extends:â€º,precedes:â€¹
-set listchars=tab:Â»âˆ¶,eol:â€¸,trail:â€¢,extends:â€º,precedes:â€¹
-"set listchars=tab:Â»âˆ¶,eol:Ë«,trail:â€¢,extends:â€º,precedes:â€¹
-"set listchars=tab:Â»âˆ¶,eol:Ë­,trail:â€¢,extends:â€º,precedes:â€¹
-"set listchars=tab:Â»âˆ¶,eol:Î‡,trail:â€¢,extends:â€º,precedes:â€¹
-"ËËˆâ†™âŒŸâŒâŒ‡âŒ˜â”Šâ£â—ƒâ–¿Ë£â–«â––â–‚â—»â™®â™¯â™­â™¬â™«â™ªâ™©â™¢â™”â™•â˜¼â™â˜¸â˜â˜‡â˜†â—¿â—°âŸ§âŸ¦â¨â¨‚â¨€
-" â€ â€¤â€¢â€¡â€ â€¥â€¦â€§âšââžâ‚‹â‚Œâ‚Šâ¼â»âº
-" âˆ™âˆ•âˆ–âˆŽâˆ´âˆµâˆ¶âˆ·â‹…â‹®â‹¯â‹°â‹±
-" â€â¤â£
-"		example  asd   
-"         asdf
-"   asdfa
-"set listchars=tab:Â»âˆ¶,eol:âŒŸ,trail:Ë,extends:â€º,precedes:â€¹
+"set listchars=tab:→\ ,eol:↲,nbsp:,␣trail:•,extends:›,precedes:‹
+"let g:indentLine_char = '¦'
+"let g:indentLine_char = '˽'
+"let g:indentLine_char = '·'
+"let g:indentLine_char = '⁞'
+let g:indentLine_char = '˸'
+"set listchars=tab:»\ ,trail:·,extends:\#,nbsp:.
+"set listchars=tab:▶\ ,trail:·,extends:\#,nbsp:.
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:›,precedes:‹
+set listchars=tab:»∶,eol:‸,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:˫,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:˭,trail:•,extends:›,precedes:‹
+"set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+"ˍˈ↙⌟⌏⌇⌘┊␣◃▿ˣ▫▖▂◻♮♯♭♬♫♪♩♢♔♕☼♁☸☐☇☆◿◰⟧⟦⨁⨂⨀
+" ‐ ․•‡†‥…‧⁚⁝⁞₋₌₊⁼⁻⁺
+" ∙∕∖∎∴∵∶∷⋅⋮⋯⋰⋱
+" ␀␤␣
+"set listchars=tab:»∶,eol:⌟,trail:ˍ,extends:›,precedes:‹
 "
-" set listchars=tab:Â»Î‡,eol:Î‡,trail:Â·,extends:â€º,precedes:â€¹
-" set listchars=tab:Â»âˆ¶,eol:Î‡,trail:â€¢,extends:â€º,precedes:â€¹
-" â‚Œâ‚‹â‚Šâ¼â»âºâžâ€¹â€ºâ€§â€¤â€¥â€¢â€¡â€ â€â€‘â…©â†²â†µâˆ™âŠ¢â‹®â‹¯â£â£¿â ¿ï¹’
-set listchars=tab:Â»â‹…,eol:â‚‹,trail:Â·,extends:â€º,precedes:â€¹
+" set listchars=tab:»·,eol:·,trail:·,extends:›,precedes:‹
+" set listchars=tab:»∶,eol:·,trail:•,extends:›,precedes:‹
+" ₌₋₊⁼⁻⁺⁞‹›‧․‥•‡†‐‑Ⅹ↲↵∙⊢⋮⋯␣⣿⠿﹒
+set listchars=tab:»⋅,eol:₋,trail:·,extends:›,precedes:‹
 
 hi NonText ctermfg=22 guifg=#4a4a59
 hi SpecialKey ctermfg=22 guifg=#4a4a59
