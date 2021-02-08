@@ -489,7 +489,7 @@ Plugin 'hari-rangarajan/CCTree'
 " :help taglist
 "Plugin 'yegappan/taglist'
 
-Plugin 'blueyed /vim-diminactive
+Plugin 'blueyed/vim-diminactive'
 
 "Argumentative aids with manipulating and moving between function arguments.
 "    Shifting arguments with <, and >,
