@@ -1,5 +1,9 @@
 #!/bin/sh
 
-apt update && apt upgrade -y
+set -e
+
+apt update
+apt list --upgradable
+apt upgrade -y
 
 apt autoremove -y
