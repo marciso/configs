@@ -27,7 +27,14 @@ command -v eix-sync >/dev/null 2>&1 || die "Missing eix-sync: emerge app-portage
 
 #run_log eix-sync -v &&
 run_log emaint sync -a &&
-run_log emerge -v --oneshot --quiet-build portage &&
+run_log emerge --metadata &&  # NOTE: --regen is not designed for rsync users
+run_log emerge -v --update --quiet-build sys-apps/portage &&
+run_log emerge -v --update --quiet-build app-portage/eix \
+                app-portage/gentoolkit \
+                app-admin/perl-cleaner \
+                app-portage/genlop \
+                app-portage/portage-utils \
+                app-eselect/eselect-repository &&
 run_log eix-update &&
 run_log fixpackages &&
 run_log emerge -v --newuse --update --deep --with-bdeps=y --quiet-build --keep-going --backtrack=100 --autounmask-keep-masks=y @world &&
@@ -38,5 +45,21 @@ run_log revdep-rebuild -v &&
 run_log emerge -v --quiet-build @preserved-rebuild &&
 run_log eclean -v --deep distfiles &&
 run_log eix-test-obsolete
+run_log emaint world
+#run_log qcheck --badonly  # use qcheck -u to update
+
+
+# HINTS:
+# * list packages:
+#   qlist -IRv
+#   eix --world -c
+
+# * query (equery is part of gentoolkit)
+#   query b `app`
+
+# * query flags
+#   euse -i X
+#   equery hasuse X
+#   eix --installed-with-use X
 
 exit 0
