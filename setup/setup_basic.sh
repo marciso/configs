@@ -16,11 +16,11 @@ which curl || die "curl needed" # could use wget
 which vim || die "vim needed"
 which git || die "git needed"
 # vim needs pynvim, and that is why we need pip
-which pip || which pip3 || die "pip needed"
+#which pip || which pip3 || die "pip needed"
 # YouCompleteMe needs cmake g++ python
 which cmake || die "cmake needed"
 which g++ || die "g++ needed"
-which python || die "python needed"
+#which python || die "python needed"
 which python3 || die "python3 needed"
 which svn || die "svn (subversion) needed" # for setting up gdb pretty printers
 which cppman || die "cppman needed (`apt install cppman` or `pip install cppman`)"
@@ -80,6 +80,7 @@ files_to_update="
 .zshrc
 .gdb/dbinit_stl_views-1.03.txt
 .config/i3/config
+.config/nvim/init.vim
 scripts/_logger.sh
 scripts/check-ssh-ban.sh
 scripts/compile-kernel.sh
@@ -122,8 +123,8 @@ done
 run_log mkdir -p ${dst_dir}/.vim/bundle/
 git_clone_or_pull https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bundle/Vundle.vim
 
-which pip && run_log pip install --user pynvim
-which pip3 && run_log pip3 install --user pynvim
+run_log python3 -m pip install --user --upgrade pynvim
+run_log python3 -m pip install --user --upgrade neovim
 
 run_log mkdir -p ${dst_dir}/.vim/spell/
 test -z "$SKIP_VIM_PLUGIN_UPDATE" && run_log vim "+PluginUpdate" "+PluginClean!" "+qall"
@@ -148,10 +149,10 @@ git_clone_or_pull https://github.com/tmux-plugins/tpm ${dst_dir}/.tmux/plugins/t
 run_log ${dst_dir}/.tmux/plugins/tpm/bin/install_plugins
 
 ## GDB
-run_log mkdir -p ${dst_dir}/.gdb/stlprettyprinter/
-svn_checkout_or_update svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python ${dst_dir}/.gdb/stlprettyprinter
+#run_log mkdir -p ${dst_dir}/.gdb/stlprettyprinter/
+#svn_checkout_or_update svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python ${dst_dir}/.gdb/stlprettyprinter
 
-download_file http://www.yolinux.com/TUTORIALS/src/dbinit_stl_views-1.03.txt ${dst_dir}/.gdb/dbinit_stl_views-1.03.txt
+#download_file http://www.yolinux.com/TUTORIALS/src/dbinit_stl_views-1.03.txt ${dst_dir}/.gdb/dbinit_stl_views-1.03.txt
 
 ## FZF
 git_clone_or_pull https://github.com/junegunn/fzf.git ${dst_dir}/.fzf
