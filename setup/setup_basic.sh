@@ -171,6 +171,9 @@ else
     test -n "$MS_EXTENDED_VIMRC" && err "YouCompleteMe should have been installed but it is not"
 fi
 
+# rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 # download all C++ man pages from cplusplus.com or cppreference.com
 cppman --cache-all
 
