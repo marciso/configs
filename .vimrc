@@ -223,7 +223,6 @@ Plugin 'tpope/vim-unimpaired'
 " Preview registers when you hit " or @, or CTRL-R
 Plugin 'junegunn/vim-peekaboo'
 
-if !empty($MS_EXTENDED_VIMRC)
 "Plugin 'neovim/pynvim' - better to install over pip ?
 " This needs integration with neovim (over python)
 " Verify if neovim complains (type :messages)
@@ -234,7 +233,6 @@ Plugin 'roxma/vim-hug-neovim-rpc'
 " this is context completion but it is somehow buggy and jumps into less
 " predicted way
 Plugin 'Shougo/deoplete.nvim'
-endif
 
 " Aligning plugin
 "    Try EasyAlign*=
@@ -500,6 +498,8 @@ Plugin 'PeterRincker/vim-argumentative.git'
 "Plugin 'andviro/flake8-vim'
 Plugin 'nvie/vim-flake8'
 " All of your Plugins must be added before the following line
+"
+Plugin 'JuliaEditorSupport/julia-vim'
 call vundle#end()            " required
 
 
@@ -651,8 +651,17 @@ set history=1000
 
 " Enable filetype plugins
 filetype on
-filetype plugin on
+filetype plugin on  " loads plugins, fixes to plugins should go afterwards, like for the python indent
+
+augroup python
+	autocmd!
+	" The default plugin sets softtabstop=8, which causes overindntion
+	" Add shiftwith and/or softtabstop
+	autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=4
+augroup end
+
 filetype indent on
+
 
 " TIP: change one line into multiply lines and indent
 " %s/[{;}]/&\r/g|norm! =gg
@@ -1658,3 +1667,9 @@ imap <F1> <Esc>
 
 
 autocmd BufWritePost *.py call flake8#Flake8()
+
+" julia-vim
+" let g:latex_to_unicode_suggestions = 1  " enable suggestions (does not work very well with YCM or doplete)
+" let g:latex_to_unicode_eager = 0  " things like \ne or \neg: when Tab pressed on \ne, try to show suggestions
+let g:latex_to_unicode_auto = 1  " no need to press Tab at all, do expansion automatically
+let g:latex_to_unicode_tab = "on"  " pressing tab expand latex: \alpha -> ..
