@@ -34,6 +34,7 @@ run_log emerge -v --update --quiet-build app-portage/eix \
                 app-admin/perl-cleaner \
                 app-portage/genlop \
                 app-portage/portage-utils \
+                app-eselect/eselect-python \
                 app-eselect/eselect-repository &&
 run_log eix-update &&
 run_log fixpackages &&
