@@ -1195,9 +1195,10 @@ vmap <F4> <ESC>:set hls!<CR>gv
 " leave F5 for Leaderf refresh cache
 "
 " toggle disable/enable list; OPEN: why did we set let g:indentLine_enabled = 0/1
-map <F6> :set list!<CR>
-imap <F6> <ESC>:set list!<CR>
-vmap <F6> <ESC>:set list!<CR>
+" use <F2> to toggle list with paste
+"map <F6> :set list!<CR>
+"imap <F6> <ESC>:set list!<CR>
+"vmap <F6> <ESC>:set list!<CR>
 
 highlight ExtraWhitespace ctermbg=darkgray guibg=darkgray
 au ColorScheme * highlight ExtraWhitespace guibg=darkgray
@@ -1306,6 +1307,9 @@ nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
 "nnoremap <silent> <A-\> :TmuxNavigatePrevious<cr>
 
 " use <F2> as the key to toggle paste mode
+map <F2> :set paste!<CR>:set nu!<CR>:set rnu!<CR>:set list!<CR>:IndentLinesToggle<CR>
+imap <F2> <ESC>:set paste!<CR>:set nu!<CR>:set rnu!<CR>:set list!<CR>:IndentLinesToggle<CR>a
+vmap <F2> <ESC>:set paste!<CR>:set nu!<CR>:set rnu!<CR>:set list!<CR>:IndentLinesToggle<CR>gv
 set pastetoggle=<F2>
 
 " fakeclip plugin, if loaded, should allow you to use a new register to
