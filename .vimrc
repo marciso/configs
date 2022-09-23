@@ -500,6 +500,10 @@ Plugin 'nvie/vim-flake8'
 " All of your Plugins must be added before the following line
 "
 Plugin 'JuliaEditorSupport/julia-vim'
+
+" Support for Rust Language
+Plugin 'rust-lang/rust.vim'
+
 call vundle#end()            " required
 
 
