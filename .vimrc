@@ -504,6 +504,10 @@ Plugin 'JuliaEditorSupport/julia-vim'
 " Support for Rust Language
 Plugin 'rust-lang/rust.vim'
 
+"
+" coc
+Plugin 'neoclide/coc.nvim'
+
 call vundle#end()            " required
 
 

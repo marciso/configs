@@ -9,6 +9,8 @@ for s in $DIR/../scripts/_logger.sh ~/bin/_logger.sh ; do
     test -f $s && source $s && break
 done
 
+verbose=1
+
 # update portage and world if needed
 
 test -f ~/Gentoo/startprefix && G=~/Gentoo

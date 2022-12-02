@@ -126,9 +126,14 @@ git_clone_or_pull https://github.com/VundleVim/Vundle.vim.git ${dst_dir}/.vim/bu
 run_log python3 -m pip install --user --upgrade pynvim
 run_log python3 -m pip install --user --upgrade neovim
 
+# for coc.nvim (Conqueror of Completion) to work, we need to install nodejs >= 14.14
+curl -sL install-node.vercel.app/lts | bash -s -- --verbose --prefix="$HOME/.local/"
+
 run_log mkdir -p ${dst_dir}/.vim/spell/
 test -z "$SKIP_VIM_PLUGIN_UPDATE" && run_log vim "+PluginUpdate" "+PluginClean!" "+qall"
+run_log vim '+CocInstall coc-json coc-tsserver coc-rust-analyzer coc-clangd'
 #run_log vim +PluginInstall +qall
+
 
 ## ZSH
 
@@ -175,9 +180,8 @@ fi
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # download all C++ man pages from cplusplus.com or cppreference.com
-cppman --cache-all
-
-echo "Add crontab entry: @weekly cppman --force-update"
+#cppman --cache-all
+#echo "Add crontab entry: @weekly cppman --force-update"
 
 # python is needed in a zsh, and vim
 # which python || die "Please install python"
