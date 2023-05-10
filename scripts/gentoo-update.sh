@@ -51,6 +51,7 @@ run_log eix-test-obsolete
 run_log emaint world
 #run_log qcheck --badonly  # use qcheck -u to update
 
+run_log dispatch-conf
 
 # HINTS:
 # * list packages:
